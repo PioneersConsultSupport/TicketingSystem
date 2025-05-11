@@ -1,0 +1,6 @@
+@AlRaneem.Support.API_HostAddress = http://localhost:5128
+
+GET {{AlRaneem.Support.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
