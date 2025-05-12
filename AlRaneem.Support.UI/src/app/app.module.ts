@@ -21,9 +21,10 @@ import { UserModule } from './user/user.module';
 import { HttpInterceptorService } from './services/httpInterceptorService';
 import { BidiModule, Directionality } from '@angular/cdk/bidi';
 //import { } from '@azure'
-import { MsalGuard, MsalInterceptor, MsalModule, MsalRedirectComponent } from '@azure/msal-angular';
+import { MsalGuard, MsalInterceptor, MsalModule, MsalRedirectComponent, MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
-const isIE = window.navigator.userAgent.indexOf('MSIE') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
+const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 ||
+             window.navigator.userAgent.indexOf('Trident/') > -1;
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,9 +49,9 @@ const isIE = window.navigator.userAgent.indexOf('MSIE') > -1 || window.navigator
     MsalModule.forRoot(new PublicClientApplication(
       {
         auth: {
-          clientId: 'b550cb8a-506c-4727-bfcb-6a1aa424abf0',
+          clientId: '164f37a5-94d6-4943-a1a4-1622f90276b0',
           redirectUri: 'http://localhost:4200',
-          authority: 'https://login.microsoftonline/ab7cdc76-2216-4b56-841a-54976e893422'
+          authority: 'https://login.microsoftonline.com/4b8957b1-49be-40b7-9537-63e78101460d'
         },
         cache: {
           cacheLocation: 'localStorage',
@@ -60,18 +61,16 @@ const isIE = window.navigator.userAgent.indexOf('MSIE') > -1 || window.navigator
     ), {
       interactionType: InteractionType.Redirect,
       authRequest: {
-        scopes:['user.read']
+        scopes:['api://fa035b9e-666c-4a68-99fe-eb806283d482/access_as_user']
       }
     }, {
       interactionType: InteractionType.Redirect,
       protectedResourceMap: new Map(
         [
-          ['https://graph.microsoft.com/v1.0/me',['user.read']]
+          ['https://localhost:7046/',['api://fa035b9e-666c-4a68-99fe-eb806283d482/access_as_user']]
         ]
       )
     })
-
-    //})
 
   ],
   providers: [
@@ -89,6 +88,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE') > -1 || window.navigator
       useClass: MsalInterceptor,
       multi: true
     },
+    MsalService, 
+    MsalBroadcastService,
     MsalGuard
     //{ provide: Directionality, useFactory: () => ({ value: 'ltr' }) }
     //{ provide: Directionality, useValue: { value: lang === 'ar' ? 'rtl' : 'ltr' } } 

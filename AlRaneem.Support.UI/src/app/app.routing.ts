@@ -6,8 +6,7 @@ import { FullComponent } from './layouts/full/full.component';
 import { authGuard } from './auth.guard';
 import { TicketsComponent } from './tickets/tickets.component';
 import { MsalGuard } from '@azure/msal-angular';
-//import { RegisterComponent } from './user/register/register.component';
-//import { LoginComponent } from './user/login/login.component';
+
 
 export const AppRoutes: Routes = [
   {
@@ -20,13 +19,8 @@ export const AppRoutes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'test',
-        canActivate: [MsalGuard],
-        component: TicketsComponent
-      },
-      {
         path: 'tickets',
-        canActivate: [authGuard],
+        canActivate: [MsalGuard],
         component: TicketsComponent
       }
 

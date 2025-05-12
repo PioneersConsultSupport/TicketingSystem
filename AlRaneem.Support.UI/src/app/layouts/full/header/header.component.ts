@@ -1,9 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../../services/authService';
 import { TranslationService } from '../../../services/translation.service';
-
-import { MediaMatcher } from '@angular/cdk/layout';
-import { MenuItems } from '../../../shared/menu-items/menu-items';
+import { MsalService } from '@azure/msal-angular';
 import { DemoMaterialModule } from '../../../demo-material-module';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -20,7 +18,8 @@ import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 export class AppHeaderComponent implements AfterViewInit {
   @ViewChild('languageSelect', { static: true }) languageSelect!: ElementRef<HTMLSelectElement>;
 
-  constructor(private authService: AuthService, private translationService: TranslationService) {
+  constructor(private authService: AuthService, private translationService: TranslationService,
+    private msalService: MsalService) {
     
   }
     ngAfterViewInit(): void {
@@ -31,8 +30,10 @@ export class AppHeaderComponent implements AfterViewInit {
       this.changeLanguage(lang);
     }
 
-  onSignOut(): void {
-    this.authService.logout();
+  logout() {
+    this.msalService.logoutRedirect({
+      postLogoutRedirectUri: 'http://localhost:4200'
+    });
   }
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
