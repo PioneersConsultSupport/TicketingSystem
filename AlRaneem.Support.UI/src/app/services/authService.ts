@@ -19,6 +19,7 @@ export class AuthService {
 
   // Check if user is logged in (example implementation)
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('accessToken');
+    let userToken = JSON.parse(localStorage.getItem('user') ?? '').token;
+    return !!userToken;
   }
 }

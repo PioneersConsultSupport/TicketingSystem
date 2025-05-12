@@ -9,7 +9,6 @@ namespace AlRaneem.Website.Server.Controllers
     [Authorize]
     [Route("[controller]")]
     [ApiController]
-    //[CustomAuthorize]
     public class EmployeesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
