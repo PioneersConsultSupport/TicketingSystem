@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AlRaneem.Website.Server.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     //[CustomAuthorize]

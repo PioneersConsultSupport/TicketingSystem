@@ -2,9 +2,11 @@ using AlRaneem.Website.DataAccess;
 using AlRaneem.Website.DataAccess.Contexts;
 using AlRaneem.Website.DataAccess.Models;
 using AlRaneem.Website.Server;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,13 +21,24 @@ builder.AddDataAccessRegistration();
 
 //builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 
-builder.Services.AddAuthentication()
-    .AddBearerToken(IdentityConstants.BearerScheme, options =>
+//builder.Services.AddAuthentication()
+//    .AddBearerToken(IdentityConstants.BearerScheme, options =>
+//    {
+//        options.BearerTokenExpiration = TimeSpan.FromDays(7); // Set expiry to 7 days
+//    });
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        options.BearerTokenExpiration = TimeSpan.FromDays(7); // Set expiry to 7 days
+        options.Authority = "https://login.microsoftonline.com/4b8957b1-49be-40b7-9537-63e78101460d/v2.0";
+        options.Audience = "api://fa035b9e-666c-4a68-99fe-eb806283d482"; // or use app URI if you set one
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true
+        };
     });
 
-builder.Services.AddAuthorizationBuilder();
+builder.Services.AddAuthorization();
 
 builder.Services.AddIdentityCore<ApplicationUser>()
     .AddRoles<IdentityRole>()
