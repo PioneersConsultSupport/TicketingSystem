@@ -8,17 +8,17 @@ namespace AlRaneem.Website.DataAccess.Repsitories
         private readonly ApplicationDbContext _context;
 
         public IEmployeeRepo employeeRepo { get; }
-        public IUserRepo userRepo { get; }
+        public IUserRoleRepo userRoleRepo { get; }
         public ICategoryRepo categoryRepo { get; }
         public ICommentRepo commentRepo { get; }
         public ITicketRepo ticketRepo { get; }
 
-        public UnitOfWork(ApplicationDbContext context,IEmployeeRepo employeeRepo, IUserRepo userRepo, 
+        public UnitOfWork(ApplicationDbContext context,IEmployeeRepo employeeRepo, IUserRoleRepo userRepo, 
             ICategoryRepo categoryRepo, ICommentRepo commentRepo, ITicketRepo ticketRepo)
         {
             _context = context;
             this.employeeRepo = employeeRepo;
-            this.userRepo = userRepo;
+            this.userRoleRepo = userRepo;
             this.categoryRepo = categoryRepo;
             this.commentRepo = commentRepo;
             this.ticketRepo = ticketRepo;

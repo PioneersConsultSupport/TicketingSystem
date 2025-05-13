@@ -23,15 +23,15 @@ import { BidiModule, Directionality } from '@angular/cdk/bidi';
 //import { } from '@azure'
 import { MsalGuard, MsalInterceptor, MsalModule, MsalRedirectComponent, MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
+import { AdminPanelComponent } from './Admin Panel/admin-panel.component';
 const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 ||
              window.navigator.userAgent.indexOf('Trident/') > -1;
 @NgModule({
   declarations: [
     AppComponent,
     FullComponent,
-
+    AdminPanelComponent,
     SpinnerComponent
-
   ],
   imports: [
     BrowserModule,

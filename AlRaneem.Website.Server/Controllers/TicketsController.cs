@@ -6,24 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AlRaneem.Website.Server.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
-    [Authorize]
-    public class CourseController : BaseController
+    public class TicketController : BaseController
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CourseController(IUnitOfWork unitOfWork)
+        public TicketController(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
         [HttpPost("create")]
         public async Task<IActionResult> Create(CreateTicketDto createTicketDto)
         {
             try
             {
-                var result = await unitOfWork.ticketRepo.AddAsync(createTicketDto.ToModel(UserId));
-                unitOfWork.Complete();
+                var result = await _unitOfWork.ticketRepo.AddAsync(createTicketDto.ToModel(UserId));
+                _unitOfWork.Complete();
                 return Ok(result);
             }
             catch (Exception ex)

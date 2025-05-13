@@ -143,7 +143,7 @@ namespace AlRaneem.Website.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("AlRaneem.Website.DataAccess.Models.SupportSystemModels.Category", b =>
@@ -169,7 +169,7 @@ namespace AlRaneem.Website.DataAccess.Migrations
 
                     b.HasIndex("ParentCategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("AlRaneem.Website.DataAccess.Models.SupportSystemModels.Comment", b =>
@@ -200,7 +200,7 @@ namespace AlRaneem.Website.DataAccess.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("AlRaneem.Website.DataAccess.Models.SupportSystemModels.Ticket", b =>
@@ -243,7 +243,7 @@ namespace AlRaneem.Website.DataAccess.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -10,7 +10,6 @@ namespace AlRaneem.Website.DataAccess.Extensions
             return new Ticket()
             {
                 CategoryId = exam.CategoryId,
-                CreatedById = userId,
                 Title = exam.Title,
                 Description = exam.Description,
                 Status = TicketStatus.Open,
