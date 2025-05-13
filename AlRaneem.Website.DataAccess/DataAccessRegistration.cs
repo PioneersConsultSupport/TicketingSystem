@@ -19,7 +19,7 @@ namespace AlRaneem.Website.DataAccess
             builder.Services.AddScoped(typeof(IBaseRepo<,>), typeof(BaseRepo<,>));
             builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
-            builder.Services.AddScoped<IUserRepo, UserRepo>();
+            builder.Services.AddScoped<IUserRoleRepo, UserRoleRepo>();
             builder.Services.AddScoped<ITicketRepo, TicketRepo>();
             builder.Services.AddScoped<ICommentRepo, CommentRepo>();
             builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();

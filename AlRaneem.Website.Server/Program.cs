@@ -1,14 +1,16 @@
 using AlRaneem.Website.DataAccess;
 using AlRaneem.Website.DataAccess.Contexts;
 using AlRaneem.Website.DataAccess.Models;
+using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
 using AlRaneem.Website.Server;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
-var builder = WebApplication.CreateBuilder(args);
+var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -26,12 +28,17 @@ builder.AddDataAccessRegistration();
 //    {
 //        options.BearerTokenExpiration = TimeSpan.FromDays(7); // Set expiry to 7 days
 //    });
+var azureAd = builder.Configuration
+    .GetSection("AzureAd")
+    .Get<AzureConfig>();
+
+builder.Services.Configure<AzureConfig>(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = "https://login.microsoftonline.com/4b8957b1-49be-40b7-9537-63e78101460d/v2.0";
-        options.Audience = "api://fa035b9e-666c-4a68-99fe-eb806283d482"; // or use app URI if you set one
+        options.Authority = "https://login.microsoftonline.com/" + azureAd?.TenantId;
+        options.Audience = "api://"+ azureAd?.ClientId;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true

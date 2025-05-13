@@ -1,6 +1,6 @@
 
 
-<span *ngIf="isLoggedIn()">
+<span *ngIf="authService.isLoggedIn()">
   <mat-nav-list appAccordion style="padding-top: 28px;">
     <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getAuthenticatedMenuitem()" routerLinkActive="selected">
       <a appAccordionToggle [routerLink]="[menuitem.state]" *ngIf="menuitem.type === 'link'">
@@ -11,7 +11,7 @@
     </mat-list-item>
   </mat-nav-list>
 </span>
-<span *ngIf="!isLoggedIn()">
+<span *ngIf="!authService.isLoggedIn()">
   <mat-nav-list appAccordion style="padding-top: 28px;">
     <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getNotAuthenticatedMenuitem()" routerLinkActive="selected">
       <a appAccordionToggle [routerLink]="[menuitem.state]" *ngIf="menuitem.type === 'link'">

@@ -4,7 +4,7 @@
     {
         //IBaseRepository<SalesUser, uint> salesUserNoCustomization { get; }
         IEmployeeRepo employeeRepo { get; }
-        IUserRepo userRepo { get; }
+        IUserRoleRepo userRoleRepo { get; }
         ICategoryRepo categoryRepo{ get; }
         ICommentRepo commentRepo { get; }
         ITicketRepo ticketRepo { get; }
