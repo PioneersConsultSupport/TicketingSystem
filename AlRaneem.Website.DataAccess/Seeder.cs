@@ -218,8 +218,10 @@ namespace AlRaneem.Website.DataAccess
                 context.Employees.AddRange(employees);
             }
             static byte[] ConvertImageToBytes(string imageName)
-            {
-                string imagePath = "C:\\Users\\Dell\\source\\repos\\MMheidt\\AlRaneem.Website\\alraneem.website.client\\src\\assets\\img\\team\\" + imageName;
+            {               
+                string projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+                string imagePath = Path.Combine(projectRoot, "alraneem.website.client", "src", "assets", "img", "team", imageName);
+
                 return File.ReadAllBytes(imagePath);
             }
         }
