@@ -22,7 +22,7 @@ namespace AlRaneem.Website.DataAccess.Repsitories
             _azureConfig = azureConfig.Value;
 
             var clientSecretCredential = new ClientSecretCredential(
-                _azureConfig.TenantId, _azureConfig.ClientId, config["AzureAd:ssssssss"]);
+                _azureConfig.TenantId, _azureConfig.ClientId, _azureConfig.ClientIdValue);
 
             _graphClient = new GraphServiceClient(clientSecretCredential);
         }
