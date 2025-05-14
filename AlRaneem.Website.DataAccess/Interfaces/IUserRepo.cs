@@ -7,6 +7,9 @@ namespace AlRaneem.Website.DataAccess.Interfaces
     {
         Task<List<AzureUser>> GetAllUsersAsync();
         void AddUserRole(UserRole userRole);
+        void UpdateUserRole(UserRole userRole);
+        void DeleteUserRole(UserRole userRole);
+        Task<List<UserRole>> GetAllUsersRolesAsync();
     }
 
 

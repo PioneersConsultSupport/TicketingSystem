@@ -32,6 +32,11 @@ namespace AlRaneem.Website.DataAccess.Repsitories
             _context.Add(userRole);
         }
 
+        public void DeleteUserRole(UserRole userRole)
+        {
+            _context.Remove(userRole);
+        }
+
         public async Task<List<AzureUser>> GetAllUsersAsync()
         {
             var usersPage = await _graphClient.Users.GetAsync();
@@ -46,5 +51,15 @@ namespace AlRaneem.Website.DataAccess.Repsitories
             }).ToList();
         }
 
+        public async Task<List<UserRole>> GetAllUsersRolesAsync()
+        {
+            var result = _context.userRoles.ToList();
+            return result;
+        }
+
+        public void UpdateUserRole(UserRole userRole)
+        {
+            _context.Update(userRole);
+        }
     }
 }
