@@ -1,9 +1,8 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppRoutes } from './app.routing';
 import { AppComponent } from './app.component';
@@ -18,20 +17,31 @@ import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserModule } from './user/user.module';
-import { HttpInterceptorService } from './services/httpInterceptorService';
-import { BidiModule, Directionality } from '@angular/cdk/bidi';
-//import { } from '@azure'
-import { MsalGuard, MsalInterceptor, MsalModule, MsalRedirectComponent, MsalBroadcastService, MsalService } from '@azure/msal-angular';
+import { BidiModule } from '@angular/cdk/bidi';
+import {
+  MsalGuard,
+  MsalInterceptor,
+  MsalModule,
+  MsalRedirectComponent,
+  MsalBroadcastService,
+  MsalService,
+} from '@azure/msal-angular';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { AdminPanelComponent } from './Admin Panel/admin-panel.component';
-const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 ||
-             window.navigator.userAgent.indexOf('Trident/') > -1;
+import { environment } from '../environments/environment';
+
+const isIE =
+  window.navigator.userAgent.indexOf('MSIE ') > -1 ||
+  window.navigator.userAgent.indexOf('Trident/') > -1;
+
+const scope = 'api://' + environment.apiClientId + '/access_as_user';
+
 @NgModule({
   declarations: [
     AppComponent,
     FullComponent,
     AdminPanelComponent,
-    SpinnerComponent
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,54 +56,45 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 ||
     ReactiveFormsModule,
     BidiModule,
     AppHeaderComponent,
-    MsalModule.forRoot(new PublicClientApplication(
-      {
+    MsalModule.forRoot(
+      new PublicClientApplication({
         auth: {
-          clientId: '164f37a5-94d6-4943-a1a4-1622f90276b0',
-          redirectUri: 'http://localhost:4200',
-          authority: 'https://login.microsoftonline.com/4b8957b1-49be-40b7-9537-63e78101460d'
+          clientId: environment.clientId,
+          redirectUri: environment.redirectUri,
+          authority:
+            'https://login.microsoftonline.com/' + environment.tenantId,
         },
         cache: {
           cacheLocation: 'localStorage',
-          storeAuthStateInCookie: isIE
-        }
+          storeAuthStateInCookie: isIE,
+        },
+      }),
+      {
+        interactionType: InteractionType.Redirect,
+        authRequest: {
+          scopes: [scope],
+        },
+      },
+      {
+        interactionType: InteractionType.Redirect,
+        protectedResourceMap: new Map([[environment.apiUrl, [scope]]]),
       }
-    ), {
-      interactionType: InteractionType.Redirect,
-      authRequest: {
-        scopes:['api://fa035b9e-666c-4a68-99fe-eb806283d482/access_as_user']
-      }
-    }, {
-      interactionType: InteractionType.Redirect,
-      protectedResourceMap: new Map(
-        [
-          ['https://localhost:7046/',['api://fa035b9e-666c-4a68-99fe-eb806283d482/access_as_user']]
-        ]
-      )
-    })
-
+    ),
   ],
   providers: [
     {
       provide: LocationStrategy,
-      useClass: PathLocationStrategy
+      useClass: PathLocationStrategy,
     },
-    //{
-    //  provide: HTTP_INTERCEPTORS,
-    //  useClass: HttpInterceptorService,
-    //  multi: true
-    //},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
-      multi: true
+      multi: true,
     },
-    MsalService, 
+    MsalService,
     MsalBroadcastService,
-    MsalGuard
-    //{ provide: Directionality, useFactory: () => ({ value: 'ltr' }) }
-    //{ provide: Directionality, useValue: { value: lang === 'ar' ? 'rtl' : 'ltr' } } 
+    MsalGuard,
   ],
-  bootstrap: [AppComponent, MsalRedirectComponent]
+  bootstrap: [AppComponent, MsalRedirectComponent],
 })
-export class AppModule { }
+export class AppModule {}
