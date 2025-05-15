@@ -3,6 +3,7 @@ import { FullComponent } from './layouts/full/full.component';
 import { TicketsComponent } from './tickets/tickets.component';
 import { MsalGuard } from '@azure/msal-angular';
 import { AdminPanelComponent } from './Admin Panel/admin-panel.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 export const AppRoutes: Routes = [
   {
@@ -23,6 +24,11 @@ export const AppRoutes: Routes = [
         path: 'admin-panel',
         canActivate: [MsalGuard],
         component: AdminPanelComponent,
+      },
+      { 
+        path: 'unauthorized',
+        canActivate: [MsalGuard],
+        component: UnauthorizedComponent
       },
       {
         path: 'user',

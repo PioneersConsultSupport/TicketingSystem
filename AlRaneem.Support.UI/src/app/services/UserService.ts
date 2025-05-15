@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 
 export class UserService {
 
-  baseUrl = environment.apiUrl + "/UserRole";
+  baseUrl = "UserRole";
   constructor(private http: HttpClient) { }
 
   getAllUsers(){

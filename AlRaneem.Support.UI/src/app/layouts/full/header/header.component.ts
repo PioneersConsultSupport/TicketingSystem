@@ -7,13 +7,14 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: [],
   standalone: true,
-  imports: [DemoMaterialModule, NgFor, NgIf, RouterModule, CommonModule, MatIconModule, TranslatePipe],
+  imports: [DemoMaterialModule, NgIf, RouterModule, CommonModule, MatIconModule, TranslatePipe],
 })
 export class AppHeaderComponent implements AfterViewInit {
   @ViewChild('languageSelect', { static: true }) languageSelect!: ElementRef<HTMLSelectElement>;
@@ -32,7 +33,7 @@ export class AppHeaderComponent implements AfterViewInit {
 
   logout() {
     this.msalService.logoutRedirect({
-      postLogoutRedirectUri: 'http://localhost:4200'
+      postLogoutRedirectUri: environment.redirectUri
     });
   }
   isLoggedIn(): boolean {
