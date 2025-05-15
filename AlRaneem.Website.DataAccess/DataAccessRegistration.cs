@@ -1,5 +1,6 @@
 ﻿using AlRaneem.Website.DataAccess.Contexts;
 using AlRaneem.Website.DataAccess.Interfaces;
+using AlRaneem.Website.DataAccess.Repositories;
 using AlRaneem.Website.DataAccess.Repsitories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;

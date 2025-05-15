@@ -9,5 +9,6 @@
         ICommentRepo commentRepo { get; }
         ITicketRepo ticketRepo { get; }
         int Complete();
+        Task<int> CompleteAsync();
     }
 }
