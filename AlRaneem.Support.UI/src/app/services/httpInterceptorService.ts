@@ -66,7 +66,7 @@ export class HttpInterceptorService implements HttpInterceptor {
             if (error.error instanceof ErrorEvent) {
               errorMsg = `Client Error: ${error.error.message}`;
             } else {
-              errorMsg = `Error ${error.status}: ${error.error.detail}`;
+              errorMsg = `Error ${error.status}: ${error?.error?.detail}`;
 
               switch (error.status) {
                 case 400:
@@ -78,6 +78,7 @@ export class HttpInterceptorService implements HttpInterceptor {
                   break;
                 case 403:
                   errorMsg = 'Forbidden';
+                  this.router.navigate(['/unauthorized']);
                   break;
                 case 404:
                   errorMsg = 'Resource not found';

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AlRaneem.Website.Server.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "NotRegistered")]
     [Route("[controller]")]
     [ApiController]
     public class TicketController : BaseController

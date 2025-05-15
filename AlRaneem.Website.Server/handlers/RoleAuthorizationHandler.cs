@@ -21,7 +21,9 @@ namespace AlRaneem.Website.Server.handlers
                 return;
 
             var user = _userRoleRepo.GetUserRoleByEmailAsync(email).Result;
-            if (user != null && user.UserRoleId == (int)requirement.Role)
+            if (user != null) return;
+
+            if (user?.UserRoleId == (int)requirement.Role)
             {
                 context.Succeed(requirement);
             }

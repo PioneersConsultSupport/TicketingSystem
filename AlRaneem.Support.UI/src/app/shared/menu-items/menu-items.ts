@@ -9,8 +9,8 @@ export interface Menu {
 }
 
 const MENUITEMS: Menu[] = [
-  { state: '/tickets', name: 'Tickets', type: 'link', icon: 'support_agent', authenticated: true },
   { state: '/admin-panel', name: 'Admin Panel', type: 'link', icon: 'support_agent', authenticated: true },
+  { state: '/tickets', name: 'Tickets', type: 'link', icon: 'support_agent', authenticated: true },
 ];
 
 @Injectable()

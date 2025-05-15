@@ -51,6 +51,8 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy =>
         policy.Requirements.Add(new RoleRequirement(UserRoles.Admin)));
+    options.AddPolicy("NotRegistered", policy =>
+        policy.Requirements.Add(new RoleRequirement(UserRoles.NotRegistered)));
 });
 
 

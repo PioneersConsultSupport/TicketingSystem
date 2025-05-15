@@ -11,6 +11,7 @@ namespace AlRaneem.Website.DataAccess.Enums
         Admin,
         SupportManager,
         Employee,
-        Client
+        Client,
+        NotRegistered
     }
 }
