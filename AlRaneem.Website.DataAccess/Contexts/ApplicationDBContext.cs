@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AlRaneem.Website.DataAccess.Models;
 using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
-using AlRaneem.Website.DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlRaneem.Website.DataAccess.Contexts
 {
@@ -10,7 +10,6 @@ namespace AlRaneem.Website.DataAccess.Contexts
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<UserRole> userRoles { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Subcategory> Subcategories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
             base(options)
@@ -20,20 +19,15 @@ namespace AlRaneem.Website.DataAccess.Contexts
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Category>()
-                .HasOne(c => c.ParentCategory)
-                .WithMany(c => c.ChildCategories)
-                .HasForeignKey(c => c.ParentCategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(c => c.ParentCategory)
+            .WithMany(c => c.ChildCategories)
+            .HasForeignKey(c => c.ParentCategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<UserRole>()
-                .HasIndex(u => u.UserEmail)
-                .IsUnique();
+            .HasIndex(u => u.UserEmail)
+            .IsUnique();
 
-            modelBuilder.Entity<Subcategory>()
-                .HasOne(sc => sc.Category)
-                .WithMany(c => c.Subcategories)
-                .HasForeignKey(sc => sc.CategoryId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

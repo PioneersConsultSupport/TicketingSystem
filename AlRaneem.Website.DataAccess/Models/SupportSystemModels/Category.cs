@@ -1,6 +1,4 @@
-﻿using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
-
-namespace AlRaneem.Website.DataAccess.Models.SupportSystemModels
+﻿namespace AlRaneem.Website.DataAccess.Models.SupportSystemModels
 {
     // Category entity
     public class Category
@@ -12,6 +10,5 @@ namespace AlRaneem.Website.DataAccess.Models.SupportSystemModels
         public int? ParentCategoryId { get; set; }
         public Category? ParentCategory { get; set; }
         public ICollection<Category> ChildCategories { get; set; } = new List<Category>();
-        public ICollection<Subcategory> Subcategories { get; set; }
     }
 }
