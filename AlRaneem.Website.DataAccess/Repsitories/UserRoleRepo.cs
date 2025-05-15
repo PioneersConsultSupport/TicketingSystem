@@ -1,12 +1,10 @@
 ﻿using AlRaneem.Website.DataAccess.Contexts;
 using AlRaneem.Website.DataAccess.Interfaces;
-using AlRaneem.Website.DataAccess.Models;
 using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
 using Azure.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
-using Microsoft.Graph.Models;
 
 
 namespace AlRaneem.Website.DataAccess.Repsitories
@@ -54,6 +52,12 @@ namespace AlRaneem.Website.DataAccess.Repsitories
         public async Task<List<UserRole>> GetAllUsersRolesAsync()
         {
             var result = _context.userRoles.ToList();
+            return result;
+        }
+
+        public async Task<UserRole> GetUserRoleByEmailAsync(string userEmail)
+        {
+            var result = _context.userRoles.SingleOrDefault(x => x.UserEmail == userEmail);
             return result;
         }
 
