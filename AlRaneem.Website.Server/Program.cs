@@ -1,16 +1,17 @@
 using AlRaneem.Website.DataAccess;
 using AlRaneem.Website.DataAccess.Contexts;
+using AlRaneem.Website.DataAccess.Enums;
 using AlRaneem.Website.DataAccess.Models;
 using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
-using AlRaneem.Website.Server;
+using AlRaneem.Website.Server.handlers;
+using AlRaneem.Website.Server.Middlewars;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Graph.Models;
 using Microsoft.IdentityModel.Tokens;
-using System.Data;
-var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -44,8 +45,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = true
         };
     });
+builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+        policy.Requirements.Add(new RoleRequirement(UserRoles.Admin)));
+});
+
 
 builder.Services.AddIdentityCore<ApplicationUser>()
     .AddRoles<IdentityRole>()
@@ -86,11 +93,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseMiddleware<ResponseTransformationMiddleware>();
+//app.UseMiddleware<ResponseTransformationMiddleware>();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.MapIdentityApi<ApplicationUser>();
 app.MapFallbackToFile("/index.html");
 

@@ -31,77 +31,77 @@ namespace AlRaneem.Website.DataAccess
         #region methods
         static async Task AddRoles(IServiceProvider serviceProvider)
         {
-            string[] roles = new string[] { "client", "employee", "support_manager", "admin" };
-            var rolesManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            foreach (string role in roles)
-            {
-                var dbRole = rolesManager.Roles.FirstOrDefault(x => x.Name == role);
-                if (dbRole == null) await rolesManager.CreateAsync(new IdentityRole { Name = role });
-            }
+            //string[] roles = new string[] { "client", "employee", "support_manager", "admin" };
+            //var rolesManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            //foreach (string role in roles)
+            //{
+            //    var dbRole = rolesManager.Roles.FirstOrDefault(x => x.Name == role);
+            //    if (dbRole == null) await rolesManager.CreateAsync(new IdentityRole { Name = role });
+            //}
         }
         static async Task AddAdminUser(UserManager<ApplicationUser> userManager, IConfiguration config, ApplicationDbContext context)
         {
-            string adminEmail = config["Seeder:adminEmail"] ?? throw new Exception("Default admin email not configured.");
-            if (!context.Users.Any(x => adminEmail.Equals(x.Email)))
-            {
-                var userResult = await userManager.CreateAsync(new ApplicationUser() { Email = adminEmail, UserName = adminEmail }, "Test123!");
-                if (!userResult.Succeeded) throw new Exception("Failed to create default admin user.");
-            }
+            //string adminEmail = config["Seeder:adminEmail"] ?? throw new Exception("Default admin email not configured.");
+            //if (!context.Users.Any(x => adminEmail.Equals(x.Email)))
+            //{
+            //    var userResult = await userManager.CreateAsync(new ApplicationUser() { Email = adminEmail, UserName = adminEmail }, "Test123!");
+            //    if (!userResult.Succeeded) throw new Exception("Failed to create default admin user.");
+            //}
 
-            var defaultAdmin = await userManager.FindByEmailAsync(adminEmail) ?? throw new Exception("Error seeding admin user");
-            if (!await userManager.IsInRoleAsync(defaultAdmin, "admin"))
-            {
-                var roleResult = await userManager.AddToRoleAsync(defaultAdmin, "admin");
-                if (!roleResult.Succeeded) throw new Exception("Failed to add admin role to default admin user in seeder.");
-            }
+            //var defaultAdmin = await userManager.FindByEmailAsync(adminEmail) ?? throw new Exception("Error seeding admin user");
+            //if (!await userManager.IsInRoleAsync(defaultAdmin, "admin"))
+            //{
+            //    var roleResult = await userManager.AddToRoleAsync(defaultAdmin, "admin");
+            //    if (!roleResult.Succeeded) throw new Exception("Failed to add admin role to default admin user in seeder.");
+            //}
         }
         static async Task AddSupportManagerUser(UserManager<ApplicationUser> userManager, IConfiguration config, ApplicationDbContext context)
         {
-            string supportManagerEmail = config["Seeder:supportManagerEmail"] ?? throw new Exception("supportManagerEmail not configured.");
-            if (!context.Users.Any(x => supportManagerEmail.Equals(x.Email)))
-            {
-                var userResult = await userManager.CreateAsync(new ApplicationUser() { Email = supportManagerEmail, UserName = supportManagerEmail }, "Test123!");
-                if (!userResult.Succeeded) throw new Exception("Failed to create default supportManager user.");
-            }
+            //string supportManagerEmail = config["Seeder:supportManagerEmail"] ?? throw new Exception("supportManagerEmail not configured.");
+            //if (!context.Users.Any(x => supportManagerEmail.Equals(x.Email)))
+            //{
+            //    var userResult = await userManager.CreateAsync(new ApplicationUser() { Email = supportManagerEmail, UserName = supportManagerEmail }, "Test123!");
+            //    if (!userResult.Succeeded) throw new Exception("Failed to create default supportManager user.");
+            //}
 
-            var defaultSupportManager = await userManager.FindByEmailAsync(supportManagerEmail) ?? throw new Exception("Error seeding support_manager user");
-            if (!await userManager.IsInRoleAsync(defaultSupportManager, "support_manager"))
-            {
-                var roleResult = await userManager.AddToRoleAsync(defaultSupportManager, "support_manager");
-                if (!roleResult.Succeeded) throw new Exception("Failed to add support_manager role to default support manager user in seeder.");
-            }
+            //var defaultSupportManager = await userManager.FindByEmailAsync(supportManagerEmail) ?? throw new Exception("Error seeding support_manager user");
+            //if (!await userManager.IsInRoleAsync(defaultSupportManager, "support_manager"))
+            //{
+            //    var roleResult = await userManager.AddToRoleAsync(defaultSupportManager, "support_manager");
+            //    if (!roleResult.Succeeded) throw new Exception("Failed to add support_manager role to default support manager user in seeder.");
+            //}
         }
         static async Task AddEmployeeUser(UserManager<ApplicationUser> userManager, IConfiguration config, ApplicationDbContext context)
         {
-            string employeeEmail = config["Seeder:employeeEmail"] ?? throw new Exception("Default employeeEmail email not configured.");
-            if (!context.Users.Any(x => employeeEmail.Equals(x.Email)))
-            {
-                var userResult = await userManager.CreateAsync(new ApplicationUser() { Email = employeeEmail, UserName = employeeEmail }, "Test123!");
-                if (!userResult.Succeeded) throw new Exception("Failed to create default employeeEmail user.");
-            }
+            //string employeeEmail = config["Seeder:employeeEmail"] ?? throw new Exception("Default employeeEmail email not configured.");
+            //if (!context.Users.Any(x => employeeEmail.Equals(x.Email)))
+            //{
+            //    var userResult = await userManager.CreateAsync(new ApplicationUser() { Email = employeeEmail, UserName = employeeEmail }, "Test123!");
+            //    if (!userResult.Succeeded) throw new Exception("Failed to create default employeeEmail user.");
+            //}
 
-            var defaultEmployeeEmail = await userManager.FindByEmailAsync(employeeEmail) ?? throw new Exception("Error seeding employeeEmail user");
-            if (!await userManager.IsInRoleAsync(defaultEmployeeEmail, "employee"))
-            {
-                var roleResult = await userManager.AddToRoleAsync(defaultEmployeeEmail, "employee");
-                if (!roleResult.Succeeded) throw new Exception("Failed to add employee role to default employee user in seeder.");
-            }
+            //var defaultEmployeeEmail = await userManager.FindByEmailAsync(employeeEmail) ?? throw new Exception("Error seeding employeeEmail user");
+            //if (!await userManager.IsInRoleAsync(defaultEmployeeEmail, "employee"))
+            //{
+            //    var roleResult = await userManager.AddToRoleAsync(defaultEmployeeEmail, "employee");
+            //    if (!roleResult.Succeeded) throw new Exception("Failed to add employee role to default employee user in seeder.");
+            //}
         }
         static async Task AddClientUser(UserManager<ApplicationUser> userManager, IConfiguration config, ApplicationDbContext context)
         {
-            string clientEmail = config["Seeder:clientEmail"] ?? throw new Exception("Default clientEmail email not configured.");
-            if (!context.Users.Any(x => clientEmail.Equals(x.Email)))
-            {
-                var userResult = await userManager.CreateAsync(new ApplicationUser() { Email = clientEmail, UserName = clientEmail }, "Test123!");
-                if (!userResult.Succeeded) throw new Exception("Failed to create default clientEmail user.");
-            }
+            //string clientEmail = config["Seeder:clientEmail"] ?? throw new Exception("Default clientEmail email not configured.");
+            //if (!context.Users.Any(x => clientEmail.Equals(x.Email)))
+            //{
+            //    var userResult = await userManager.CreateAsync(new ApplicationUser() { Email = clientEmail, UserName = clientEmail }, "Test123!");
+            //    if (!userResult.Succeeded) throw new Exception("Failed to create default clientEmail user.");
+            //}
 
-            var defaultClientEmail = await userManager.FindByEmailAsync(clientEmail) ?? throw new Exception("Error seeding clientEmail user");
-            if (!await userManager.IsInRoleAsync(defaultClientEmail, "client"))
-            {
-                var roleResult = await userManager.AddToRoleAsync(defaultClientEmail, "client");
-                if (!roleResult.Succeeded) throw new Exception("Failed to add client role to default client user in seeder.");
-            }
+            //var defaultClientEmail = await userManager.FindByEmailAsync(clientEmail) ?? throw new Exception("Error seeding clientEmail user");
+            //if (!await userManager.IsInRoleAsync(defaultClientEmail, "client"))
+            //{
+            //    var roleResult = await userManager.AddToRoleAsync(defaultClientEmail, "client");
+            //    if (!roleResult.Succeeded) throw new Exception("Failed to add client role to default client user in seeder.");
+            //}
         }
         static void AddEmployees(ApplicationDbContext context)
         {

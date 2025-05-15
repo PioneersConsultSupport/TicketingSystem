@@ -1,103 +1,114 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse, HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import {
+  HttpEvent,
+  HttpInterceptor,
+  HttpHandler,
+  HttpRequest,
+  HttpErrorResponse,
+  HttpResponse,
+} from '@angular/common/http';
+import { EMPTY, from, Observable, throwError } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { AuthService } from './authService';
+import { Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
+import { InteractionRequiredAuthError } from '@azure/msal-browser';
+import { MessageService } from 'primeng/api';
 
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private msalService: MsalService,
+    private messageService: MessageService
+  ) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.url.includes("/assets/i18n")) {
-      return next.handle(req);
-    }
-    const apiReq = req.clone({ url: `${environment.apiUrl}/${req.url}` });
-    // Check if the request URL should bypass the token logic
-    if (this.isExcludedUrl(apiReq.url)) {
-      return next.handle(apiReq); // Bypass token logic and proceed with the request
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    const activeAccount = this.msalService.instance.getActiveAccount();
+
+    if (!activeAccount) {
+      this.msalService.loginRedirect();
+      return EMPTY;
     }
 
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      if (this.isTokenExpired())
-      {
-        // Wait for the token to be refreshed, then handle the request
-        return this.handleTokenRefresh(apiReq, next);
-      }
-      else
-      {
-        // Clone and handle the request with the existing token
-        const cloned = apiReq.clone({
+    return from(
+      this.msalService.instance.acquireTokenSilent({
+        account: activeAccount,
+        scopes: ['api://' + environment.apiClientId + '/access_as_user'],
+      })
+    ).pipe(
+      switchMap((result) => {
+        const authReq = req.clone({
+          url: `${environment.apiUrl}/${req.url}`,
           setHeaders: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${result.accessToken}`,
+          },
         });
-        return next.handle(cloned);
-      }
-    } else {
-      // No token, just proceed with the request
-      return next.handle(apiReq);
-    }
-  }
-
-  // Method to check if a request should bypass the token logic
-  private isExcludedUrl(url: string): boolean {
-    const excludedUrls = [
-      '/login', // Example of a login request
-      '/refresh', // Example of token refresh endpoint
-      '/register', // Example of a public endpoint
-      // Add more URLs or patterns as needed
-    ];
-
-    return excludedUrls.some(excludedUrl => url.includes(excludedUrl));
-  }
-
-  isTokenExpired(): boolean {
-    const tokenExpiryTime = localStorage.getItem('tokenExpiryTime');
-    if (tokenExpiryTime) {
-      const expiryTime = parseInt(tokenExpiryTime, 10);
-      const currentTime = Date.now();
-      return currentTime > expiryTime; // True if the token is expired
-    }
-    return false;
-  }
-
-  handleTokenRefresh(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const refreshToken = localStorage.getItem('refreshToken');
-    return this.http.post<any>('refresh', { refreshToken: refreshToken })
-      .pipe(
-        switchMap((response: any) => {
-          if (response.IsSuccess) {
-            // Store the new tokens
-            localStorage.setItem('accessToken', response.Data.accessToken);
-            localStorage.setItem('refreshToken', response.Data.refreshToken);
-            const tokenExpiryTime = Date.now() + response.Data.expiresIn * 1000;
-            localStorage.setItem('tokenExpiryTime', tokenExpiryTime.toString());
-
-            // Clone the original request with the new token
-            const cloned = req.clone({
-              setHeaders: {
-                Authorization: `Bearer ${response.Data.accessToken}`
+        return next.handle(authReq).pipe(
+          tap((event) => {
+            if (event instanceof HttpResponse) {
+              if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'Done Successfully',
+                  life: 6000,
+                });
               }
+            }
+          }),
+          catchError((error: HttpErrorResponse) => {
+            let errorMsg = 'An unknown error occurred';
+
+            if (error.error instanceof ErrorEvent) {
+              errorMsg = `Client Error: ${error.error.message}`;
+            } else {
+              errorMsg = `Error ${error.status}: ${error.error.detail}`;
+
+              switch (error.status) {
+                case 400:
+                  errorMsg = error.error?.message || 'Bad Request';
+                  break;
+                case 401:
+                  errorMsg = 'Unauthorized';
+                  this.router.navigate(['/unauthorized']);
+                  break;
+                case 403:
+                  errorMsg = 'Forbidden';
+                  break;
+                case 404:
+                  errorMsg = 'Resource not found';
+                  this.router.navigate(['/not-found']);
+                  break;
+                case 500:
+                  errorMsg = 'Internal server error';
+                  this.router.navigate(['/server-error']);
+                  break;
+              }
+            }
+
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: errorMsg,
+              life: 6000,
             });
-            // Handle the original request with the new token
-            return next.handle(cloned);
-          }
-          else
-          {
-            // Handle failure to refresh token
-            return throwError('Failed to refresh token');
-          }
-        }),
-        catchError((error) => {
-          // Handle error during token refresh
-          if (error.status == 401) {
-            this.authService.logout();
-          }
-          return throwError(error);
-        })
-      );
+            return throwError(() => error);
+          })
+        );
+      }),
+      catchError((err) => {
+        if (err instanceof InteractionRequiredAuthError) {
+          this.msalService.logoutRedirect({
+            postLogoutRedirectUri: environment.redirectUri,
+          });
+        }
+
+        return throwError(() => err);
+      })
+    );
   }
 }

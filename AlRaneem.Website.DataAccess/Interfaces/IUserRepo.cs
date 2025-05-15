@@ -1,5 +1,4 @@
-﻿using AlRaneem.Website.DataAccess.Models;
-using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
+﻿using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
 
 namespace AlRaneem.Website.DataAccess.Interfaces
 {
@@ -10,7 +9,6 @@ namespace AlRaneem.Website.DataAccess.Interfaces
         void UpdateUserRole(UserRole userRole);
         void DeleteUserRole(UserRole userRole);
         Task<List<UserRole>> GetAllUsersRolesAsync();
+        Task<UserRole> GetUserRoleByEmailAsync(string userEmail);
     }
-
-
 }

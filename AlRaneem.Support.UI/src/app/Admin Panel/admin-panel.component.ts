@@ -6,6 +6,7 @@ import { UserRoles } from '../Enums/user-roles';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-panel',
@@ -33,7 +34,7 @@ export class AdminPanelComponent implements OnInit {
 
   search() {
     this.userService.getAllUsersRoles().subscribe((response) => {
-      this.dataSource = new MatTableDataSource(response.Data);
+      this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -42,7 +43,7 @@ export class AdminPanelComponent implements OnInit {
   ngOnInit(): void {
     this.search();
     this.userService.getAllUsers().subscribe((response) => {
-      this.users = response.Data;
+      this.users = response;
       this.roles = this.enumToKeyValueArray(UserRoles);
     });
     this.displayedColumns = ['userEmail', 'userRoleId', 'edit', 'delete'];

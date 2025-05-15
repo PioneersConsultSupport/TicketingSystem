@@ -29,6 +29,9 @@ import {
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { AdminPanelComponent } from './Admin Panel/admin-panel.component';
 import { environment } from '../environments/environment';
+import { HttpInterceptorService } from './services/httpInterceptorService';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 const isIE =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||
@@ -56,6 +59,7 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     ReactiveFormsModule,
     BidiModule,
     AppHeaderComponent,
+    ToastModule,
     MsalModule.forRoot(
       new PublicClientApplication({
         auth: {
@@ -72,7 +76,7 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
       {
         interactionType: InteractionType.Redirect,
         authRequest: {
-          scopes: [scope],
+          scopes: ['user.read'],
         },
       },
       {
@@ -91,9 +95,15 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
       useClass: MsalInterceptor,
       multi: true,
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi: true,
+    },
     MsalService,
     MsalBroadcastService,
     MsalGuard,
+    MessageService
   ],
   bootstrap: [AppComponent, MsalRedirectComponent],
 })
