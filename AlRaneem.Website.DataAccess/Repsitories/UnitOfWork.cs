@@ -33,5 +33,9 @@ namespace AlRaneem.Website.DataAccess.Repsitories
         {
             _context.Dispose();
         }
+        public async Task<int> CompleteAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
     }
 }
