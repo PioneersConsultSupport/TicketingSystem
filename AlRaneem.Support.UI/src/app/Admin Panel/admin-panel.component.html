@@ -1,101 +1,93 @@
-<div class="p-6 bg-white rounded-xl shadow-md w-full max-w-md">
-  <h2 class="text-xl font-semibold mb-4">Admin Panel</h2>
-  <form [formGroup]="adminForm" (ngSubmit)="onSubmit()">
-    <div class="mb-4">
-      <label for="user" class="block mb-1 font-medium">Select User</label>
-      <mat-form-field>
-        <mat-select formControlName="user" ngModel name="user">
-          <mat-option *ngFor="let user of users" [value]="user.mail">
-            {{ user.displayName }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="mb-4">
-      <label for="role" class="block mb-1 font-medium">Assign Role</label>
-      <mat-form-field>
-        <mat-select formControlName="role" ngModel name="role">
-          <mat-option *ngFor="let role of roles" [value]="role.value">
-            {{ role.key }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="col-6 d-flex">
-      <button
-        type="submit"
-        style="
-          background-color: #2780e3 !important;
-          color: white;
-          margin-right: 50px;
-        "
-        mat-button
-      >
-        Save
+<div class="max-w-5xl mx-auto p-10 bg-gradient-to-br from-white via-blue-50 to-white rounded-3xl shadow-2xl border border-blue-100">
+  <!-- Header -->
+  <h2 class="text-4xl font-extrabold text-blue-700 mb-8 flex items-center gap-3">
+    <mat-icon color="primary" class="text-4xl">admin_panel_settings</mat-icon>
+    Admin Panel
+  </h2>
+
+  <!-- Admin Form -->
+  <form [formGroup]="adminForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- User Select -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Select User</mat-label>
+      <mat-select formControlName="user">
+        <mat-option *ngFor="let user of users" [value]="user.mail">
+          {{ user.displayName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Role Select -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Assign Role</mat-label>
+      <mat-select formControlName="role">
+        <mat-option *ngFor="let role of roles" [value]="role.value">
+          {{ role.key }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <div class="md:col-span-2 flex justify-end">
+      <button type="submit"
+              mat-flat-button
+              color="primary"
+              class="px-8 py-3 rounded-xl text-white shadow-lg hover:bg-blue-800 transition transform hover:scale-105 duration-200">
+        <mat-icon class="mr-2">save</mat-icon> Save Role
       </button>
     </div>
   </form>
 </div>
-<div class="mat-elevation-z8" style="overflow: auto">
-  <table mat-table [dataSource]="dataSource" matSort>
+
+<!-- User Roles Table -->
+<div class="max-w-5xl mx-auto mt-14 bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+  <h3 class="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+    <mat-icon color="accent">group</mat-icon> Assigned Roles
+  </h3>
+
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z4 w-full rounded-lg overflow-hidden border border-gray-200">
+
+    <!-- Email Column -->
     <ng-container matColumnDef="userEmail">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-      <td mat-cell *matCellDef="let detail">{{ detail.userEmail }}</td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-blue-50 text-left px-6 py-4 font-semibold text-blue-800">Email</th>
+      <td mat-cell *matCellDef="let detail" class="px-6 py-4">{{ detail.userEmail }}</td>
     </ng-container>
 
+    <!-- Role Column -->
     <ng-container matColumnDef="userRoleId">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
-      <td mat-cell *matCellDef="let detail">
-        {{ objectEnum[detail.userRoleId] }}
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-blue-50 text-left px-6 py-4 font-semibold text-blue-800">Role</th>
+      <td mat-cell *matCellDef="let detail" class="px-6 py-4">
+        <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800">
+          {{ objectEnum[detail.userRoleId] }}
+        </span>
       </td>
     </ng-container>
 
+    <!-- Edit Column -->
     <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+      <th mat-header-cell *matHeaderCellDef class="bg-blue-50 px-4 py-4 text-center"></th>
       <td mat-cell *matCellDef="let detail" class="text-center">
-        <button mat-button class="btn-primary" (click)="edit(detail)">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-pencil"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"
-            />
-          </svg>
+        <button mat-icon-button color="primary" (click)="edit(detail)">
+          <mat-icon>edit</mat-icon>
         </button>
       </td>
     </ng-container>
 
+    <!-- Delete Column -->
     <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+      <th mat-header-cell *matHeaderCellDef class="bg-blue-50 px-4 py-4 text-center"></th>
       <td mat-cell *matCellDef="let detail" class="text-center">
-        <button mat-button class="btn-primary" (click)="deleteRole(detail)">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-trash"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
-            />
-            <path
-              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
-            />
-          </svg>
+        <button mat-icon-button color="warn" (click)="deleteRole(detail)">
+          <mat-icon>delete</mat-icon>
         </button>
       </td>
     </ng-container>
 
+    <!-- Row Definitions -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
-  <mat-paginator fixed [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+  <!-- Paginator -->
+  <mat-paginator class="mt-6" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
 </div>
