@@ -1,0 +1,45 @@
+<h2 mat-dialog-title class="text-xl font-semibold text-blue-700">
+  {{ data?.title || (isEditMode ? 'Edit Ticket' : 'Create New Ticket') }}
+</h2>
+
+<div mat-dialog-content class="mt-6 space-y-4">
+  <form [formGroup]="ticketForm">
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Enter ticket title" formControlName="title" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="category">
+        <mat-option value="Finance & Operations">Finance & Operations</mat-option>
+        <mat-option value="We Care">We Care</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="Open">Open</mat-option>
+        <mat-option value="Assigned">Assigned</mat-option>
+        <mat-option value="In Progress">In Progress</mat-option>
+
+        <mat-option value="Completed">Completed</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+</div>
+
+<div mat-dialog-actions class="flex justify-end gap-4 mt-8 mb-4">
+  <button mat-button (click)="close()">Cancel</button>
+
+  <button mat-flat-button
+          color="{{ isEditMode ? 'warn' : 'primary' }}"
+          [disabled]="ticketForm.invalid"
+          (click)="save()">
+    <mat-icon class="mr-1">{{ isEditMode ? 'edit' : 'add' }}</mat-icon>
+    {{ isEditMode ? 'Edit' : 'Create' }}
+  </button>
+</div>

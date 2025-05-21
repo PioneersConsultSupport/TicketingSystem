@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppRoutes } from './app.routing';
@@ -15,9 +15,18 @@ import { DemoMaterialModule } from './demo-material-module';
 
 import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { UserModule } from './user/user.module';
 import { BidiModule } from '@angular/cdk/bidi';
+
+// ✅ Material Modules for TicketsComponent
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 import {
   MsalGuard,
   MsalInterceptor,
@@ -33,6 +42,9 @@ import { HttpInterceptorService } from './services/httpInterceptorService';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
+// ✅ Tickets Component
+import { TicketsComponent } from './tickets/tickets.component';
+
 const isIE =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||
   window.navigator.userAgent.indexOf('Trident/') > -1;
@@ -45,6 +57,7 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     FullComponent,
     AdminPanelComponent,
     SpinnerComponent,
+    TicketsComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,21 +65,31 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     DemoMaterialModule,
     UserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     SharedModule,
     RouterModule.forRoot(AppRoutes),
     AppSidebarComponent,
-    ReactiveFormsModule,
     BidiModule,
     AppHeaderComponent,
     ToastModule,
+
+    // ✅ Material modules
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule,
+
+    // ✅ MSAL for Microsoft Authentication
     MsalModule.forRoot(
       new PublicClientApplication({
         auth: {
           clientId: environment.clientId,
           redirectUri: environment.redirectUri,
-          authority:
-            'https://login.microsoftonline.com/' + environment.tenantId,
+          authority: 'https://login.microsoftonline.com/' + environment.tenantId,
         },
         cache: {
           cacheLocation: 'localStorage',
@@ -86,25 +109,14 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     ),
   ],
   providers: [
-    {
-      provide: LocationStrategy,
-      useClass: PathLocationStrategy,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpInterceptorService,
-      multi: true,
-    },
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: MsalInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
     MsalService,
     MsalBroadcastService,
     MsalGuard,
-    MessageService
+    MessageService,
   ],
   bootstrap: [AppComponent, MsalRedirectComponent],
 })
-export class AppModule {}
+export class AppModule { }
