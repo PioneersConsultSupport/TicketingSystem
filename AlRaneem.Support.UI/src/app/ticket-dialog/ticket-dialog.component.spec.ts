@@ -21,3 +21,4 @@ describe('TicketDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

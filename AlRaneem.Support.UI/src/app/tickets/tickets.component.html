@@ -1,3 +1,4 @@
+<!-- Tickets Dashboard -->
 <div class="max-w-6xl mx-auto p-10 bg-gradient-to-br from-white via-gray-50 to-white rounded-3xl shadow-2xl border border-gray-100">
 
   <!-- Header -->
@@ -8,7 +9,7 @@
     </h2>
   </div>
 
-  <!-- Action Buttons with explicit margin and bottom margin -->
+  <!-- Action Buttons -->
   <div class="flex flex-wrap" style="margin-bottom: 2rem;">
     <button mat-flat-button
             color="primary"
@@ -64,9 +65,39 @@
       <input matInput placeholder="Enter Reference #" formControlName="referenceNumber" />
     </mat-form-field>
 
+    <mat-form-field appearance="outline" class="w-full col-span-1">
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Enter Title" formControlName="title" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full col-span-1">
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Enter Description" formControlName="description" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full col-span-1">
+      <mat-label>Subcategory</mat-label>
+      <mat-select formControlName="subcategory">
+        <mat-option value="">All</mat-option>
+        <mat-option value="Payments">Payments</mat-option>
+        <mat-option value="Invoices">Invoices</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full col-span-1">
+      <mat-label>Priority</mat-label>
+      <mat-select formControlName="priority">
+        <mat-option value="">All</mat-option>
+        <mat-option value="Low">Low</mat-option>
+        <mat-option value="Medium">Medium</mat-option>
+        <mat-option value="High">High</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- ✅ Updated Search Button -->
     <div class="flex items-end col-span-1">
-      <button mat-flat-button color="accent" class="w-full py-3 rounded-lg" (click)="searchTickets()">
-        <mat-icon class="mr-1">search</mat-icon> Search
+      <button mat-flat-button color="primary" class="w-full py-3 rounded-lg" (click)="searchTickets()">
+        <mat-icon class="mr-1">filter_alt</mat-icon> Filter
       </button>
     </div>
   </form>

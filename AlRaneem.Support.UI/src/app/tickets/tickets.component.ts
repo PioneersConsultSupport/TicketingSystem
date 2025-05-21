@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.scss'],
 })
+
 export class TicketsComponent implements OnInit {
   filterForm: FormGroup;
   dataSource = new MatTableDataSource<any>();
