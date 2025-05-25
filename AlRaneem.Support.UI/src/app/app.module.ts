@@ -41,8 +41,6 @@ import { environment } from '../environments/environment';
 import { HttpInterceptorService } from './services/httpInterceptorService';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-
-// ✅ Tickets Component
 import { TicketsComponent } from './tickets/tickets.component';
 
 const isIE =

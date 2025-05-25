@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from '../services/UserService';
-import { user } from '../models/user';
+import { User } from '../models/user';
 import { UserRoles } from '../Enums/user-roles';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-panel',
@@ -16,7 +15,7 @@ import { MessageService } from 'primeng/api';
 export class AdminPanelComponent implements OnInit {
   adminForm: FormGroup;
 
-  users: user[] = [];
+  users: User[] = [];
   dataSource!: MatTableDataSource<{ key: string; value: number }>;
   roles: { key: string; value: number }[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -27,8 +26,9 @@ export class AdminPanelComponent implements OnInit {
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.adminForm = this.fb.group({
       id: [''],
-      user: [''],
-      role: [''],
+      userRoleId: [''],
+      userEmail: [''],
+      userName: [''],
     });
   }
 
@@ -39,27 +39,41 @@ export class AdminPanelComponent implements OnInit {
       this.dataSource.sort = this.sort;
     });
   }
-  
+
   ngOnInit(): void {
     this.search();
     this.userService.getAllUsers().subscribe((response) => {
       this.users = response;
       this.roles = this.enumToKeyValueArray(UserRoles);
     });
-    this.displayedColumns = ['userEmail', 'userRoleId', 'edit', 'delete'];
+    this.displayedColumns = [
+      'userName',
+      'userEmail',
+      'userRoleId',
+      'edit',
+      'delete',
+    ];
   }
 
   onSubmit(): void {
     if (this.adminForm.valid) {
-      const { user, role, id } = this.adminForm.value;
-      if (!id)
-        this.userService.addUserRole(role, user).subscribe((response) => {
-          this.adminForm.reset();
-          this.search();
-        });
-      else
+      const user = this.adminForm.value;
+      const userNameOjbect = this.users.find(x => x.mail == user.userEmail) ?? null;
+      if (!user.id) {
         this.userService
-          .updateUserRole(id, role, user)
+          .addUserRole(user.userRoleId, user.userEmail, userNameOjbect?.displayName ?? '')
+          .subscribe((response) => {
+            this.adminForm.reset();
+            this.search();
+          });
+      } else
+        this.userService
+          .updateUserRole(
+            user.id,
+            user.userRoleId,
+            user.userEmail,
+            user.userName
+          )
           .subscribe((response) => {
             this.adminForm.reset();
             this.search();
@@ -69,15 +83,21 @@ export class AdminPanelComponent implements OnInit {
 
   edit(detail: any) {
     this.adminForm.setValue({
-      user: detail.userEmail,
-      role: detail.userRoleId,
       id: detail.id,
+      userRoleId: detail.userRoleId,
+      userEmail: detail.userEmail,
+      userName: detail.userName,
     });
   }
 
   deleteRole(detail: any) {
     this.userService
-      .deleteUserRole(detail.id, detail.userRoleId, detail.userEmail)
+      .deleteUserRole(
+        detail.id,
+        detail.userRoleId,
+        detail.userEmail,
+        detail.userName
+      )
       .subscribe((response) => {
         this.search();
       });

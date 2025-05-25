@@ -1,6 +1,9 @@
-﻿using AlRaneem.Website.DataAccess.Interfaces;
+﻿using AlRaneem.Website.DataAccess.Enums;
+using AlRaneem.Website.DataAccess.Interfaces;
 using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
+using AlRaneem.Website.DataAccess.Repsitories;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace AlRaneem.Website.Server.handlers
 {
@@ -16,17 +19,22 @@ namespace AlRaneem.Website.Server.handlers
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, RoleRequirement requirement)
         {
             var email = context.User?.Identity?.Name;
-
+            
             if (email == null)
                 return;
 
-            var user = _userRoleRepo.GetUserRoleByEmailAsync(email).Result;
-            if (user != null) return;
+            var user = _userRoleRepo
+            .FindUserRoleByConditionAsync(x => x.UserEmail == email)
+            .Result;
 
-            if (user?.UserRoleId == (int)requirement.Role)
+            if (user == null) return;
+
+            if ((int)requirement.Role == (int)UserRoles.Admin && user?.UserRoleId != (int)requirement.Role)
             {
-                context.Succeed(requirement);
+                return;
             }
+
+            context.Succeed(requirement);
         }
     }
 }

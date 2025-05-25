@@ -1,5 +1,5 @@
 
-export class user{
+export class User{
     id:string = '';
     displayName:string = '';
     mail:string = '';

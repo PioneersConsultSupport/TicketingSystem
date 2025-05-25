@@ -5,15 +5,21 @@ namespace AlRaneem.Website.DataAccess.Extensions
 {
     public static class TicketExtensions
     {
-        public static Ticket ToModel(this CreateTicketDto exam, string userId)
+        public static Ticket ToEntity(this TicketDto ticketDto)
         {
             return new Ticket()
             {
-                CategoryId = exam.CategoryId,
-                Title = exam.Title,
-                Description = exam.Description,
-                Status = TicketStatus.Open,
-                CreatedAt = DateTime.UtcNow
+                Id = ticketDto.Id,
+                Title = ticketDto.Title,
+                Description = ticketDto.Description,
+                CreatedAt = DateTime.Now,
+                CreatedById = ticketDto.CreatedById,
+                StatusId = ticketDto.StatusId,
+                PriorityId = ticketDto.PriorityId,
+                SupportTypeId = ticketDto.SupportTypeId,
+                CategoryId = ticketDto.CategoryId,
+                SubcategoryId = ticketDto.SubcategoryId,
+                AssignedToId = ticketDto.AssignedToId,
             };
         }
     }

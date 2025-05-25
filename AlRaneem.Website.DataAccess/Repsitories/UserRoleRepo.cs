@@ -1,10 +1,13 @@
 ﻿using AlRaneem.Website.DataAccess.Contexts;
+using AlRaneem.Website.DataAccess.Enums;
 using AlRaneem.Website.DataAccess.Interfaces;
 using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
 using Azure.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
+using System.Linq.Expressions;
 
 
 namespace AlRaneem.Website.DataAccess.Repsitories
@@ -42,22 +45,28 @@ namespace AlRaneem.Website.DataAccess.Repsitories
             return usersPage.Value
                 .Select(x => new AzureUser
                 {
-                Id = x.Id,
-                DisplayName = x.DisplayName,
-                Mail = x.Mail,
-                UserPrincipalName = x.UserPrincipalName,
-            }).ToList();
+                    Id = x.Id,
+                    DisplayName = x.DisplayName,
+                    Mail = x.Mail,
+                    UserPrincipalName = x.UserPrincipalName,
+                }).ToList();
         }
 
         public async Task<List<UserRole>> GetAllUsersRolesAsync()
         {
-            var result = _context.userRoles.ToList();
+            var result = _context.userRoles.AsNoTracking().ToList();
             return result;
         }
 
-        public async Task<UserRole> GetUserRoleByEmailAsync(string userEmail)
+        public async Task<UserRole> FindUserRoleByConditionAsync(Expression<Func<UserRole, bool>> criteria)
         {
-            var result = _context.userRoles.SingleOrDefault(x => x.UserEmail == userEmail);
+            var result = _context.userRoles.SingleOrDefault(criteria);
+            return result;
+        }
+
+        public async Task<List<UserRole>> GetUserRoleByRoleAsync(int role)
+        {
+            var result = _context.userRoles.Where(x => x.UserRoleId == role).ToList();
             return result;
         }
 

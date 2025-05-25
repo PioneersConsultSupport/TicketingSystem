@@ -1,21 +1,8 @@
-
-
 <span *ngIf="authService.isLoggedIn()">
   <mat-nav-list appAccordion style="padding-top: 28px;">
-    <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getAuthenticatedMenuitem()" routerLinkActive="selected">
+    <mat-list-item appAccordionLink *ngFor="let menuitem of menuList" routerLinkActive="selected">
       <a appAccordionToggle [routerLink]="[menuitem.state]" *ngIf="menuitem.type === 'link'">
         <mat-icon style="margin-inline: 20px;">{{ menuitem.icon }} </mat-icon>
-        <span>{{ menuitem.name | translate }}</span>
-        <span fxFlex></span>
-      </a>
-    </mat-list-item>
-  </mat-nav-list>
-</span>
-<span *ngIf="!authService.isLoggedIn()">
-  <mat-nav-list appAccordion style="padding-top: 28px;">
-    <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getNotAuthenticatedMenuitem()" routerLinkActive="selected">
-      <a appAccordionToggle [routerLink]="[menuitem.state]" *ngIf="menuitem.type === 'link'">
-        <mat-icon style="margin-inline: 20px;">{{ menuitem.icon }}</mat-icon>
         <span>{{ menuitem.name | translate }}</span>
         <span fxFlex></span>
       </a>

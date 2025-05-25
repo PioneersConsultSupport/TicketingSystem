@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { UserService } from '../../services/UserService';
+import { UserRoles } from '../../Enums/user-roles';
 
 export interface Menu {
   state: string;
@@ -8,18 +10,21 @@ export interface Menu {
   authenticated: boolean;
 }
 
-const MENUITEMS: Menu[] = [
-  { state: '/admin-panel', name: 'Admin Panel', type: 'link', icon: 'support_agent', authenticated: true },
-  { state: '/tickets', name: 'Tickets', type: 'link', icon: 'support_agent', authenticated: true },
-];
-
 @Injectable()
 export class MenuItems {
-  getAuthenticatedMenuitem(): Menu[] {
-    return MENUITEMS.filter(item => item.authenticated);
+  
+  MENUITEMS: Menu[] = [
+    { state: '/admin-panel', name: 'Admin Panel', type: 'link', icon: 'support_agent', authenticated: true },
+    { state: '/tickets', name: 'Tickets', type: 'link', icon: 'support_agent', authenticated: true },
+  ];
+
+  constructor(private userService: UserService){
   }
 
-  getNotAuthenticatedMenuitem(): Menu[] {
-    return MENUITEMS.filter(item => !item.authenticated);
+  async getMenuitem() {
+    const userRole = await this.userService.getUserRole() ?? 0;
+    this.MENUITEMS[0].authenticated = +userRole == UserRoles.Admin ? true : false;
+    this.MENUITEMS[1].authenticated = +userRole != null || +userRole != undefined ? true : false;
+    return this.MENUITEMS.filter(item => item.authenticated);
   }
 }

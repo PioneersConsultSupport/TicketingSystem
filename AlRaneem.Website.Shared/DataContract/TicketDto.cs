@@ -1,25 +1,22 @@
 ﻿
-namespace AlRaneem.Website.DataAccess.Models.SupportSystemModels
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Xml.Linq;
+
+namespace AlRaneem.Website.Shared.DataContract
 {
-    public class Ticket
+    public class TicketDto
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public int? StatusId { get; set; }
-        public Lookup Status { get; set; } = default!;
-        public int? PriorityId { get; set; }
-        public Lookup Priority { get; set; } = default!;
-        public int? SupportTypeId { get; set; }
-        public Lookup SupportType { get; set; } = default!;
-        public int? CategoryId { get; set; }
-        public Lookup Category { get; set; } = default!;
-        public int? SubcategoryId { get; set; }
-        public Lookup? Subcategory { get; set; }
-        public int? AssignedToId { get; set; }
-        public UserRole? AssignedTo { get; set; }
         public int? CreatedById { get; set; }
-        public UserRole? CreatedBy { get; set; }
+        public int? StatusId { get; set; }
+        public int? PriorityId { get; set; }
+        public int? SupportTypeId { get; set; }
+        public int? CategoryId { get; set; }
+        public int? SubcategoryId { get; set; }
+        public int? AssignedToId { get; set; }
     }
 }

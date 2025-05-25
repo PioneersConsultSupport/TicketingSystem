@@ -32,6 +32,7 @@ export class AppHeaderComponent implements AfterViewInit {
     }
 
   logout() {
+    localStorage.removeItem("userRole");
     this.msalService.logoutRedirect({
       postLogoutRedirectUri: environment.redirectUri
     });

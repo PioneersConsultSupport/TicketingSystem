@@ -13,22 +13,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.AddDataAccessRegistration();
 
-//builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
-
-//builder.Services.AddAuthentication()
-//    .AddBearerToken(IdentityConstants.BearerScheme, options =>
-//    {
-//        options.BearerTokenExpiration = TimeSpan.FromDays(7); // Set expiry to 7 days
-//    });
 var azureAd = builder.Configuration
     .GetSection("AzureAd")
     .Get<AzureConfig>();
@@ -46,7 +37,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy =>
@@ -55,13 +46,10 @@ builder.Services.AddAuthorization(options =>
         policy.Requirements.Add(new RoleRequirement(UserRoles.NotRegistered)));
 });
 
-
 builder.Services.AddIdentityCore<ApplicationUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddApiEndpoints();
-
-
 
 builder.Services.AddCors(options =>
 {
@@ -89,7 +77,6 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 
 app.UseCors("AllowAll");
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -99,7 +86,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-//app.UseMiddleware<ResponseTransformationMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.MapIdentityApi<ApplicationUser>();
 app.MapFallbackToFile("/index.html");

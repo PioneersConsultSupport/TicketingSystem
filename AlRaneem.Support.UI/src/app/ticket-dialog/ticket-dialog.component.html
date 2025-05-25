@@ -7,26 +7,66 @@
 
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Title</mat-label>
-      <input matInput placeholder="Enter ticket title" formControlName="title" />
+      <input matInput placeholder="Enter ticket title" formControlName="title"  />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-full">
+    <mat-form-field appearance="outline" class="w-full" *ngIf="hasRequiredValidator('supportTypeId')">
+      <mat-label>Support Option</mat-label>
+      <mat-select formControlName="supportTypeId" >
+        <mat-option *ngFor="let supportOption of supportOptionList" [value]="supportOption.value">
+            {{ supportOption.key }}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full" *ngIf="hasRequiredValidator('categoryId')">
       <mat-label>Category</mat-label>
-      <mat-select formControlName="category">
-        <mat-option value="Finance & Operations">Finance & Operations</mat-option>
-        <mat-option value="We Care">We Care</mat-option>
+      <mat-select formControlName="categoryId" (selectionChange)="getSubcategoryByCategory()">
+        <mat-option *ngFor="let category of categoryList" [value]="category.value">
+            {{ category.key }}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full" *ngIf="hasRequiredValidator('subcategoryId')">
+      <mat-label>Subcategory</mat-label>
+      <mat-select formControlName="subcategoryId" >
+        <mat-option *ngFor="let subCategory of subCategoryList" [value]="subCategory.value">
+            {{ subCategory.key }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full" *ngIf="hasRequiredValidator('statusId')">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="statusId" >
+        <mat-option *ngFor="let status of statusList" [value]="status.value">
+            {{ status.key }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full" *ngIf="hasRequiredValidator('priorityId')">
+      <mat-label>Priority</mat-label>
+      <mat-select formControlName="priorityId" >
+        <mat-option *ngFor="let ticketPriority of ticketPriorityList" [value]="ticketPriority.value">
+            {{ ticketPriority.key }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full" *ngIf="hasRequiredValidator('assignedToId')">
+      <mat-label>Assigned To</mat-label>
+      <mat-select formControlName="assignedToId" >
+        <mat-option *ngFor="let assignedTo of assignedToList" [value]="assignedTo.value">
+            {{ assignedTo.key }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Status</mat-label>
-      <mat-select formControlName="status">
-        <mat-option value="Open">Open</mat-option>
-        <mat-option value="Assigned">Assigned</mat-option>
-        <mat-option value="In Progress">In Progress</mat-option>
-
-        <mat-option value="Completed">Completed</mat-option>
-      </mat-select>
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Enter Description" formControlName="description"  />
     </mat-form-field>
 
   </form>
@@ -35,7 +75,7 @@
 <div mat-dialog-actions class="flex justify-end gap-4 mt-8 mb-4">
   <button mat-button (click)="close()">Cancel</button>
 
-  <button mat-flat-button
+  <button mat-flat-button *ngIf="!data.isViewMode"
           color="{{ isEditMode ? 'warn' : 'primary' }}"
           [disabled]="ticketForm.invalid"
           (click)="save()">

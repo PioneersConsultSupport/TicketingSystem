@@ -5,9 +5,9 @@
         //IBaseRepository<SalesUser, uint> salesUserNoCustomization { get; }
         IEmployeeRepo employeeRepo { get; }
         IUserRoleRepo userRoleRepo { get; }
-        ICategoryRepo categoryRepo{ get; }
         ICommentRepo commentRepo { get; }
         ITicketRepo ticketRepo { get; }
+        ILookupRepo lookupRepo { get; }
         int Complete();
     }
 }

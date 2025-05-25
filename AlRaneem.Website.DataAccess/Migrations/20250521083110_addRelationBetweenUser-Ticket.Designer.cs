@@ -4,6 +4,7 @@ using AlRaneem.Website.DataAccess.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlRaneem.Website.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250521083110_addRelationBetweenUser-Ticket")]
+    partial class addRelationBetweenUserTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -210,29 +213,30 @@ namespace AlRaneem.Website.DataAccess.Migrations
                     b.Property<int?>("AssignedToId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CreatedById")
-                        .HasColumnType("int");
+                    b.Property<string>("CreatedByEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PriorityId")
+                    b.Property<int>("PriorityId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StatusId")
+                    b.Property<int>("StatusId")
                         .HasColumnType("int");
 
                     b.Property<int?>("SubcategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SupportTypeId")
+                    b.Property<int>("SupportTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -248,8 +252,6 @@ namespace AlRaneem.Website.DataAccess.Migrations
                     b.HasIndex("AssignedToId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("CreatedById");
 
                     b.HasIndex("PriorityId");
 
@@ -329,29 +331,27 @@ namespace AlRaneem.Website.DataAccess.Migrations
                         .HasForeignKey("ApplicationUserId1");
 
                     b.HasOne("AlRaneem.Website.DataAccess.Models.SupportSystemModels.UserRole", "AssignedTo")
-                        .WithMany("AssignedToTickets")
+                        .WithMany("Tickets")
                         .HasForeignKey("AssignedToId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("AlRaneem.Website.DataAccess.Models.SupportSystemModels.Lookup", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("AlRaneem.Website.DataAccess.Models.SupportSystemModels.UserRole", "CreatedBy")
-                        .WithMany("CreatedByTickets")
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("AlRaneem.Website.DataAccess.Models.SupportSystemModels.Lookup", "Priority")
                         .WithMany()
                         .HasForeignKey("PriorityId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("AlRaneem.Website.DataAccess.Models.SupportSystemModels.Lookup", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("AlRaneem.Website.DataAccess.Models.SupportSystemModels.Lookup", "Subcategory")
                         .WithMany()
@@ -361,13 +361,12 @@ namespace AlRaneem.Website.DataAccess.Migrations
                     b.HasOne("AlRaneem.Website.DataAccess.Models.SupportSystemModels.Lookup", "SupportType")
                         .WithMany()
                         .HasForeignKey("SupportTypeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("AssignedTo");
 
                     b.Navigation("Category");
-
-                    b.Navigation("CreatedBy");
 
                     b.Navigation("Priority");
 
@@ -392,9 +391,7 @@ namespace AlRaneem.Website.DataAccess.Migrations
 
             modelBuilder.Entity("AlRaneem.Website.DataAccess.Models.SupportSystemModels.UserRole", b =>
                 {
-                    b.Navigation("AssignedToTickets");
-
-                    b.Navigation("CreatedByTickets");
+                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }
