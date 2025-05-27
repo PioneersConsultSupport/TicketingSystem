@@ -14,15 +14,6 @@
       <mat-icon>account_circle</mat-icon>
     </button>
     <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item>
-        <mat-icon style="margin-inline:10px;">settings</mat-icon> {{ 'settings' | translate }}
-      </button>
-      <button mat-menu-item>
-        <mat-icon style="margin-inline:10px;">account_box</mat-icon> {{ 'profile' | translate }}
-      </button>
-      <button mat-menu-item>
-        <mat-icon style="margin-inline:10px;">notifications_off</mat-icon> {{ 'disableNotifications' | translate }}
-      </button>
       <button mat-menu-item (click)="logout()">
         <mat-icon style="margin-inline:10px;">exit_to_app</mat-icon> {{ 'signOut' | translate }}
       </button>

@@ -14,7 +14,7 @@ export interface Menu {
 export class MenuItems {
   
   MENUITEMS: Menu[] = [
-    { state: '/admin-panel', name: 'Admin Panel', type: 'link', icon: 'support_agent', authenticated: true },
+    { state: '/admin-panel', name: 'admin_panel', type: 'link', icon: 'support_agent', authenticated: true },
     { state: '/tickets', name: 'Tickets', type: 'link', icon: 'support_agent', authenticated: true },
   ];
 

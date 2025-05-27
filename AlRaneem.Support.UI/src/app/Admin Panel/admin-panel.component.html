@@ -2,14 +2,14 @@
   <!-- Header -->
   <h2 class="text-4xl font-extrabold text-blue-700 mb-8 flex items-center gap-3">
     <mat-icon color="primary" class="text-4xl">admin_panel_settings</mat-icon>
-    Admin Panel
+    {{ 'admin_panel' | translate }}
   </h2>
 
   <!-- Admin Form -->
   <form [formGroup]="adminForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-8">
     <!-- User Select -->
     <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Select User</mat-label>
+      <mat-label>{{ 'select_user' | translate }}</mat-label>
       <mat-select formControlName="userEmail">
         <mat-option *ngFor="let user of users" [value]="user.mail">
           {{ user.displayName }}
@@ -19,10 +19,10 @@
 
     <!-- Role Select -->
     <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Assign Role</mat-label>
+      <mat-label>{{ 'assign_role' | translate }}</mat-label>
       <mat-select formControlName="userRoleId">
         <mat-option *ngFor="let role of roles" [value]="role.value">
-          {{ role.key }}
+          {{ role.key | translate }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -33,7 +33,7 @@
               mat-flat-button
               color="primary"
               class="px-8 py-3 rounded-xl text-white shadow-lg hover:bg-blue-800 transition transform hover:scale-105 duration-200">
-        <mat-icon class="mr-2">save</mat-icon> Save Role
+        <mat-icon class="mr-2">save</mat-icon> {{ 'add' | translate }}
       </button>
     </div>
   </form>
@@ -42,7 +42,7 @@
 <!-- User Roles Table -->
 <div class="max-w-5xl mx-auto mt-14 bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
   <h3 class="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-    <mat-icon color="accent">group</mat-icon> Assigned Roles
+    <mat-icon color="accent">group</mat-icon> {{ 'assigned_roles' | translate }}
   </h3>
 
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z4 w-full rounded-lg overflow-hidden border border-gray-200">
@@ -63,7 +63,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-blue-50 text-left px-6 py-4 font-semibold text-blue-800">Role</th>
       <td mat-cell *matCellDef="let detail" class="px-6 py-4">
         <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800">
-          {{ objectEnum[detail.userRoleId] }}
+          {{ objectEnum[detail.userRoleId] | translate }}
         </span>
       </td>
     </ng-container>

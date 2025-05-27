@@ -20,7 +20,7 @@ export class TranslationService {
   }
 
   private loadTranslations(lang: string) {
-    this.http.get(`/assets/i18n/${lang}.json`).subscribe(
+    this.http.get(`assets/i18n/${lang}.json`).subscribe(
       (translations: any) => {
         this.translations = translations;
       },

@@ -8,19 +8,21 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { EMPTY, from, Observable, throwError } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { InteractionRequiredAuthError } from '@azure/msal-browser';
 import { MessageService } from 'primeng/api';
+import { SpinnerService } from './spinnerService';
 
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {
   constructor(
     private router: Router,
     private msalService: MsalService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private spinnerService: SpinnerService
   ) {}
 
   intercept(
@@ -42,11 +44,12 @@ export class HttpInterceptorService implements HttpInterceptor {
     ).pipe(
       switchMap((result) => {
         const authReq = req.clone({
-          url: `${environment.apiUrl}/${req.url}`,
+          url: `${req.url.includes('assets/i18n/') ? '' : environment.apiUrl}/${req.url}`,
           setHeaders: {
             Authorization: `Bearer ${result.accessToken}`,
           },
         });
+        this.spinnerService.show();
         return next.handle(authReq).pipe(
           tap((event) => {
             if (event instanceof HttpResponse) {
@@ -98,7 +101,8 @@ export class HttpInterceptorService implements HttpInterceptor {
               life: 6000,
             });
             return throwError(() => error);
-          })
+          }),
+          finalize(() => this.spinnerService.hide())
         );
       }),
       catchError((err) => {

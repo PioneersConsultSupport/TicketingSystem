@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UserRoles } from '../Enums/user-roles';
+import { TranslatePipe } from "../shared/pipes/translate.pipe";
 
 @Component({
   selector: 'app-ticket-dialog',
@@ -31,7 +32,8 @@ import { UserRoles } from '../Enums/user-roles';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-  ],
+    TranslatePipe
+],
   templateUrl: './ticket-dialog.component.html',
   styleUrls: ['./ticket-dialog.component.scss'],
 })
@@ -90,7 +92,6 @@ export class TicketDialogComponent {
       ],
     });
     this.categoryList = this.getLookupByType('Category');
-    // this.subCategoryList = this.getLookupByType('Subcategory');
     this.supportOptionList = this.getLookupByType('SupportOption');
     this.ticketPriorityList = this.getLookupByType('TicketPriority');
     this.statusList = this.getLookupByType('TicketStatus');

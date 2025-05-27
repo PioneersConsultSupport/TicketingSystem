@@ -3,12 +3,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { TicketDialogComponent } from '../ticket-dialog/ticket-dialog.component';
-import Swal from 'sweetalert2';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { InteractionStatus } from '@azure/msal-browser';
 import { filter, take } from 'rxjs';
 import { ticketService } from '../services/ticketService';
-import { UserService } from '../services/UserService';
 import { Ticket } from '../models/ticket';
 import { Lookup } from '../models/lookup';
 import { MatSort } from '@angular/material/sort';
@@ -42,7 +40,6 @@ export class TicketsComponent implements OnInit {
     private msalService: MsalService,
     private msalBroadcastService: MsalBroadcastService,
     private ticketService: ticketService,
-    private userService: UserService,
     private dialog: MatDialog
   ) {}
 
@@ -128,8 +125,9 @@ export class TicketsComponent implements OnInit {
   openTicketDialog(): void {
     const dialogRef = this.dialog.open(TicketDialogComponent, {
       width: '500px',
+      direction: document.documentElement.dir == 'ltr' ? 'ltr' : 'rtl',
       data: {
-        title: 'Create New Ticket',
+        title: 'create_new_ticket',
         lookups: this.lookupList,
         assignedToList: this.assignedToList,
         userRole: this.userRoleOjbect,
@@ -137,9 +135,6 @@ export class TicketsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe({
-      // if (result?.action === 'create') {
-      //   Swal.fire('Created!', 'The ticket has been created.', 'success');
-      // }
       next: (result: any) => {
         this.ticketService.addTicket(result.data).subscribe((res: Ticket) => {
           this.ticketList.push(res);
@@ -154,8 +149,9 @@ export class TicketsComponent implements OnInit {
   openEditTicketDialog(ticket: any): void {
     const dialogRef = this.dialog.open(TicketDialogComponent, {
       width: '500px',
+      direction: document.documentElement.dir == 'ltr' ? 'ltr' : 'rtl',
       data: {
-        title: 'Edit Ticket',
+        title: 'edit_ticket',
         ticket,
         lookups: this.lookupList,
         assignedToList: this.assignedToList,
@@ -164,9 +160,6 @@ export class TicketsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe({
-      // if (result?.action === 'edit') {
-      //   Swal.fire('Updated!', 'The ticket has been updated.', 'success');
-      // }
       next: (result: any) => {
         this.ticketService
           .updateTicket(result.data)
@@ -184,17 +177,15 @@ export class TicketsComponent implements OnInit {
   openViewTicketDialog(ticket: any): void {
     const dialogRef = this.dialog.open(TicketDialogComponent, {
       width: '500px',
+      direction: document.documentElement.dir == 'ltr' ? 'ltr' : 'rtl',
       data: {
-        title: 'View Ticket',
+        title: 'view_ticket',
         ticket,
         lookups: this.lookupList,
         assignedToList: this.assignedToList,
         userRole: this.userRoleOjbect,
         isViewMode: true,
       },
-    });
-
-    dialogRef.afterClosed().subscribe({
     });
   }
 

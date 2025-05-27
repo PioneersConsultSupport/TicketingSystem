@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './demo-material-module';
 
 import { SharedModule } from './shared/shared.module';
-import { SpinnerComponent } from './shared/spinner.component';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { UserModule } from './user/user.module';
 import { BidiModule } from '@angular/cdk/bidi';
 
@@ -42,6 +42,8 @@ import { HttpInterceptorService } from './services/httpInterceptorService';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { TicketsComponent } from './tickets/tickets.component';
+import { SpinnerService } from './services/spinnerService';
+import { TranslatePipe } from "./shared/pipes/translate.pipe";
 
 const isIE =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||
@@ -54,8 +56,8 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     AppComponent,
     FullComponent,
     AdminPanelComponent,
-    SpinnerComponent,
     TicketsComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +73,6 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     BidiModule,
     AppHeaderComponent,
     ToastModule,
-
     // ✅ Material modules
     MatFormFieldModule,
     MatSelectModule,
@@ -80,32 +81,27 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     MatPaginatorModule,
     MatButtonModule,
     MatIconModule,
-
-    // ✅ MSAL for Microsoft Authentication
-    MsalModule.forRoot(
-      new PublicClientApplication({
+    MsalModule.forRoot(new PublicClientApplication({
         auth: {
-          clientId: environment.clientId,
-          redirectUri: environment.redirectUri,
-          authority: 'https://login.microsoftonline.com/' + environment.tenantId,
+            clientId: environment.clientId,
+            redirectUri: environment.redirectUri,
+            authority: 'https://login.microsoftonline.com/' + environment.tenantId,
         },
         cache: {
-          cacheLocation: 'localStorage',
-          storeAuthStateInCookie: isIE,
+            cacheLocation: 'localStorage',
+            storeAuthStateInCookie: isIE,
         },
-      }),
-      {
+    }), {
         interactionType: InteractionType.Redirect,
         authRequest: {
-          scopes: ['user.read'],
+            scopes: ['user.read'],
         },
-      },
-      {
+    }, {
         interactionType: InteractionType.Redirect,
         protectedResourceMap: new Map([[environment.apiUrl, [scope]]]),
-      }
-    ),
-  ],
+    }),
+    TranslatePipe
+],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: MsalInterceptor, multi: true },
@@ -114,6 +110,7 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     MsalBroadcastService,
     MsalGuard,
     MessageService,
+    SpinnerService
   ],
   bootstrap: [AppComponent, MsalRedirectComponent],
 })
