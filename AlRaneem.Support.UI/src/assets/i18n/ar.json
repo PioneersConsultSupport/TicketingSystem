@@ -158,5 +158,6 @@
   "Admin": "مسؤول",
   "SupportManager": "مدير الدعم",
   "Employee": "موظف",
-  "Client": "عميل"
+  "Client": "عميل",
+  "client_support_portal": "بوابة دعم العميل"
 }

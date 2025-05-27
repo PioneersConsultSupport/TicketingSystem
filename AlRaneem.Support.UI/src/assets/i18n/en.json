@@ -153,5 +153,6 @@
   "Admin": "Admin",
   "SupportManager": "Support Manager",
   "Employee": "Employee",
-  "Client": "Client"
+  "Client": "Client",
+  "client_support_portal": "Client Support Portal"
 }

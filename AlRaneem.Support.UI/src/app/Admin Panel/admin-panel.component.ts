@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../services/UserService';
 import { User } from '../models/user';
 import { UserRoles } from '../Enums/user-roles';
@@ -26,8 +26,8 @@ export class AdminPanelComponent implements OnInit {
   constructor(private fb: FormBuilder, private userService: UserService) {
     this.adminForm = this.fb.group({
       id: [''],
-      userRoleId: [''],
-      userEmail: [''],
+      userRoleId: ['', Validators.required],
+      userEmail: ['', Validators.required],
       userName: [''],
     });
   }
