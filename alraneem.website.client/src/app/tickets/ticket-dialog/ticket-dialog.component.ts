@@ -17,8 +17,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { UserRoles } from '../Enums/user-roles';
-import { TranslatePipe } from "../shared/pipes/translate.pipe";
+import { UserRoles } from 'src/app/Enums/user-roles';
+import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-ticket-dialog',

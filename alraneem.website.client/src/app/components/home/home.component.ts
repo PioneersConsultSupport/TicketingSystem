@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import emailjs from 'emailjs-com';
-import { ToastrService } from 'ngx-toastr';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,17 +12,21 @@ export class HomeComponent {
   email!: string;
   subject!: string;
   message!: string;
-  constructor(private toastr: ToastrService) {}
+  constructor(private messageService: MessageService) {}
   sendEmail() {
-    console.log('sendEmail method called');
     if (!this.name || !this.email || !this.subject || !this.message) {
-      console.log('Please fill in all form fields');
-      this.toastr.error('Please fill in all form fields!', 'error', {
-        timeOut: 3000,
-        positionClass: 'toast-bottom-right',
-        closeButton: true,
-        progressBar: true,
-      });
+      // this.toastr.error('Please fill in all form fields!', 'error', {
+      //   timeOut: 3000,
+      //   positionClass: 'toast-bottom-right',
+      //   closeButton: true,
+      //   progressBar: true,
+      // });
+      this.messageService.add({
+                  severity: 'error',
+                  summary: 'error',
+                  detail: 'Please fill in all form fields!',
+                  life: 3000,
+                });
       return;
     }
     const templateParams = {
@@ -41,27 +45,34 @@ export class HomeComponent {
         'vmC2qnWpyXc5b4sEi'
       )
       .then((response) => {
-        this.toastr.success('Email sent successfully!', 'Success', {
-          timeOut: 3000,
-          positionClass: 'toast-bottom-right',
-          closeButton: true,
-          progressBar: true,
-        });
+        this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'Email sent successfully!',
+                  life: 3000,
+                });
         this.resetForm();
         this.formSubmitted = false;
       })
       .catch((error) => {
-        this.toastr
-          .error('Error sending email!', 'Error', {
-            timeOut: 3000,
-            positionClass: 'toast-bottom-right',
-            closeButton: true,
-            progressBar: true,
-          })
-          .onHidden.toPromise()
-          .then(() => {
-            this.formSubmitted = false;
-          });
+        // this.toastr
+        //   .error('Error sending email!', 'Error', {
+        //     timeOut: 3000,
+        //     positionClass: 'toast-bottom-right',
+        //     closeButton: true,
+        //     progressBar: true,
+        //   })
+        //   .onHidden.toPromise()
+        //   .then(() => {
+        //     this.formSubmitted = false;
+        //   });
+          this.messageService.add({
+                  severity: 'error',
+                  summary: 'error',
+                  detail: 'Error sending email!',
+                  life: 3000,
+                });
+                this.formSubmitted = false;
       });
   }
   resetForm() {

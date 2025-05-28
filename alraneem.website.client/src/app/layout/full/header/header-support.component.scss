@@ -1,0 +1,23 @@
+.lang-toggle {
+  margin: 0 8px;
+  border-radius: 20px;
+  .mat-button-toggle {
+    min-width: 30px;
+    height: 30px;
+    font-size: 14px;
+    width: 50px;
+  }
+
+  .mat-button-toggle-button {
+    line-height: 1.5;
+  }
+
+  .mat-button-toggle-checked {
+  background-color: #2C9AB7;
+  color: white;
+ }
+}
+
+::ng-deep .mat-pseudo-checkbox {
+  display: none !important;
+}

@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AuthService } from '../../../services/authService';
 import { TranslationService } from '../../../services/translation.service';
 import { MsalService } from '@azure/msal-angular';
@@ -7,34 +13,38 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { environment } from '../../../../environments/environment';
+import { environment } from 'src/app/environments/environment';
+import { MatSelect } from '@angular/material/select';
+import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: [],
-  standalone: true,
-  imports: [DemoMaterialModule, NgIf, RouterModule, CommonModule, MatIconModule, TranslatePipe],
+  selector: 'app-header-support',
+  templateUrl: './header-support.component.html',
+  styleUrls: ['./header-support.component.scss'],
 })
-export class AppHeaderComponent implements AfterViewInit {
-  @ViewChild('languageSelect', { static: true }) languageSelect!: ElementRef<HTMLSelectElement>;
+export class AppHeaderSupportComponent implements OnInit {
+  languageSelect?: string;
 
-  constructor(private authService: AuthService, private translationService: TranslationService,
-    private msalService: MsalService) {
-    
-  }
-    ngAfterViewInit(): void {
-      const lang = localStorage.getItem('selected-lang');
-      if (lang) {
-        this.languageSelect.nativeElement.value = lang;
-      }
-      this.changeLanguage(lang);
+  constructor(
+    private authService: AuthService,
+    private translationService: TranslationService,
+    private msalService: MsalService
+  ) {}
+
+  ngOnInit(): void {
+    const lang = localStorage.getItem('selected-lang') ?? "";
+    if (lang != 'null') {
+      this.languageSelect = lang;
+    } else {
+      this.languageSelect = 'en';
     }
+    this.changeLanguage(this.languageSelect);
+  }
 
   logout() {
-    localStorage.removeItem("userRole");
+    localStorage.removeItem('userRole');
     this.msalService.logoutRedirect({
-      postLogoutRedirectUri: environment.redirectUri
+      postLogoutRedirectUri: environment.redirectUri,
     });
   }
   isLoggedIn(): boolean {

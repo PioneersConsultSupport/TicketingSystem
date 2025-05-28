@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
+import { AuthenticationResult, EventType } from '@azure/msal-browser';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +16,7 @@ export class AppComponent implements OnInit {
     private msalService: MsalService,
     private msalBroadcastService: MsalBroadcastService
   ) {}
-  
+
   ngOnInit(): void {
     this.msalBroadcastService.msalSubject$.subscribe((event) => {
       if (event.eventType === EventType.LOGIN_SUCCESS) {

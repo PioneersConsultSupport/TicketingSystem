@@ -69,6 +69,7 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     RouterModule.forRoot(AppRoutes),
     AppSidebarComponent,
     AppHeaderComponent,
+    ToastModule,
     // ✅ Material modules
     MatFormFieldModule,
     MatSelectModule,

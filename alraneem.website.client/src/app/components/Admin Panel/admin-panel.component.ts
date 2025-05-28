@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../services/UserService';
-import { User } from '../models/user';
-import { UserRoles } from '../Enums/user-roles';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/UserService';
+import { UserRoles } from 'src/app/Enums/user-roles';
 
 @Component({
   selector: 'app-admin-panel',

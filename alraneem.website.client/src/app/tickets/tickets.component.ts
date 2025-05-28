@@ -2,16 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { TicketDialogComponent } from '../ticket-dialog/ticket-dialog.component';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { InteractionStatus } from '@azure/msal-browser';
 import { filter, take } from 'rxjs';
-import { ticketService } from '../services/ticketService';
 import { Ticket } from '../models/ticket';
 import { Lookup } from '../models/lookup';
 import { MatSort } from '@angular/material/sort';
 import { UserRoles } from '../Enums/user-roles';
 import { UserRole } from '../models/user-role';
+import { ticketService } from '../Services/ticketService';
+import { TicketDialogComponent } from './ticket-dialog/ticket-dialog.component';
 
 @Component({
   selector: 'app-tickets',

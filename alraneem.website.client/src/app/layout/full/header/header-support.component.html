@@ -1,0 +1,46 @@
+<div class="header-container" style="display: flex; align-items: center; justify-content: space-between;">
+  <!-- Language Selector -->
+  <!-- <select  id="language-select" #languageSelect (change)="changeLanguageEvent($event)">
+    <option value="en">English</option>
+    <option value="ar">العربية</option>
+  </select> -->
+
+  <mat-button-toggle-group
+  name="langToggle"
+  [(ngModel)]="languageSelect"
+  (change)="changeLanguage($event.value)"
+  appearance="legacy"
+  class="lang-toggle"
+>
+  <mat-button-toggle value="en">EN</mat-button-toggle>
+  <mat-button-toggle value="ar">AR</mat-button-toggle>
+</mat-button-toggle-group>
+
+  <!-- <mat-form-field appearance="outline" class="lang-select">
+      <mat-select
+        ngModel
+        name="language"
+        [(ngModel)] ="languageSelect"
+        (selectionChange)="changeLanguage($event.value)"
+      >
+        <mat-option [value]="'ar'">
+          {{ 'العربية' }}
+        </mat-option>
+        <mat-option [value]="'en'">
+          {{ 'English' }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
+  <!-- User Menu -->
+  <span *ngIf="isLoggedIn()">
+    <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #profileMenu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon style="margin-inline:10px;">exit_to_app</mat-icon> {{ 'signOut' | translate }}
+      </button>
+    </mat-menu>
+  </span>
+</div>

@@ -14,8 +14,8 @@ export interface Menu {
 export class MenuItems {
   
   MENUITEMS: Menu[] = [
-    { state: '/admin-panel', name: 'admin_panel', type: 'link', icon: 'support_agent', authenticated: true },
-    { state: '/tickets', name: 'Tickets', type: 'link', icon: 'support_agent', authenticated: true },
+    { state: '/support/admin-panel', name: 'admin_panel', type: 'link', icon: 'admin_panel_settings', authenticated: true },
+    { state: '/support/tickets', name: 'Tickets', type: 'link', icon: 'confirmation_number', authenticated: true },
   ];
 
   constructor(private userService: UserService){

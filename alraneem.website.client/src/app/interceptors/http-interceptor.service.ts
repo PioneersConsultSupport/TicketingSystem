@@ -9,12 +9,12 @@ import {
 } from '@angular/common/http';
 import { EMPTY, from, Observable, throwError } from 'rxjs';
 import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { InteractionRequiredAuthError } from '@azure/msal-browser';
 import { MessageService } from 'primeng/api';
-import { SpinnerService } from './spinnerService';
+import { SpinnerService } from '../services/spinnerService';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {

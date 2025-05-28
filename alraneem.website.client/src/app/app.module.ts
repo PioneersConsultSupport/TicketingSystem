@@ -8,22 +8,41 @@ import { HomeComponent } from './components/home/home.component';
 import { SolutionComponent } from './components/solution/solution.component';
 import { SolutionDetailsComponent } from './components/solution/solution-details/solution-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TeamsComponent } from './components/teams/teams.component';
 import { TermsComponent } from './components/terms/terms.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
+import { ToastModule } from 'primeng/toast';
 import { FullComponent } from './layout/full/full.component';
 import { AdminPanelComponent } from './components/Admin Panel/admin-panel.component';
 import { TicketsComponent } from './tickets/tickets.component';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { DemoMaterialModule } from './demo-material-module';
 import { SharedModule } from './shared/shared.module';
-import { RouterModule } from '@angular/router';
 import { AppSidebarComponent } from './layout/full/sidebar/sidebar.component';
-import { AppHeaderComponent } from './layout/full/header/header.component';
+import { AppHeaderSupportComponent } from './layout/full/header/header-support.component';
 import { TranslatePipe } from './shared/pipes/translate.pipe';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MsalBroadcastService, MsalGuard, MsalInterceptor, MsalModule, MsalRedirectComponent, MsalService } from '@azure/msal-angular';
+import { MessageService } from 'primeng/api';
+import { SpinnerService } from './services/spinnerService';
+import { HttpInterceptorService } from './interceptors/http-interceptor.service';
+import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
+import { environment } from './environments/environment';
+import { WrapeComponent } from './components/wrape-component/wrape.component';
+
+const isIE =
+  window.navigator.userAgent.indexOf('MSIE ') > -1 ||
+  window.navigator.userAgent.indexOf('Trident/') > -1;
+
+const scope = 'api://' + environment.apiClientId + '/access_as_user';
 
 @NgModule({
   declarations: [
@@ -36,9 +55,11 @@ import { TranslatePipe } from './shared/pipes/translate.pipe';
     TeamsComponent,
     TermsComponent,
     FullComponent,
+    WrapeComponent,
     AdminPanelComponent,
     TicketsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    AppHeaderSupportComponent
   ],
   imports: [
     BrowserModule,
@@ -47,17 +68,10 @@ import { TranslatePipe } from './shared/pipes/translate.pipe';
     CommonModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
-    BrowserModule,
-    BrowserAnimationsModule,
     DemoMaterialModule,
-    FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     SharedModule,
-    RouterModule.forRoot(AppRoutes),
     AppSidebarComponent,
-    AppHeaderComponent,
     ToastModule,
     // ✅ Material modules
     MatFormFieldModule,
