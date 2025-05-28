@@ -15,7 +15,6 @@ import { DemoMaterialModule } from './demo-material-module';
 
 import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
-import { UserModule } from './user/user.module';
 import { BidiModule } from '@angular/cdk/bidi';
 
 // ✅ Material Modules for TicketsComponent
@@ -63,16 +62,13 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     BrowserModule,
     BrowserAnimationsModule,
     DemoMaterialModule,
-    UserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule,
     RouterModule.forRoot(AppRoutes),
     AppSidebarComponent,
-    BidiModule,
     AppHeaderComponent,
-    ToastModule,
     // ✅ Material modules
     MatFormFieldModule,
     MatSelectModule,

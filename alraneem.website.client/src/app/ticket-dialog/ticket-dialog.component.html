@@ -1,0 +1,139 @@
+<h2 mat-dialog-title class="text-xl font-semibold text-blue-700">
+  {{
+    data?.title || (isEditMode ? "edit_ticket" : "create_new_ticket")
+      | translate
+  }}
+</h2>
+
+<div mat-dialog-content class="mt-6 space-y-4">
+  <form
+    [formGroup]="ticketForm"
+    class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8"
+  >
+    <mat-form-field appearance="outline" class="w-full col-span-1">
+      <mat-label>{{ "title" | translate }}</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="w-full"
+      *ngIf="hasRequiredValidator('supportTypeId')"
+    >
+      <mat-label>{{ "support_option" | translate }}</mat-label>
+      <mat-select formControlName="supportTypeId">
+        <mat-option
+          *ngFor="let supportOption of supportOptionList"
+          [value]="supportOption.value"
+        >
+          {{ supportOption.key | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="w-full"
+      *ngIf="hasRequiredValidator('categoryId')"
+    >
+      <mat-label>{{ "category" | translate }}</mat-label>
+      <mat-select
+        formControlName="categoryId"
+        (selectionChange)="getSubcategoryByCategory()"
+      >
+        <mat-option
+          *ngFor="let category of categoryList"
+          [value]="category.value"
+        >
+          {{ category.key | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="w-full"
+      *ngIf="hasRequiredValidator('subcategoryId')"
+    >
+      <mat-label>{{ "subcategory" | translate }}</mat-label>
+      <mat-select formControlName="subcategoryId">
+        <mat-option
+          *ngFor="let subCategory of subCategoryList"
+          [value]="subCategory.value"
+        >
+          {{ subCategory.key | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="w-full"
+      *ngIf="hasRequiredValidator('statusId')"
+    >
+      <mat-label>{{ "status" | translate }}</mat-label>
+      <mat-select formControlName="statusId">
+        <mat-option *ngFor="let status of statusList" [value]="status.value">
+          {{ status.key | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="w-full"
+      *ngIf="hasRequiredValidator('priorityId')"
+    >
+      <mat-label>{{ "priority" | translate }}</mat-label>
+      <mat-select formControlName="priorityId">
+        <mat-option
+          *ngFor="let ticketPriority of ticketPriorityList"
+          [value]="ticketPriority.value"
+        >
+          {{ ticketPriority.key | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="w-full"
+      *ngIf="hasRequiredValidator('assignedToId')"
+    >
+      <mat-label>{{ "assigned_to" | translate }}</mat-label>
+      <mat-select formControlName="assignedToId">
+        <mat-option
+          *ngFor="let assignedTo of assignedToList"
+          [value]="assignedTo.value"
+        >
+          {{ assignedTo.key | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ "description" | translate }}</mat-label>
+      <input matInput formControlName="description" />
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions class="flex justify-end gap-4 mt-8 mb-4">
+  <button mat-button (click)="close()">{{ "cancel" | translate }}</button>
+
+  <button
+    mat-flat-button
+    *ngIf="!data.isViewMode"
+    color="{{ isEditMode ? 'warn' : 'primary' }}"
+    [disabled]="ticketForm.invalid"
+    (click)="save()"
+  >
+    <mat-icon class="mr-2">{{ isEditMode ? "edit" : "add" }}</mat-icon>
+    <ng-container *ngIf="isEditMode">
+      {{ "edit" | translate }}
+    </ng-container>
+    <ng-container *ngIf="!isEditMode">
+      {{ "add" | translate }}
+    </ng-container>
+  </button>
+</div>

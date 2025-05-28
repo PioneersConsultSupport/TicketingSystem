@@ -1,0 +1,22 @@
+
+
+
+<div class="header-container" style="display: flex; align-items: center; justify-content: space-between;">
+  <!-- Language Selector -->
+  <select  id="language-select" #languageSelect (change)="changeLanguageEvent($event)">
+    <option value="en">English</option>
+    <option value="ar">العربية</option>
+  </select>
+
+  <!-- User Menu -->
+  <span *ngIf="isLoggedIn()">
+    <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #profileMenu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon style="margin-inline:10px;">exit_to_app</mat-icon> {{ 'signOut' | translate }}
+      </button>
+    </mat-menu>
+  </span>
+</div>

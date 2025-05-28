@@ -29,12 +29,7 @@ export const AppRoutes: Routes = [
         path: 'unauthorized',
         canActivate: [MsalGuard],
         component: UnauthorizedComponent
-      },
-      {
-        path: 'user',
-        loadChildren: () =>
-          import('./user/user.module').then((m) => m.UserModule),
-      },
+      }
     ],
   },
 ];
