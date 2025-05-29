@@ -23,9 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\alraneem.website.client\alraneem.website.client.esproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
+    
     <ProjectReference Include="..\AlRaneem.Website.DataAccess\AlRaneem.Website.DataAccess.csproj" />
   </ItemGroup>
 
