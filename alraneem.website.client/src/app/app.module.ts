@@ -16,7 +16,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
 import { FullComponent } from './layout/full/full.component';
 import { AdminPanelComponent } from './components/Admin Panel/admin-panel.component';
-import { TicketsComponent } from './tickets/tickets.component';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { DemoMaterialModule } from './demo-material-module';
 import { SharedModule } from './shared/shared.module';
@@ -37,6 +36,7 @@ import { HttpInterceptorService } from './interceptors/http-interceptor.service'
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { environment } from './environments/environment';
 import { WrapeComponent } from './components/wrape-component/wrape.component';
+import { TicketsComponent } from './components/tickets/tickets.component';
 
 const isIE =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||

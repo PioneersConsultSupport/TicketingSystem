@@ -1,8 +1,10 @@
 using AlRaneem.Website.DataAccess;
 using AlRaneem.Website.DataAccess.Contexts;
 using AlRaneem.Website.DataAccess.Enums;
+using AlRaneem.Website.DataAccess.Interfaces;
 using AlRaneem.Website.DataAccess.Models;
 using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
+using AlRaneem.Website.DataAccess.Repsitories;
 using AlRaneem.Website.Server.handlers;
 using AlRaneem.Website.Server.Middlewars;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +13,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using AlRaneem.Website.DataAccess.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -18,7 +21,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.AddDataAccessRegistration();
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddScoped(typeof(IBaseRepo<,>), typeof(BaseRepo<,>));
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+builder.Services.AddScoped<IUserRoleRepo, UserRoleRepo>();
+builder.Services.AddScoped<ITicketRepo, TicketRepo>();
+builder.Services.AddScoped<ICommentRepo, CommentRepo>();
+builder.Services.AddScoped<ILookupRepo, LookupRepo>();
+builder.Services.AddScoped<IMailService, MailService>();
 
 var azureAd = builder.Configuration
     .GetSection("AzureAd")
@@ -64,8 +77,8 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    await context.Database.MigrateAsync();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
     await Seeder.Seed(services);
 }
 app.UseDefaultFiles();

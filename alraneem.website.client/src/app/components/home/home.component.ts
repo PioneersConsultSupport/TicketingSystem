@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import emailjs from 'emailjs-com';
 import { MessageService } from 'primeng/api';
 @Component({
@@ -12,21 +13,15 @@ export class HomeComponent {
   email!: string;
   subject!: string;
   message!: string;
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService, private router: Router) {}
   sendEmail() {
     if (!this.name || !this.email || !this.subject || !this.message) {
-      // this.toastr.error('Please fill in all form fields!', 'error', {
-      //   timeOut: 3000,
-      //   positionClass: 'toast-bottom-right',
-      //   closeButton: true,
-      //   progressBar: true,
-      // });
       this.messageService.add({
-                  severity: 'error',
-                  summary: 'error',
-                  detail: 'Please fill in all form fields!',
-                  life: 3000,
-                });
+        severity: 'error',
+        summary: 'error',
+        detail: 'Please fill in all form fields!',
+        life: 3000,
+      });
       return;
     }
     const templateParams = {
@@ -46,33 +41,22 @@ export class HomeComponent {
       )
       .then((response) => {
         this.messageService.add({
-                  severity: 'success',
-                  summary: 'Success',
-                  detail: 'Email sent successfully!',
-                  life: 3000,
-                });
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Email sent successfully!',
+          life: 3000,
+        });
         this.resetForm();
         this.formSubmitted = false;
       })
       .catch((error) => {
-        // this.toastr
-        //   .error('Error sending email!', 'Error', {
-        //     timeOut: 3000,
-        //     positionClass: 'toast-bottom-right',
-        //     closeButton: true,
-        //     progressBar: true,
-        //   })
-        //   .onHidden.toPromise()
-        //   .then(() => {
-        //     this.formSubmitted = false;
-        //   });
-          this.messageService.add({
-                  severity: 'error',
-                  summary: 'error',
-                  detail: 'Error sending email!',
-                  life: 3000,
-                });
-                this.formSubmitted = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'error',
+          detail: 'Error sending email!',
+          life: 3000,
+        });
+        this.formSubmitted = false;
       });
   }
   resetForm() {
@@ -80,5 +64,8 @@ export class HomeComponent {
     this.email = '';
     this.subject = '';
     this.message = '';
+  }
+  navigateToSupportPortal() {
+    this.router.navigate(['/support/tickets']);
   }
 }

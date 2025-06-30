@@ -77,19 +77,17 @@ export class HttpInterceptorService implements HttpInterceptor {
                   break;
                 case 401:
                   errorMsg = 'Unauthorized';
-                  this.router.navigate(['/unauthorized']);
+                  this.router.navigate(['support/unauthorized']);
                   break;
                 case 403:
                   errorMsg = 'Forbidden';
-                  this.router.navigate(['/unauthorized']);
+                  this.router.navigate(['support/unauthorized']);
                   break;
                 case 404:
                   errorMsg = 'Resource not found';
-                  this.router.navigate(['/not-found']);
                   break;
                 case 500:
                   errorMsg = 'Internal server error';
-                  this.router.navigate(['/server-error']);
                   break;
               }
             }

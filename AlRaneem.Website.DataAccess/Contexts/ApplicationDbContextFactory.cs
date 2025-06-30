@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 
 namespace AlRaneem.Website.DataAccess.Contexts
 {
@@ -23,7 +22,7 @@ namespace AlRaneem.Website.DataAccess.Contexts
 
             // Configure the DbContext with the connection string
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlite(connectionString);
 
             return new ApplicationDbContext(optionsBuilder.Options);
         }

@@ -1,5 +1,6 @@
 ﻿using AlRaneem.Website.DataAccess.Constants;
 using AlRaneem.Website.DataAccess.Contexts;
+using AlRaneem.Website.DataAccess.Enums;
 using AlRaneem.Website.DataAccess.Models;
 using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace AlRaneem.Website.DataAccess
             {
                 AddEmployees(context);
                 AddLookups(context);
+                AddUserRoles(context);
                 context.SaveChanges();
             }
         }
@@ -186,6 +188,16 @@ namespace AlRaneem.Website.DataAccess
                 new Lookup { Id = 32, Type = LookupType.Category, Name = "Elite Real Estate" },
                 new Lookup { Id = 33, Type = LookupType.Category, Name = "LCS" }
             );
+        }
+        static void AddUserRoles(ApplicationDbContext context)
+        {
+            if (!context.userRoles.Any())
+                context.userRoles.Add(new UserRole
+                {
+                    UserEmail = "A.ahmed@pioneersconsult.com",
+                    UserName = "Abdulrahman Ahmad",
+                    UserRoleId = (int)UserRoles.Admin
+                });
         }
         #endregion
     }

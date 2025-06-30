@@ -33,7 +33,7 @@ export class AppHeaderSupportComponent implements OnInit {
 
   ngOnInit(): void {
     const lang = localStorage.getItem('selected-lang') ?? "";
-    if (lang != 'null') {
+    if (lang && lang != 'null') {
       this.languageSelect = lang;
     } else {
       this.languageSelect = 'en';

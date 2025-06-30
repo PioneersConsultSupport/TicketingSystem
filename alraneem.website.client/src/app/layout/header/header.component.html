@@ -46,7 +46,7 @@
     <nav id="navbar" class="navbar">
       <ul>
         <li><a id="heroLink" href="index.html">Home</a></li>
-        <li><a id="aboutLink" href="home#about">Why choose us</a></li>
+        <li><a id="aboutLink" [routerLink]="['']" fragment="about">Why choose us</a></li>
         <!-- <li><a href="#portfolio">Portfolio</a></li> -->
         <li>
           <a
@@ -61,10 +61,10 @@
             >Our Team</a
           >
         </li>
-        <li><a id="helpCenterLink" href="home#helpCenter">Help Center</a></li>
+        <li><a id="helpCenterLink" [routerLink]="['']" fragment="helpCenter">Help Center</a></li>
         <!-- <li><a href="#partner">Our partner</a></li> -->
-        <li><a id="latestNewsLink" href="home#latestNews">Latest News</a></li>
-        <li><a id="contactLink" href="home#contact">Contact us</a></li>
+        <li><a id="latestNewsLink" [routerLink]="['']" fragment="latestNews">Latest News</a></li>
+        <li><a id="contactLink" [routerLink]="['']" fragment="contact">Contact us</a></li>
       </ul>
     </nav>
     <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
