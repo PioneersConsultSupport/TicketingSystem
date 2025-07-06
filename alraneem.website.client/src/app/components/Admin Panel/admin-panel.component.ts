@@ -78,6 +78,7 @@ export class AdminPanelComponent implements OnInit {
             this.adminForm.reset();
             this.search();
           });
+          this.clearAllControls();
     }
   }
 
@@ -115,5 +116,13 @@ export class AdminPanelComponent implements OnInit {
         .filter((key) => isNaN(Number(key)))
         .map((key) => [UserRoles[key as keyof typeof UserRoles], key])
     );
+  }
+
+  clearAllControls() {
+    Object.keys(this.adminForm.controls).forEach((controlName) => {
+      const control = this.adminForm.get(controlName);
+      control?.clearValidators();
+      control?.updateValueAndValidity();
+    });
   }
 }

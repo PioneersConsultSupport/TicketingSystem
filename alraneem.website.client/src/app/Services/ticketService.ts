@@ -16,7 +16,7 @@ export class ticketService {
   }
 
   updateTicket(ticket: Ticket){
-      return this.http.put<Ticket>(this.baseUrl, ticket);
+      return this.http.post<Ticket>(this.baseUrl + '/Update', ticket);
   }
 
   deleteTicket(ticket: Ticket){

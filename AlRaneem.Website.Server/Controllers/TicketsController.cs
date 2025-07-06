@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace AlRaneem.Website.Server.Controllers
 {
@@ -64,7 +65,7 @@ namespace AlRaneem.Website.Server.Controllers
                 MailContext mailContextForClient = new()
                 {
                     Subject = "Teckit Created",
-                    ToEmail = [_context?.HttpContext?.User?.Identity?.Name],
+                    ToEmail = [_context.HttpContext.User.FindFirst(ClaimTypes.Email).Value],
                     Body = $"A new ticket has been added with number {result.Id}."
                 };
 
@@ -94,7 +95,7 @@ namespace AlRaneem.Website.Server.Controllers
             }
         }
 
-        [HttpPut()]
+        [HttpPost("Update")]
         public async Task<IActionResult> Update([FromBody] TicketDto ticketDto)
         {
             try
@@ -176,7 +177,7 @@ namespace AlRaneem.Website.Server.Controllers
                 .Result;
 
                 var userRole = _unitOfWork.userRoleRepo
-                .FindUserRoleByConditionAsync(x => x.UserEmail == (_context.HttpContext.User.Identity.Name ?? ""))
+                .FindUserRoleByConditionAsync(x => x.UserEmail == (_context.HttpContext.User.FindFirst(ClaimTypes.Email).Value ?? ""))
                 .Result;
 
                 Expression<Func<Ticket, bool>> filter = userRole.UserRoleId switch

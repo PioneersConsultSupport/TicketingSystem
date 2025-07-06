@@ -5,37 +5,36 @@ import { SolutionComponent } from './components/solution/solution.component';
 import { SolutionDetailsComponent } from './components/solution/solution-details/solution-details.component';
 import { TeamsComponent } from './components/teams/teams.component';
 import { TermsComponent } from './components/terms/terms.component';
-import { FullComponent } from './layout/full/full.component';
-import { AdminPanelComponent } from './components/Admin Panel/admin-panel.component';
-import { MsalGuard } from '@azure/msal-angular';
 import { WrapeComponent } from './components/wrape-component/wrape.component';
+import { authGuard } from './guards/auth.guard';
+import { FullComponent } from './layout/full/full.component';
 import { TicketsComponent } from './components/tickets/tickets.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
-1;
+import { AdminPanelComponent } from './components/Admin Panel/admin-panel.component';
 
 const routes: Routes = [
   {
     path: 'support',
     component: FullComponent,
     children: [
-      { 
+      {
         path: '',
-        redirectTo: 'tickets', 
-        pathMatch: 'full' 
+        redirectTo: 'tickets',
+        pathMatch: 'full',
       },
       {
         path: 'tickets',
-        canActivate: [MsalGuard],
         component: TicketsComponent,
+        canActivate: [authGuard],
       },
       {
         path: 'admin-panel',
-        canActivate: [MsalGuard],
         component: AdminPanelComponent,
+        canActivate: [authGuard],
       },
       {
         path: 'unauthorized',
-        canActivate: [MsalGuard],
+        canActivate: [authGuard],
         component: UnauthorizedComponent,
       },
     ],
@@ -74,10 +73,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-  anchorScrolling: 'enabled',
-  scrollPositionRestoration: 'enabled'
-})],
+  imports: [
+    RouterModule.forRoot(routes, {
+      anchorScrolling: 'enabled',
+      scrollPositionRestoration: 'enabled',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

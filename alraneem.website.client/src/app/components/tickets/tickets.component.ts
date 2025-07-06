@@ -37,26 +37,11 @@ export class TicketsComponent implements OnInit {
   };
 
   constructor(
-    private msalService: MsalService,
-    private msalBroadcastService: MsalBroadcastService,
     private ticketService: ticketService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.msalBroadcastService.inProgress$
-      .pipe(
-        filter(
-          (status: InteractionStatus) => status === InteractionStatus.None
-        ),
-        take(1)
-      )
-      .subscribe(() => {
-        const accounts = this.msalService.instance.getAllAccounts();
-        if (accounts.length > 0) {
-          this.msalService.instance.setActiveAccount(accounts[0]);
-        }
-      });
     this.ticketService.getAllTickets().subscribe((res) => {
       this.userRoleOjbect = res.userRole;
       this.displayedColumns = [

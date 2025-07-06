@@ -28,7 +28,7 @@ export class UserService {
     userEmail: string,
     userName: string
   ) {
-    return this.http.put(this.baseUrl, {
+    return this.http.post(this.baseUrl + '/Update', {
       UserEmail: userEmail,
       UserRoleId: roleId,
       Id: id,

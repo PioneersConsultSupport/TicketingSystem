@@ -1,15 +1,30 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MsalService } from '@azure/msal-angular';
+import { environment } from '../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private msalService: MsalService) { }
+  getToken(): string | null {
+    return localStorage.getItem('jwt_token');
+  }
+
+  setToken(token: string) {
+    localStorage.setItem('jwt_token', token);
+  }
 
   isLoggedIn(): boolean {
-    const account = this.msalService.instance.getActiveAccount();
-    return !!account;
+    const token = this.getToken();
+    return !!token;
+  }
+
+  logout() {
+    this.clearToken();
+    return this.http.post<any>(`${environment.apiUrl}/auth/logout`, null);
+  }
+  
+  clearToken() {
+    localStorage.removeItem('jwt_token');
   }
 }

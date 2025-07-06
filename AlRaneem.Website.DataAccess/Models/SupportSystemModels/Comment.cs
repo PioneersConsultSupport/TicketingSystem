@@ -8,8 +8,6 @@
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public int TicketId { get; set; }
         public Ticket Ticket { get; set; }
-
         public string CreatedById { get; set; }
-        public ApplicationUser CreatedBy { get; set; }
     }
 }

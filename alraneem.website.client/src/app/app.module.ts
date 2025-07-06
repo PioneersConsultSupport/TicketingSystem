@@ -29,7 +29,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MsalBroadcastService, MsalGuard, MsalInterceptor, MsalModule, MsalRedirectComponent, MsalService } from '@azure/msal-angular';
+import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MessageService } from 'primeng/api';
 import { SpinnerService } from './services/spinnerService';
 import { HttpInterceptorService } from './interceptors/http-interceptor.service';
@@ -81,34 +81,34 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     MatPaginatorModule,
     MatButtonModule,
     MatIconModule,
-    MsalModule.forRoot(new PublicClientApplication({
-        auth: {
-            clientId: environment.clientId,
-            redirectUri: environment.redirectUri,
-            authority: 'https://login.microsoftonline.com/' + environment.tenantId,
-        },
-        cache: {
-            cacheLocation: 'localStorage',
-            storeAuthStateInCookie: isIE,
-        },
-    }), {
-        interactionType: InteractionType.Redirect,
-        authRequest: {
-            scopes: ['user.read'],
-        },
-    }, {
-        interactionType: InteractionType.Redirect,
-        protectedResourceMap: new Map([[environment.apiUrl, [scope]]]),
-    }),
+    // MsalModule.forRoot(new PublicClientApplication({
+    //     auth: {
+    //         clientId: environment.clientId,
+    //         redirectUri: environment.redirectUri,
+    //         authority: 'https://login.microsoftonline.com/' + environment.tenantId,
+    //     },
+    //     cache: {
+    //         cacheLocation: 'localStorage',
+    //         storeAuthStateInCookie: isIE,
+    //     },
+    // }), {
+    //     interactionType: InteractionType.Popup,
+    //     authRequest: {
+    //         scopes: ['user.read'],
+    //     },
+    // }, {
+    //     interactionType: InteractionType.Popup,
+    //     protectedResourceMap: new Map([[environment.apiUrl, [scope]]]),
+    // }),
     TranslatePipe
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: MsalInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: MsalInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    MsalService,
-    MsalBroadcastService,
-    MsalGuard,
+    // MsalService,
+    // MsalBroadcastService,
+    // MsalGuard,
     MessageService,
     SpinnerService],
   bootstrap: [AppComponent, MsalRedirectComponent],

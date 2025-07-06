@@ -2,6 +2,7 @@
 using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AlRaneem.Website.Server.Controllers
 {
@@ -37,7 +38,7 @@ namespace AlRaneem.Website.Server.Controllers
         }
 
         [Authorize(Policy = "AdminOnly")]
-        [HttpPut()]
+        [HttpPost("Update")]
         public async Task<IActionResult> UpdateUserRole([FromBody] UserRole userRole)
         {
             _unitOfWork.userRoleRepo.UpdateUserRole(userRole);
@@ -68,7 +69,7 @@ namespace AlRaneem.Website.Server.Controllers
         public async Task<IActionResult> GetUser()
         {
             var userRole = _unitOfWork.userRoleRepo
-            .FindUserRoleByConditionAsync(x => x.UserEmail == (_context.HttpContext.User.Identity.Name ?? ""))
+            .FindUserRoleByConditionAsync(x => x.UserEmail == (_context.HttpContext.User.FindFirst(ClaimTypes.Email).Value ?? ""))
             .Result;
             _unitOfWork.Complete();
             return Ok(userRole);

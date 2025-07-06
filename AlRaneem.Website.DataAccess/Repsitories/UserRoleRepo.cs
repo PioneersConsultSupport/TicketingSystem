@@ -46,7 +46,7 @@ namespace AlRaneem.Website.DataAccess.Repsitories
                 .Select(x => new AzureUser
                 {
                     Id = x.Id,
-                    DisplayName = x.DisplayName,
+                    DisplayName = $"{x.DisplayName} ({x.Mail})",
                     Mail = x.Mail,
                     UserPrincipalName = x.UserPrincipalName,
                 }).ToList();

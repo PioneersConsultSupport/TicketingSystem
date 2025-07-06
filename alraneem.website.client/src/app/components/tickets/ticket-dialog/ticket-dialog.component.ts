@@ -88,6 +88,7 @@ export class TicketDialogComponent {
         { value: data?.ticket?.description || '', disabled: data.isViewMode },
       ],
       createdById: [
+        { value: (data?.ticket?.createdById ?? data?.userRole?.id) || null, disabled: data.isViewMode },
         { value: data?.userRole?.id || null, disabled: data.isViewMode },
       ],
     });

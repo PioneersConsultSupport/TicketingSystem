@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import emailjs from 'emailjs-com';
 import { MessageService } from 'primeng/api';
+import { environment } from 'src/app/environments/environment';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -67,5 +68,24 @@ export class HomeComponent {
   }
   navigateToSupportPortal() {
     this.router.navigate(['/support/tickets']);
+  }
+
+  login() {
+    const popup = window.open(
+      environment.apiUrl + '/auth/login',
+      'Azure Login',
+      'width=600,height=600'
+    );
+
+    const handler = (event: MessageEvent) => {
+      popup?.close();
+      if (event.data?.token) {
+        localStorage.setItem('jwt_token', event.data.token);
+        window.removeEventListener('message', handler);
+        this.router.navigate(['/support/tickets']);
+      }
+    };
+
+    window.addEventListener('message', handler);
   }
 }

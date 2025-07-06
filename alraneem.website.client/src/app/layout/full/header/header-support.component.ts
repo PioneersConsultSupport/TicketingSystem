@@ -10,7 +10,7 @@ import { TranslationService } from '../../../services/translation.service';
 import { MsalService } from '@azure/msal-angular';
 import { DemoMaterialModule } from '../../../demo-material-module';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { environment } from 'src/app/environments/environment';
@@ -28,11 +28,11 @@ export class AppHeaderSupportComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private translationService: TranslationService,
-    private msalService: MsalService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    const lang = localStorage.getItem('selected-lang') ?? "";
+    const lang = localStorage.getItem('selected-lang') ?? '';
     if (lang && lang != 'null') {
       this.languageSelect = lang;
     } else {
@@ -42,12 +42,23 @@ export class AppHeaderSupportComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('userRole');
-    this.msalService.logoutRedirect({
-      postLogoutRedirectUri: environment.redirectUri,
-    });
+    const popup = window.open(
+      'https://login.microsoftonline.com/' +
+        environment.tenantId +
+        '/oauth2/v2.0/logout',
+      'Azure Logout',
+      'width=600,height=600'
+    );
+
+    const interval = setInterval(() => {
+      if (popup?.closed) {
+        clearInterval(interval);
+        this.authService.clearToken();
+        this.router.navigate(['']);
+      }
+    }, 1000);
   }
-  isLoggedIn(): boolean {
+  isLoggedIn() {
     return this.authService.isLoggedIn();
   }
   changeLanguageEvent(event: Event) {
