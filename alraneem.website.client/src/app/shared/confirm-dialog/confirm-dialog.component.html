@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>
+  <mat-icon color="warn">{{ data.icon || 'help_outline' }}</mat-icon>
+  {{ data.title | translate }}
+</h2>
+<mat-dialog-content>
+  <p>{{ data.message | translate }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">{{'no' | translate }}</button>
+  <button mat-raised-button color="warn" (click)="onConfirm()">{{'yes' | translate }}</button>
+</mat-dialog-actions>

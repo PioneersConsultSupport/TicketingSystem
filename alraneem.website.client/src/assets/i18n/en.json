@@ -158,5 +158,9 @@
   "user_name": "Name",
   "user_email": "Email",
   "user_Role": "Role",
-  "save_Role": "Save Role"
+  "save_Role": "Save Role",
+  "delete_message": "Are you sure you want to delete this item?",
+  "delete_title": "Delete",
+  "yes": "Yes",
+  "no": "No"
 }

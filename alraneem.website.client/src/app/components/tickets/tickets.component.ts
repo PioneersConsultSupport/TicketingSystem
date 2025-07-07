@@ -2,9 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { InteractionStatus } from '@azure/msal-browser';
-import { filter, take } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { TicketDialogComponent } from './ticket-dialog/ticket-dialog.component';
 import { Ticket } from 'src/app/models/ticket';
@@ -12,6 +9,7 @@ import { UserRole } from 'src/app/models/user-role';
 import { Lookup } from 'src/app/models/lookup';
 import { ticketService } from 'src/app/Services/ticketService';
 import { UserRoles } from 'src/app/Enums/user-roles';
+import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
 
 @Component({
   selector: 'app-tickets',
@@ -38,7 +36,8 @@ export class TicketsComponent implements OnInit {
 
   constructor(
     private ticketService: ticketService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private confirmService: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +51,7 @@ export class TicketsComponent implements OnInit {
         'assignedTo',
         'edit',
         'view',
+        'delete'
       ];
 
       if (this.userRoleOjbect.userRoleId == UserRoles.Client) {
@@ -177,5 +177,20 @@ export class TicketsComponent implements OnInit {
   clearFilter(field: keyof typeof this.filterValues) {
     this.filterValues[field] = '';
     this.applyFilter();
+  }
+
+  deleteTicket(ticket: Ticket) {
+    this.confirmService
+    .confirm('delete_title', 'delete_message', 'delete')
+    .subscribe(result => {
+      if (result) {
+       this.ticketService
+      .deleteTicket(ticket)
+      .subscribe((response) => {
+        this.ticketList = this.ticketList.filter(item => item.id !== ticket.id);
+        this.dataSource.data = [...this.ticketList];
+      });
+      }
+    });
   }
 }

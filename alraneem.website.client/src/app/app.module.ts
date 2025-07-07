@@ -33,7 +33,6 @@ import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MessageService } from 'primeng/api';
 import { SpinnerService } from './services/spinnerService';
 import { HttpInterceptorService } from './interceptors/http-interceptor.service';
-import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { environment } from './environments/environment';
 import { WrapeComponent } from './components/wrape-component/wrape.component';
 import { TicketsComponent } from './components/tickets/tickets.component';

@@ -163,5 +163,9 @@
   "user_name": "الاسم",
   "user_email": "البريد الالكتروني",
   "user_Role": "الدور",
-  "save_Role": "حفظ الدور"
+  "save_Role": "حفظ الدور",
+  "delete_message": "هل انت متأكد من حذف هذا العنصر؟",
+  "delete_title": "حذف",
+  "yes": "نعم",
+  "no": "لا"
 }

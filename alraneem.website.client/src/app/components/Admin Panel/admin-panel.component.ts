@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/UserService';
 import { UserRoles } from 'src/app/Enums/user-roles';
+import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
 
 @Component({
   selector: 'app-admin-panel',
@@ -23,7 +24,7 @@ export class AdminPanelComponent implements OnInit {
   displayedColumns: string[] = [];
   objectEnum = this.getEnumEntries();
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private confirmService: ConfirmDialogService) {
     this.adminForm = this.fb.group({
       id: [''],
       userRoleId: ['', Validators.required],
@@ -92,7 +93,11 @@ export class AdminPanelComponent implements OnInit {
   }
 
   deleteRole(detail: any) {
-    this.userService
+    this.confirmService
+    .confirm('delete_title', 'delete_message', 'delete')
+    .subscribe(result => {
+      if (result) {
+       this.userService
       .deleteUserRole(
         detail.id,
         detail.userRoleId,
@@ -102,6 +107,8 @@ export class AdminPanelComponent implements OnInit {
       .subscribe((response) => {
         this.search();
       });
+      }
+    });
   }
 
   enumToKeyValueArray(enumObj: any): { key: string; value: number }[] {
