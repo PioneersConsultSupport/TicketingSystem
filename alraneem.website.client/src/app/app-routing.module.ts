@@ -8,9 +8,9 @@ import { TermsComponent } from './components/terms/terms.component';
 import { WrapeComponent } from './components/wrape-component/wrape.component';
 import { authGuard } from './guards/auth.guard';
 import { FullComponent } from './layout/full/full.component';
-import { TicketsComponent } from './components/tickets/tickets.component';
+import { TicketsComponent } from './components/help-center/tickets/tickets.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
-import { AdminPanelComponent } from './components/Admin Panel/admin-panel.component';
+import { AdminPanelComponent } from './components/help-center/Admin Panel/admin-panel.component';
 
 const routes: Routes = [
   {

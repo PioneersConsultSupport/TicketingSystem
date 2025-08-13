@@ -15,7 +15,7 @@ import { TermsComponent } from './components/terms/terms.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
 import { FullComponent } from './layout/full/full.component';
-import { AdminPanelComponent } from './components/Admin Panel/admin-panel.component';
+import { AdminPanelComponent } from './components/help-center/Admin Panel/admin-panel.component';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { DemoMaterialModule } from './demo-material-module';
 import { SharedModule } from './shared/shared.module';
@@ -35,7 +35,7 @@ import { SpinnerService } from './services/spinnerService';
 import { HttpInterceptorService } from './interceptors/http-interceptor.service';
 import { environment } from './environments/environment';
 import { WrapeComponent } from './components/wrape-component/wrape.component';
-import { TicketsComponent } from './components/tickets/tickets.component';
+import { TicketsComponent } from './components/help-center/tickets/tickets.component';
 
 const isIE =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||

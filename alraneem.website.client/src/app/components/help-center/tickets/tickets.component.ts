@@ -23,6 +23,7 @@ export class TicketsComponent implements OnInit {
   userRoleOjbect!: UserRole;
   displayedColumns: string[] = [];
   ticketList: Ticket[] = [];
+  ticketList444444: Ticket[] = [];
   lookupList: Lookup[] = [];
   categoryList: { key: string; value: number }[] = [];
   statusList: { key: string; value: number }[] = [];
@@ -53,7 +54,6 @@ export class TicketsComponent implements OnInit {
         'view',
         'delete'
       ];
-
       if (this.userRoleOjbect.userRoleId == UserRoles.Client) {
         this.displayedColumns = this.displayedColumns.filter(
           (x) => x != 'edit' && x != 'view'
