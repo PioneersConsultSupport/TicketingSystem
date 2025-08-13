@@ -194,8 +194,8 @@ namespace AlRaneem.Website.DataAccess
             if (!context.userRoles.Any())
                 context.userRoles.Add(new UserRole
                 {
-                    UserEmail = "A.ahmed@pioneersconsult.com",
-                    UserName = "Abdulrahman Ahmad",
+                    UserEmail = "L.alawneh@pioneersconsult.com",
+                    UserName = "Laith Al alawneh",
                     UserRoleId = (int)UserRoles.Admin
                 });
         }
