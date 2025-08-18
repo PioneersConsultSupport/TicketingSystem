@@ -12,9 +12,12 @@ namespace AlRaneem.Website.DataAccess.Repsitories
         public ICommentRepo commentRepo { get; }
         public ITicketRepo ticketRepo { get; }
         public ILookupRepo lookupRepo { get; }
+        public ICategoryRepo categoryRepo { get; }
+        public ISubcategoryRepo subcategoryRepo { get; }
+        
 
         public UnitOfWork(ApplicationDbContext context,IEmployeeRepo employeeRepo, IUserRoleRepo userRepo, 
-            ICommentRepo commentRepo, ITicketRepo ticketRepo, ILookupRepo lookupRepo)
+            ICommentRepo commentRepo, ITicketRepo ticketRepo, ILookupRepo lookupRepo, ICategoryRepo categoryRepo, ISubcategoryRepo subcategoryRepo)
         {
             _context = context;
             this.employeeRepo = employeeRepo;
@@ -22,6 +25,8 @@ namespace AlRaneem.Website.DataAccess.Repsitories
             this.commentRepo = commentRepo;
             this.ticketRepo = ticketRepo;
             this.lookupRepo = lookupRepo;
+            this.categoryRepo = categoryRepo;
+            this.subcategoryRepo = subcategoryRepo;
         }
 
         public int Complete()

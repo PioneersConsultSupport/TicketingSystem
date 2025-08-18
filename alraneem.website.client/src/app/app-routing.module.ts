@@ -11,6 +11,8 @@ import { FullComponent } from './layout/full/full.component';
 import { TicketsComponent } from './components/help-center/tickets/tickets.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { AdminPanelComponent } from './components/help-center/Admin Panel/admin-panel.component';
+import { CategoryComponent } from './components/help-center/category-management/category/category.component';
+import { SubcategoryComponent } from './components/help-center/category-management/subcategory/subcategory.component';
 
 const routes: Routes = [
   {
@@ -30,6 +32,16 @@ const routes: Routes = [
       {
         path: 'admin-panel',
         component: AdminPanelComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'category-management',
+        component: CategoryComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'category-management/subcategory',
+        component: SubcategoryComponent,
         canActivate: [authGuard],
       },
       {
@@ -69,7 +81,7 @@ const routes: Routes = [
       },
     ],
   },
-  { path: '**', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>{{ data ? 'Edit Category' : 'Add Category' }}</h2>
+<form [formGroup]="form" (ngSubmit)="save()" class="grid gap-4">
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Type</mat-label>
+    <input matInput formControlName="type">
+  </mat-form-field>
+
+  <div class="flex justify-end gap-2 mt-4">
+    <button mat-button type="button" (click)="close()">Cancel</button>
+    <button mat-flat-button color="primary" type="submit">{{ data ? 'Update' : 'Add' }}</button>
+  </div>
+</form>

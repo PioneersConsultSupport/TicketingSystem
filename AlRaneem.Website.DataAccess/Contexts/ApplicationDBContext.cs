@@ -10,6 +10,8 @@ namespace AlRaneem.Website.DataAccess.Contexts
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<UserRole> userRoles { get; set; }
         public DbSet<Lookup> Lookups { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Subcategory> subcategories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
             base(options)
@@ -73,6 +75,12 @@ namespace AlRaneem.Website.DataAccess.Contexts
                 .WithMany(p => p.Children)
                 .HasForeignKey(l => l.ParentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Category>()
+            .HasMany(c => c.Subcategory)
+            .WithOne()
+            .HasForeignKey(sc => sc.CategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

@@ -8,6 +8,9 @@
         ICommentRepo commentRepo { get; }
         ITicketRepo ticketRepo { get; }
         ILookupRepo lookupRepo { get; }
+        ICategoryRepo categoryRepo { get; }
+        ISubcategoryRepo subcategoryRepo { get; }
+
         int Complete();
     }
 }
