@@ -14,6 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-subcategory',
@@ -29,6 +31,8 @@ import { ActivatedRoute } from '@angular/router';
     MatSortModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCardModule,
+    MatTooltipModule
   ],
   templateUrl: './subcategory.component.html',
   styleUrls: ['./subcategory.component.scss'],

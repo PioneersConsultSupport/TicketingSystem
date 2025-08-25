@@ -11,7 +11,7 @@ import { UserService } from 'src/app/Services/UserService';
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
-  styles: [],
+  styleUrls: ['./admin-panel.component.scss'],
 })
 export class AdminPanelComponent implements OnInit {
   adminForm: FormGroup;

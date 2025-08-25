@@ -23,6 +23,8 @@ import { Category } from 'src/app/models/category';
 import { CategoryService } from 'src/app/Services/category.Service';
 import { Subcategory } from 'src/app/models/subcategory';
 import { UserRole } from 'src/app/models/user-role';
+import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-tickets',
@@ -40,6 +42,8 @@ import { UserRole } from 'src/app/models/user-role';
     MatSelectModule,
     TranslatePipe,
     FormsModule,
+    MatCardModule,
+    MatTooltipModule,
   ],
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.scss'],

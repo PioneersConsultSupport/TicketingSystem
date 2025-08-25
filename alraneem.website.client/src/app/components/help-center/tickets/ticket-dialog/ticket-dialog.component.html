@@ -1,106 +1,110 @@
-<h2 mat-dialog-title>
-  {{ mode === 'create' ? 'Create Ticket' : 'Edit Ticket' }}
-</h2>
+<mat-dialog-content class="dialog-container">
+  <!-- Header -->
+  <div class="dialog-header flex items-center gap-3 mb-6">
+    <mat-icon color="primary">confirmation_number</mat-icon>
+    <h2 class="text-2xl font-bold">{{ mode === 'create' ? 'Create Ticket' : 'Edit Ticket' }}</h2>
+  </div>
 
-<form [formGroup]="form" (ngSubmit)="save()" class="ticket-form" mat-dialog-content>
+  <!-- Form -->
+  <form [formGroup]="form" (ngSubmit)="save()" class="dialog-form grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Title -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ "title" | translate }}</mat-label>
+      <input matInput formControlName="title" />
+      <mat-error *ngIf="form.get('title')?.hasError('required')">
+        Title is required
+      </mat-error>
+    </mat-form-field>
 
-  <!-- Title -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ "title" | translate }}</mat-label>
-    <input matInput formControlName="title" />
-    <mat-error *ngIf="form.get('title')?.hasError('required')">
-      Title is required
-    </mat-error>
-  </mat-form-field>
+    <!-- Support Option -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ "SupportOption" | translate }}</mat-label>
+      <mat-select formControlName="supportOptionId">
+        <mat-option *ngFor="let supportOption of supportOptions" [value]="supportOption.id">
+          {{ supportOption.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <!-- Description -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ "Description" | translate }}</mat-label>
-    <textarea matInput formControlName="description" rows="3"></textarea>
-    <mat-error *ngIf="form.get('description')?.hasError('required')">
-      Description is required
-    </mat-error>
-  </mat-form-field>
+    <!-- Assigned To -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ "AssignedTo" | translate }}</mat-label>
+      <mat-select formControlName="assignedToId">
+        <mat-option *ngFor="let user of users" [value]="user.id">
+          {{ user.userName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <!-- Assigned To -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ "AssignedTo" | translate }}</mat-label>
-    <mat-select formControlName="assignedToId">
-      <mat-option *ngFor="let user of users" [value]="user.id">
-        {{ user.userName }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <!-- Priority -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ "Priority" | translate }}</mat-label>
+      <mat-select formControlName="priorityId">
+        <mat-option *ngFor="let priority of ticketPriority" [value]="priority.id">
+          {{ priority.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-    <!-- priority -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ "Priority" | translate }}</mat-label>
-    <mat-select formControlName="priorityId">
-      <mat-option *ngFor="let priority of ticketPriority" [value]="priority.id">
-        {{ priority.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <!-- Status -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ "Status" | translate }}</mat-label>
+      <mat-select formControlName="statusId">
+        <mat-option *ngFor="let status of ticketStatus" [value]="status.id">
+          {{ status.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <!-- SupportOption -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ "SupportOption" | translate }}</mat-label>
-    <mat-select formControlName="supportOptionId">
-      <mat-option *ngFor="let supportOption of supportOptions" [value]="supportOption.id">
-        {{ supportOption.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <!-- Category -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ "Category" | translate }}</mat-label>
+      <mat-select formControlName="categoryId">
+        <mat-option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <!-- Status -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ "Status" | translate }}</mat-label>
-    <mat-select formControlName="statusId">
-      <mat-option *ngFor="let status of ticketStatus" [value]="status.id">
-        {{ status.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <!-- Subcategory -->
+    <mat-form-field appearance="outline" class="w-full" *ngIf="subcategories.length > 0">
+      <mat-label>{{ "Subcategory" | translate }}</mat-label>
+      <mat-select formControlName="subcategoryId" [disabled]="!form.get('categoryId')?.value">
+        <mat-option *ngFor="let sub of subcategories" [value]="sub.id">
+          {{ sub.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <!-- Category -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ "Category" | translate }}</mat-label>
-    <mat-select formControlName="categoryId">
-      <mat-option *ngFor="let category of categories" [value]="category.id">
-        {{ category.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <!-- Start Date -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ "StartDate" | translate }}</mat-label>
+      <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
 
-  <!-- Subcategory -->
-  <mat-form-field appearance="outline" class="full-width" *ngIf="subcategories.length > 0">
-    <mat-label>{{ "Subcategory" | translate }}</mat-label>
-    <mat-select formControlName="subcategoryId" [disabled]="!form.get('categoryId')?.value">
-      <mat-option *ngFor="let sub of subcategories" [value]="sub.id">
-        {{ sub.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <!-- Delivery Date -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ "DeliveryDate" | translate }}</mat-label>
+      <input matInput [matDatepicker]="deliveryPicker" formControlName="deliveryDate" />
+      <mat-datepicker-toggle matSuffix [for]="deliveryPicker"></mat-datepicker-toggle>
+      <mat-datepicker #deliveryPicker></mat-datepicker>
+    </mat-form-field>
 
-  <!-- Start Date -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ "StartDate" | translate }}</mat-label>
-    <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
-    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-    <mat-datepicker #startPicker></mat-datepicker>
-  </mat-form-field>
-
-  <!-- Delivery Date -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ "DeliveryDate" | translate }}</mat-label>
-    <input matInput [matDatepicker]="deliveryPicker" formControlName="deliveryDate" />
-    <mat-datepicker-toggle matSuffix [for]="deliveryPicker"></mat-datepicker-toggle>
-    <mat-datepicker #deliveryPicker></mat-datepicker>
-  </mat-form-field>
-</form>
+    <!-- Description -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ "Description" | translate }}</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+      <mat-error *ngIf="form.get('description')?.hasError('required')">
+        Description is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
 
 <!-- Dialog Actions -->
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" class="dialog-actions mt-4">
   <button mat-stroked-button type="button" (click)="close()">Cancel</button>
   <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="save()">
     {{ mode === 'create' ? 'Save' : 'Update' }}
