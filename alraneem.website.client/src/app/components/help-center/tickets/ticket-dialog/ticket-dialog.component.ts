@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -17,8 +17,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { UserRoles } from 'src/app/Enums/user-roles';
 import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
+import { Ticket } from 'src/app/models/ticket';
+import { TicketService } from 'src/app/Services/ticketService';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTableDataSource } from '@angular/material/table';
+import { Category } from 'src/app/models/category';
+import { CategoryService } from 'src/app/Services/category.Service';
+import { Subcategory } from 'src/app/models/subcategory';
+import { CategoryType } from 'src/app/Enums/category-types';
+import { UserService } from 'src/app/Services/UserService';
+import { UserRole } from 'src/app/models/user-role';
 
 @Component({
   selector: 'app-ticket-dialog',
@@ -32,161 +41,135 @@ import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    TranslatePipe
-],
+    MatDatepickerModule,
+    TranslatePipe,
+  ],
   templateUrl: './ticket-dialog.component.html',
   styleUrls: ['./ticket-dialog.component.scss'],
 })
-export class TicketDialogComponent {
-  ticketForm: FormGroup;
-  isEditMode = false;
-
-  categoryList: { key: string; value: number }[] = [];
-  subCategoryList: { key: string; value: number }[] = [];
-  supportOptionList: { key: string; value: number }[] = [];
-  ticketPriorityList: { key: string; value: number }[] = [];
-  statusList: { key: string; value: number }[] = [];
-  assignedToList: { key: string; value: number }[] = [];
-
+export class TicketDialogComponent implements OnInit {
+  form: FormGroup;
+  mode: 'create' | 'edit';
+  ticket?: Ticket;
+  categories: Category[] = [];
+  ticketPriority: Subcategory[] = [];
+  supportOptions: Subcategory[] = [];
+  ticketStatus: Subcategory[] = [];
+  subcategories: Subcategory[] = [];
+  users: UserRole[] = [];
+  categoryType: CategoryType = CategoryType.TicketCategory;
   constructor(
     private fb: FormBuilder,
+    private ticketService: TicketService,
+    private categoryService: CategoryService,
     public dialogRef: MatDialogRef<TicketDialogComponent>,
+    private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.isEditMode = !!data.ticket;
-    this.ticketForm = this.fb.group({
-      id: [{ value: data?.ticket?.id || 0, disabled: data.isViewMode }],
-      title: [{ value: data?.ticket?.title || '', disabled: data.isViewMode }],
-      categoryId: [
-        { value: data?.ticket?.categoryId || null, disabled: data.isViewMode },
-      ],
-      statusId: [
-        { value: data?.ticket?.statusId || null, disabled: data.isViewMode },
-      ],
-      supportTypeId: [
-        {
-          value: data?.ticket?.supportTypeId || null,
-          disabled: data.isViewMode,
-        },
-      ],
-      subcategoryId: [
-        {
-          value: data?.ticket?.subcategoryId || null,
-          disabled: data.isViewMode,
-        },
-      ],
-      priorityId: [
-        { value: data?.ticket?.priorityId || null, disabled: data.isViewMode },
-      ],
-      assignedToId: [
-        {
-          value: data?.ticket?.assignedToId || null,
-          disabled: data.isViewMode,
-        },
-      ],
-      description: [
-        { value: data?.ticket?.description || '', disabled: data.isViewMode },
-      ],
-      createdById: [
-        { value: (data?.ticket?.createdById ?? data?.userRole?.id) || null, disabled: data.isViewMode },
-        { value: data?.userRole?.id || null, disabled: data.isViewMode },
-      ],
+    this.mode = data.mode;
+    this.ticket = data.ticket;
+
+    this.form = this.fb.group({
+      title: [this.ticket?.title || '', Validators.required],
+      description: [this.ticket?.description || '', Validators.required],
+      priorityId: [this.ticket?.priorityId || null],
+      statusId: [this.ticket?.statusId || null],
+      categoryId: [this.ticket?.categoryId || null],
+      subcategoryId: [this.ticket?.subcategoryId || null],
+      startDate: [this.ticket?.startDate || null],
+      deliveryDate: [this.ticket?.deliveryDate || null],
+      assignedToId: [this.ticket?.assignedToId || null],
+      supportOptionId: [this.ticket?.supportOptionId || null],
     });
-    this.categoryList = this.getLookupByType('Category');
-    this.supportOptionList = this.getLookupByType('SupportOption');
-    this.ticketPriorityList = this.getLookupByType('TicketPriority');
-    this.statusList = this.getLookupByType('TicketStatus');
-    this.getSubcategoryByCategory()
-    this.assignedToList = data.assignedToList;
-    this.clearAllControls();
-    this.setRequiredValidators();
   }
 
-  close(): void {
-    this.dialogRef.close();
-  }
-
-  save(): void {
-    if (this.ticketForm.valid) {
-      const ticketData = this.ticketForm.value;
-      this.dialogRef.close({
-        action: this.isEditMode ? 'edit' : 'create',
-        data: ticketData,
+  ngOnInit(): void {
+    this.loadCategories();
+    this.getUsers();
+    this.form
+      .get('categoryId')
+      ?.valueChanges.subscribe((categoryId: number) => {
+        this.onCategoryChange(categoryId);
       });
+
+    if (this.ticket?.categoryId) {
+      this.onCategoryChange(this.ticket.categoryId);
     }
   }
 
-  getLookupByType(type: string, isParent?: boolean) {
-    let parentId = 0;
-    if (isParent) {
-      parentId = this.ticketForm.get('categoryId')?.value;
-    }
-    return this.data.lookups
-      .filter(
-        (x: any) =>
-          type == x.type && (parentId ? x.parentId === parentId : true)
-      )
-      .map((x: any) => ({ key: x.name, value: x.id }));
-  }
-
-  setRequiredValidators() {
-    let controls;
-    if (this.data.userRole.userRoleId == UserRoles.Client)
-      controls = [
-        'title',
-        'categoryId',
-        'supportTypeId',
-        'subcategoryId',
-        'description',
-      ];
-    else if (this.data.userRole.userRoleId == UserRoles.Employee)
-      controls = [
-        'title',
-        'categoryId',
-        'statusId',
-        'subcategoryId',
-        'priorityId',
-        'description',
-      ];
-    else
-      controls = [
-        'title',
-        'categoryId',
-        'statusId',
-        'subcategoryId',
-        'priorityId',
-        'assignedToId',
-        'description',
-      ];
-
-    controls.forEach((control) => {
-      this.ticketForm.get(control)?.setValidators([Validators.required]);
-      this.ticketForm.get(control)?.updateValueAndValidity();
+  getUsers() {
+    this.userService.getAllUsersRoles().subscribe((response) => {
+      this.users = response;
     });
   }
-
-  clearAllControls() {
-    Object.keys(this.ticketForm.controls).forEach((controlName) => {
-      const control = this.ticketForm.get(controlName);
-      control?.clearValidators();
-      control?.updateValueAndValidity();
-    });
+  loadCategories() {
+    this.categoryService
+      .getCategoriesByType(CategoryType.TicketCategory)
+      .subscribe((data: Category[]) => {
+        this.categories = data;
+      });
+    this.categoryService
+      .getCategoriesByType(CategoryType.TicketPriority)
+      .subscribe((data: Category[]) => {
+        this.ticketPriority = data[0].subcategory;
+      });
+    this.categoryService
+      .getCategoriesByType(CategoryType.TicketStatus)
+      .subscribe((data: Category[]) => {
+        this.ticketStatus = data[0].subcategory;
+      });
+    this.categoryService
+      .getCategoriesByType(CategoryType.SupportOption)
+      .subscribe((data: Category[]) => {
+        this.supportOptions = data[0].subcategory;
+      });
   }
 
-  hasRequiredValidator(controlName: string): boolean {
-    const control = this.ticketForm.get(controlName);
-    if (!control || !control.validator) return false;
+  onCategoryChange(categoryId: number) {
+    this.subcategories = [];
+    this.form.get('subcategoryId')?.setValue(null);
 
-    const validator = control.validator({} as AbstractControl);
-    return validator?.['required'] ?? false;
-  }
-
-  getSubcategoryByCategory(){
-    this.subCategoryList = this.getLookupByType('Subcategory', true);
-    if(!this.subCategoryList.length){
-      let control = this.ticketForm.get('subcategoryId');
-      control?.clearValidators();
-      control?.updateValueAndValidity();
+    if (categoryId) {
+      this.loadSubcategories(categoryId);
+      if (this.ticket?.subcategoryId) {
+        this.form.get('subcategoryId')?.setValue(this.ticket.subcategoryId);
+      }
     }
+  }
+
+loadSubcategories(categoryId: number) {
+  this.categoryService
+    .getSubcategoriesByCategoryId(categoryId)
+    .subscribe((data: Subcategory[]) => {
+      this.subcategories = data;
+
+      if (this.subcategories.length > 0 && this.ticket?.subcategoryId) {
+        this.form.get('subcategoryId')?.setValue(this.ticket.subcategoryId);
+      } else {
+        this.form.get('subcategoryId')?.setValue(null);
+      }
+    });
+}
+
+  save() {
+    if (this.form.invalid) return;
+
+    const ticketData: Ticket = { ...this.ticket, ...this.form.value };
+
+    if (this.mode === 'create') {
+      this.ticketService.addTicket(ticketData).subscribe(() => {
+        this.dialogRef.close(true);
+      });
+    } else {
+      this.ticketService
+        .updateTicket(this.ticket!.id!, ticketData)
+        .subscribe(() => {
+          this.dialogRef.close(true);
+        });
+    }
+  }
+
+  close() {
+    this.dialogRef.close(false);
   }
 }

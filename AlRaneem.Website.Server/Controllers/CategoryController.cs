@@ -16,7 +16,7 @@ namespace AlRaneem.Website.Server.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        //[Authorize(Policy = "AdminOnly")]
         [HttpGet("AllCategory")]
         public async Task<IActionResult> getAllCategory()
         {
@@ -55,6 +55,14 @@ namespace AlRaneem.Website.Server.Controllers
             }
 
             return Ok(category);
+        }
+
+        //[Authorize(Policy = "AdminOnly")]
+        [HttpGet("ByType/{type}")]
+        public async Task<IActionResult> GetCategoriesByType(string type)
+        {
+            var categories = await _unitOfWork.categoryRepo.GetCategoriesByTypeAsync(type);
+            return Ok(categories);
         }
 
         [Authorize(Policy = "AdminOnly")]

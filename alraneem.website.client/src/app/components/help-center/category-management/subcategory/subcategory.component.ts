@@ -1,28 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Subcategory } from 'src/app/models/subcategory';
 import { CategoryService } from 'src/app/Services/category.Service';
 import { SubcategoryDialogComponent } from '../subcategory-dialog/subcategory-dialog.component';
 import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-subcategory',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
     MatPaginatorModule,
     MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './subcategory.component.html',
   styleUrls: ['./subcategory.component.scss'],
@@ -31,66 +37,101 @@ export class SubcategoryComponent implements OnInit {
   categoryName = '';
   subcategories: Subcategory[] = [];
   displayedColumns: string[] = ['name', 'actions'];
+  dataSource = new MatTableDataSource<Subcategory>();
+  filterValue = '';
 
   constructor(
-    private route: ActivatedRoute,
     private categoryService: CategoryService,
     private dialog: MatDialog,
-    private confirmDialog: ConfirmDialogService
+    private confirmDialog: ConfirmDialogService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    if (this.categoryService.selectedCategoryId) {
-      this.loadSubcategories(this.categoryService.selectedCategoryId);
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (id) {
+      this.loadSubcategories(id);
     }
+    this.dataSource.filterPredicate = (data: Subcategory, filter: string) =>
+      data.name.toLowerCase().includes(filter.trim().toLowerCase());
   }
 
   loadSubcategories(categoryId: number) {
     this.categoryService.getCategoryById(categoryId).subscribe((cat) => {
       this.categoryName = cat.name;
-      this.subcategories = cat.subcategory || [];
+      this.dataSource.data = cat.subcategory || [];
     });
   }
 
+  applyFilter() {
+    this.dataSource.filter = this.filterValue.trim().toLowerCase();
+  }
+
   openAddSubcategoryDialog() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     const dialogRef = this.dialog.open(SubcategoryDialogComponent, {
-      data: { category: { id: this.categoryService.selectedCategoryId, name: this.categoryName } }
+      data: {
+        category: {
+          id: id,
+          name: this.categoryName,
+        },
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && this.categoryService.selectedCategoryId) {
-        const newSub: Subcategory = { ...result, categoryId: this.categoryService.selectedCategoryId };
-        this.categoryService.addSubcategory(newSub)
-          .subscribe(() => this.loadSubcategories(this.categoryService.selectedCategoryId!));
+      if (result && id) {
+        const newSub: Subcategory = {
+          ...result,
+          categoryId: id,
+        };
+        this.categoryService
+          .addSubcategory(newSub)
+          .subscribe(() =>
+            this.loadSubcategories(id!)
+          );
       }
     });
   }
 
   editSubcategory(sub: Subcategory) {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     const dialogRef = this.dialog.open(SubcategoryDialogComponent, {
-      data: { category: { id: this.categoryService.selectedCategoryId, name: this.categoryName }, subcategory: sub }
+      data: {
+        category: {
+          id: id,
+          name: this.categoryName,
+        },
+        subcategory: sub,
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const updatedSub: Subcategory = { ...sub, ...result };
-        this.categoryService.updateSubcategory(updatedSub)
-          .subscribe(() => this.loadSubcategories(this.categoryService.selectedCategoryId!));
+        this.categoryService
+          .updateSubcategory(updatedSub)
+          .subscribe(() =>
+            this.loadSubcategories(id!)
+          );
       }
     });
   }
 
   deleteSubcategory(sub: Subcategory) {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     this.confirmDialog
       .confirm(
         'Delete Subcategory',
         `Are you sure you want to delete subcategory "${sub.name}"?`,
         'delete'
       )
-      .subscribe(result => {
+      .subscribe((result) => {
         if (result) {
-          this.categoryService.deleteSubcategory(sub.id)
-            .subscribe(() => this.loadSubcategories(this.categoryService.selectedCategoryId!));
+          this.categoryService
+            .deleteSubcategory(sub.id)
+            .subscribe(() =>
+              this.loadSubcategories(id!)
+            );
         }
       });
   }

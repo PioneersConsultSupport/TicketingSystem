@@ -41,6 +41,13 @@ namespace AlRaneem.Website.DataAccess.Repsitories
                 .Include(c => c.Subcategory)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
+        public async Task<List<Category>> GetCategoriesByTypeAsync(string type)
+        {
+            return await _context.Categories
+                .Where(c => c.Type == type)
+                .Include(c => c.Subcategory)
+                .ToListAsync();
+        }
         public void DeleteCategory(Category category)
         {
             _context.Remove(category);

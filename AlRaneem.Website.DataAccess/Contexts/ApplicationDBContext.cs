@@ -9,7 +9,6 @@ namespace AlRaneem.Website.DataAccess.Contexts
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<UserRole> userRoles { get; set; }
-        public DbSet<Lookup> Lookups { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Subcategory> subcategories { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -20,26 +19,25 @@ namespace AlRaneem.Website.DataAccess.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<UserRole>()
-                .HasIndex(u => u.UserEmail)
+            // RefNumber 
+            modelBuilder.Entity<Ticket>()
+                .HasIndex(t => t.RefNumber)
                 .IsUnique();
 
-            modelBuilder.Entity<Lookup>()
-                .Property(l => l.Id)
-                .ValueGeneratedNever();
-
+            // UserRole ↔ Ticket
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.AssignedTo)
-                .WithMany(t => t.AssignedToTickets)
+                .WithMany(u => u.AssignedToTickets)
                 .HasForeignKey(t => t.AssignedToId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.CreatedBy)
-                .WithMany(t => t.CreatedByTickets)
+                .WithMany(u => u.CreatedByTickets)
                 .HasForeignKey(t => t.CreatedById)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Ticket ↔ Subcategory (Status & Priority & Subcategory)
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Status)
                 .WithMany()
@@ -47,15 +45,15 @@ namespace AlRaneem.Website.DataAccess.Contexts
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.Priority)
+                .HasOne(t => t.supportOption)
                 .WithMany()
-                .HasForeignKey(t => t.PriorityId)
+                .HasForeignKey(t => t.SupportOptionId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.SupportType)
+                .HasOne(t => t.Priority)
                 .WithMany()
-                .HasForeignKey(t => t.SupportTypeId)
+                .HasForeignKey(t => t.PriorityId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Ticket>()
@@ -70,17 +68,17 @@ namespace AlRaneem.Website.DataAccess.Contexts
                 .HasForeignKey(t => t.SubcategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Lookup>()
-                .HasOne(l => l.Parent)
-                .WithMany(p => p.Children)
-                .HasForeignKey(l => l.ParentId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+            // Category ↔ Subcategory
             modelBuilder.Entity<Category>()
-            .HasMany(c => c.Subcategory)
-            .WithOne()
-            .HasForeignKey(sc => sc.CategoryId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasMany(c => c.Subcategory)
+                .WithOne()
+                .HasForeignKey(sc => sc.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // UserEmail
+            modelBuilder.Entity<UserRole>()
+                .HasIndex(u => u.UserEmail)
+                .IsUnique();
 
         }
     }

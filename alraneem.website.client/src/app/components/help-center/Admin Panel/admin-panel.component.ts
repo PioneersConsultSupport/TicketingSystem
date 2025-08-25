@@ -4,9 +4,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/UserService';
 import { UserRoles } from 'src/app/Enums/user-roles';
 import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
+import { UserService } from 'src/app/Services/UserService';
 
 @Component({
   selector: 'app-admin-panel',

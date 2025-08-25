@@ -7,24 +7,30 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Category } from 'src/app/models/category';
-import { Subcategory } from 'src/app/models/subcategory';
 import { CategoryService } from 'src/app/Services/category.Service';
 import { CategoryDialogComponent } from '../category-dialog/category-dialog.component';
-import { SubcategoryDialogComponent } from '../subcategory-dialog/subcategory-dialog.component';
 import { Router } from '@angular/router';
 import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-category',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
   ],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss'],
@@ -32,6 +38,12 @@ import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
 export class CategoryComponent implements OnInit {
   displayedColumns: string[] = ['name', 'type', 'actions'];
   dataSource!: MatTableDataSource<Category>;
+  categories: Category[] = [];
+  types: string[] = [];
+  filterValues = {
+    name: '',
+    type: '',
+  };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -49,10 +61,32 @@ export class CategoryComponent implements OnInit {
 
   loadCategories() {
     this.categoryService.getAllCategories().subscribe((data: Category[]) => {
+      this.categories = data;
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.types = [...new Set(data.map((c) => c.type))];
+      this.dataSource.filterPredicate = (
+        category: Category,
+        filter: string
+      ) => {
+        const searchTerms = JSON.parse(filter);
+
+        const matchesName = searchTerms.name
+          ? category.name.toLowerCase().includes(searchTerms.name.toLowerCase())
+          : true;
+
+        const matchesType = searchTerms.type
+          ? category.type === searchTerms.type
+          : true;
+
+        return matchesName && matchesType;
+      };
     });
+  }
+
+  applyFilter() {
+    this.dataSource.filter = JSON.stringify(this.filterValues);
   }
 
   openCategoryDialog(category?: Category) {
@@ -77,26 +111,23 @@ export class CategoryComponent implements OnInit {
   }
 
   deleteCategory(category: Category) {
-  this.confirmDialog
-    .confirm(
-      'Delete Category',
-      `Are you sure you want to delete category "${category.name}"?`,
-      'delete'
-    )
-    .subscribe(result => {
-      if (result) {
-        this.categoryService.deleteCategory(category.id).subscribe({
-          next: () => this.loadCategories(),
-          error: err => alert('Error deleting category: ' + err.message)
-        });
-      }
-    });
-}
+    this.confirmDialog
+      .confirm(
+        'Delete Category',
+        `Are you sure you want to delete category "${category.name}"?`,
+        'delete'
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.categoryService.deleteCategory(category.id).subscribe({
+            next: () => this.loadCategories(),
+            error: (err) => alert('Error deleting category: ' + err.message),
+          });
+        }
+      });
+  }
 
   goToSubcategory(categoryId: number) {
-    this.categoryService.selectedCategoryId = categoryId;
-    if (this.categoryService.selectedCategoryId) {
-      this.router.navigate(['/support/category-management/subcategory']);
-    }
+    this.router.navigate(['/support/category-management/subcategory', categoryId]);
   }
 }

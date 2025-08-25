@@ -12,6 +12,7 @@ namespace AlRaneem.Website.DataAccess.Interfaces
         void AddSubcategory(Subcategory subcategory);
         void UpdateSubcategory(Subcategory subcategory);
         Task<Subcategory?> GetSubcategoryByIdAsync(int id);
+        Task<List<Subcategory>> GetSubcategoryByCategoryIdAsync(int categoryId);
         void DeleteSubcategory(Subcategory subcategory);
     }
 }

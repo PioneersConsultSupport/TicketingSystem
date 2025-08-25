@@ -50,6 +50,12 @@ namespace AlRaneem.Website.Server.Controllers
             return Ok(new { message = "Subcategory deleted successfully." });
         }
 
+        [HttpGet("ByCategory/{categoryId:int}")]
+        public async Task<IActionResult> GetSubcategoryByCategoryId(int categoryId)
+        {
+            var subcategories = await _unitOfWork.subcategoryRepo.GetSubcategoryByCategoryIdAsync(categoryId);
+            return Ok(subcategories);
+        }
 
     }
 }

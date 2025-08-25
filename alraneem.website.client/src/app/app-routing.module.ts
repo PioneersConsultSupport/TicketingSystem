@@ -27,7 +27,6 @@ const routes: Routes = [
       {
         path: 'tickets',
         component: TicketsComponent,
-        canActivate: [authGuard],
       },
       {
         path: 'admin-panel',
@@ -40,7 +39,7 @@ const routes: Routes = [
         canActivate: [authGuard],
       },
       {
-        path: 'category-management/subcategory',
+        path: 'category-management/subcategory/:id',
         component: SubcategoryComponent,
         canActivate: [authGuard],
       },

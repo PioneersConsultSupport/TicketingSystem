@@ -6,6 +6,26 @@
       Categories Management
     </h2>
 
+    <div class="flex gap-4 mb-4">
+      <!-- Filter by Name -->
+      <mat-form-field appearance="outline" class="w-1/2">
+        <mat-label>Filter by Name</mat-label>
+        <input matInput [(ngModel)]="filterValues.name" (keyup)="applyFilter()" placeholder="Enter category name" />
+      </mat-form-field>
+
+      <!-- Filter by Type -->
+      <mat-form-field appearance="outline" class="w-1/2">
+        <mat-label>Filter by Type</mat-label>
+        <mat-select [(ngModel)]="filterValues.type" (selectionChange)="applyFilter()">
+          <mat-option value="">All</mat-option>
+          <mat-option *ngFor="let type of types" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+
     <button mat-flat-button color="primary" (click)="openCategoryDialog()">
       <mat-icon class="mr-2">add</mat-icon>
       Add Category
@@ -56,4 +76,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  <!-- Paginator -->
+  <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
 </div>

@@ -10,9 +10,8 @@ namespace AlRaneem.Website.DataAccess.Models.SupportSystemModels
     public class Category
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
         public ICollection<Subcategory> Subcategory { get; set; } = new List<Subcategory>();
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AlRaneem.Website.DataAccess.Contexts;
 using AlRaneem.Website.DataAccess.Interfaces;
 using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlRaneem.Website.DataAccess.Repsitories
 {
@@ -10,6 +11,12 @@ namespace AlRaneem.Website.DataAccess.Repsitories
         public TicketRepo(ApplicationDbContext context) : base(context)
         {
             _context = context;
+        }
+        public async Task<Ticket?> GetLastTicketAsync()
+        {
+            return await _context.Tickets
+                .OrderByDescending(t => t.Id)
+                .FirstOrDefaultAsync();
         }
     }
 }

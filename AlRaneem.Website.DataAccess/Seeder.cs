@@ -15,7 +15,6 @@ namespace AlRaneem.Website.DataAccess
             using (var context = new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
                 AddEmployees(context);
-                AddLookups(context);
                 AddUserRoles(context);
                 context.SaveChanges();
             }
@@ -143,52 +142,7 @@ namespace AlRaneem.Website.DataAccess
                 return File.ReadAllBytes(imagePath);
             }
         }
-        static void AddLookups(ApplicationDbContext context)
-        {
-            if(!context.Lookups.Any())
-            context.Lookups.AddRange(
-                new Lookup { Id = 1, Type = LookupType.TicketPriority, Name = "Low" },
-                new Lookup { Id = 2, Type = LookupType.TicketPriority, Name = "Medium" },
-                new Lookup { Id = 3, Type = LookupType.TicketPriority, Name = "High" },
-
-                new Lookup { Id = 4, Type = LookupType.TicketStatus, Name = "Open" },
-                new Lookup { Id = 5, Type = LookupType.TicketStatus, Name = "Assigned" },
-                new Lookup { Id = 6, Type = LookupType.TicketStatus, Name = "In Progress" },
-                new Lookup { Id = 7, Type = LookupType.TicketStatus, Name = "Completed" },
-
-                new Lookup { Id = 8, Type = LookupType.SupportOption, Name = "Technical Support" },
-                new Lookup { Id = 9, Type = LookupType.SupportOption, Name = "Billing Support" },
-                new Lookup { Id = 10, Type = LookupType.SupportOption, Name = "General Inquiry" },
-
-                new Lookup { Id = 11, Type = LookupType.Category, Name = "Microsoft Dynamics F&O" },
-
-                    new Lookup { Id = 12, Type = LookupType.Subcategory, Name = "Finance", ParentId = 11 },
-                    new Lookup { Id = 13, Type = LookupType.Subcategory, Name = "Supply Chain Management", ParentId = 11 },
-                    new Lookup { Id = 14, Type = LookupType.Subcategory, Name = "Human Resources", ParentId = 11 },
-                    new Lookup { Id = 15, Type = LookupType.Subcategory, Name = "Manufacturing", ParentId = 11 },
-                    new Lookup { Id = 16, Type = LookupType.Subcategory, Name = "Retail and Commerce", ParentId = 11 },
-                    new Lookup { Id = 17, Type = LookupType.Subcategory, Name = "Project Management and Accounting", ParentId = 11 },
-                    new Lookup { Id = 18, Type = LookupType.Subcategory, Name = "Business Intelligence and Analytics", ParentId = 11 },
-                    new Lookup { Id = 19, Type = LookupType.Subcategory, Name = "Customer Relationship Management (CRM)", ParentId = 11 },
-                    new Lookup { Id = 20, Type = LookupType.Subcategory, Name = "Governance, Risk, and Compliance", ParentId = 11 },
-                    new Lookup { Id = 21, Type = LookupType.Subcategory, Name = "Data Management", ParentId = 11 },
-                    new Lookup { Id = 22, Type = LookupType.Subcategory, Name = "Service Management", ParentId = 11 },
-
-                new Lookup { Id = 23, Type = LookupType.Category, Name = "Business Central" },
-
-                    new Lookup { Id = 24, Type = LookupType.Subcategory, Name = "Finance Management", ParentId = 23 },
-                    new Lookup { Id = 25, Type = LookupType.Subcategory, Name = "Sales & Service Management", ParentId = 23 },
-                    new Lookup { Id = 26, Type = LookupType.Subcategory, Name = "Project Management", ParentId = 23 },
-                    new Lookup { Id = 27, Type = LookupType.Subcategory, Name = "Supply Chain Management", ParentId = 23 },
-                    new Lookup { Id = 28, Type = LookupType.Subcategory, Name = "Operations Management", ParentId = 23 },
-                    new Lookup { Id = 29, Type = LookupType.Subcategory, Name = "Reporting & Analytics", ParentId = 23 },
-
-                new Lookup { Id = 30, Type = LookupType.Category, Name = "Azure" },
-                new Lookup { Id = 31, Type = LookupType.Category, Name = "We Care" },
-                new Lookup { Id = 32, Type = LookupType.Category, Name = "Elite Real Estate" },
-                new Lookup { Id = 33, Type = LookupType.Category, Name = "LCS" }
-            );
-        }
+        
         static void AddUserRoles(ApplicationDbContext context)
         {
             if (!context.userRoles.Any())

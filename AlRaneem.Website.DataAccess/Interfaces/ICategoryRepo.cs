@@ -14,6 +14,8 @@ namespace AlRaneem.Website.DataAccess.Interfaces
         void UpdateCategory(Category category);
         Task<Category?> GetCategoryByIdAsync(int id);
         void DeleteCategory(Category category);
+        Task<List<Category>> GetCategoriesByTypeAsync(string type);
+
 
     }
 }

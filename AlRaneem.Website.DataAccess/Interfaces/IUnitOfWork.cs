@@ -2,12 +2,10 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        //IBaseRepository<SalesUser, uint> salesUserNoCustomization { get; }
         IEmployeeRepo employeeRepo { get; }
         IUserRoleRepo userRoleRepo { get; }
         ICommentRepo commentRepo { get; }
         ITicketRepo ticketRepo { get; }
-        ILookupRepo lookupRepo { get; }
         ICategoryRepo categoryRepo { get; }
         ISubcategoryRepo subcategoryRepo { get; }
 

@@ -35,7 +35,6 @@ import { SpinnerService } from './services/spinnerService';
 import { HttpInterceptorService } from './interceptors/http-interceptor.service';
 import { environment } from './environments/environment';
 import { WrapeComponent } from './components/wrape-component/wrape.component';
-import { TicketsComponent } from './components/help-center/tickets/tickets.component';
 
 const isIE =
   window.navigator.userAgent.indexOf('MSIE ') > -1 ||
@@ -56,7 +55,6 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     FullComponent,
     WrapeComponent,
     AdminPanelComponent,
-    TicketsComponent,
     SpinnerComponent,
     AppHeaderSupportComponent
   ],

@@ -16,7 +16,6 @@ namespace AlRaneem.Website.DataAccess.Extensions
                 CreatedById = ticketDto.CreatedById,
                 StatusId = ticketDto.StatusId,
                 PriorityId = ticketDto.PriorityId,
-                SupportTypeId = ticketDto.SupportTypeId,
                 CategoryId = ticketDto.CategoryId,
                 SubcategoryId = ticketDto.SubcategoryId,
                 AssignedToId = ticketDto.AssignedToId,

@@ -19,7 +19,8 @@ namespace AlRaneem.Website.Server.Controllers
             _context = context;
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        //[Authorize(Policy = "AdminOnly")]
+        [Authorize(Policy = "NotRegistered")]
         [HttpGet("AllUsers")]
         public async Task<IActionResult> getAllUsers()
         {
@@ -55,7 +56,8 @@ namespace AlRaneem.Website.Server.Controllers
             return Ok();
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        //[Authorize(Policy = "AdminOnly")]
+        [Authorize(Policy = "NotRegistered")]
         [HttpGet()]
         public async Task<IActionResult> getAllUsersRoles()
         {

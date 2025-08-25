@@ -34,5 +34,11 @@ namespace AlRaneem.Website.DataAccess.Repsitories
         {
             _context.Remove(subcategory);
         }
+        public async Task<List<Subcategory>> GetSubcategoryByCategoryIdAsync(int categoryId)
+        {
+            return await _context.subcategories
+                .Where(sc => sc.CategoryId == categoryId)
+                .ToListAsync();
+        }
     }
 }
