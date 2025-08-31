@@ -1,0 +1,41 @@
+<div class="comments-wrapper">
+  <h3 class="comments-header">
+    <mat-icon class="comments-icon">chat</mat-icon>
+    {{ 'Comments' | translate }} ({{ comments.length }})
+  </h3>
+
+  <div class="comments-list">
+    <div *ngFor="let comment of comments" class="comment-card">
+      <div class="comment-header">
+        <div class="author" [matTooltip]="comment.createdBy!.userEmail">
+          <mat-icon class="author-icon">person</mat-icon>
+          {{ comment.createdBy?.userName || 'Anonymous' }}
+        </div>
+        <div class="time">{{ comment.createdAt | date: 'short' }}</div>
+      </div>
+      <div class="comment-message">{{ comment.message }}</div>
+    </div>
+  </div>
+
+  <div class="comment-input">
+    <mat-form-field appearance="outline" class="flex-1">
+      <textarea
+        matInput
+        placeholder="{{ 'Write a comment...' | translate }}"
+        [(ngModel)]="newComment"
+        rows="1"
+        (keyup.enter)="addComment()"
+      ></textarea>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="addComment()"
+      [disabled]="!newComment.trim()"
+    >
+      <mat-icon>send</mat-icon>
+      {{ 'Add Comment' | translate }}
+    </button>
+  </div>
+</div>

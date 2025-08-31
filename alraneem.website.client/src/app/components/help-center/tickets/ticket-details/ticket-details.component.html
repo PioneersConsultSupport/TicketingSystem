@@ -1,0 +1,113 @@
+<div class="ticket-details-container p-6 bg-white rounded-2xl shadow-lg">
+    <!-- Header -->
+    <div class="header-flex flex items-center gap-3">
+        <mat-icon color="primary" class="header-icon">confirmation_number</mat-icon>
+        <h2 class="title-text text-2xl font-bold">{{ "Ticket Details" | translate }}</h2>
+    </div>
+
+    <!-- Form -->
+    <form *ngIf="form" [formGroup]="form" class="ticket-form grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>{{ "title" | translate }}</mat-label>
+            <input matInput formControlName="title" />
+            <mat-error *ngIf="form.get('title')?.hasError('required')">
+                {{ "Title is required" | translate }}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>{{ "SupportOption" | translate }}</mat-label>
+            <mat-select formControlName="supportOptionId">
+                <mat-option *ngFor="let supportOption of supportOptions" [value]="supportOption.id">
+                    {{ supportOption.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>{{ "AssignedTo" | translate }}</mat-label>
+            <mat-select formControlName="assignedToId">
+                <mat-option *ngFor="let user of users" [value]="user.id">
+                    {{ user.userName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>{{ "Priority" | translate }}</mat-label>
+            <mat-select formControlName="priorityId">
+                <mat-option *ngFor="let priority of ticketPriority" [value]="priority.id">
+                    {{ priority.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>{{ "Status" | translate }}</mat-label>
+            <mat-select formControlName="statusId">
+                <mat-option *ngFor="let status of ticketStatus" [value]="status.id">
+                    {{ status.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>{{ "Category" | translate }}</mat-label>
+            <mat-select formControlName="categoryId">
+                <mat-option *ngFor="let category of categories" [value]="category.id">
+                    {{ category.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full" *ngIf="subcategories.length > 0">
+            <mat-label>{{ "Subcategory" | translate }}</mat-label>
+            <mat-select formControlName="subcategoryId" [disabled]="!form.get('categoryId')?.value">
+                <mat-option *ngFor="let sub of subcategories" [value]="sub.id">
+                    {{ sub.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>{{ "StartDate" | translate }}</mat-label>
+            <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>{{ "DeliveryDate" | translate }}</mat-label>
+            <input matInput [matDatepicker]="deliveryPicker" formControlName="deliveryDate" />
+            <mat-datepicker-toggle matSuffix [for]="deliveryPicker"></mat-datepicker-toggle>
+            <mat-datepicker #deliveryPicker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field appearance="outline" class="w-full md:col-span-3">
+            <mat-label>{{ "Description" | translate }}</mat-label>
+            <textarea matInput formControlName="description" rows="3"></textarea>
+        </mat-form-field>
+    </form>
+
+    <!-- Actions -->
+    <div class="actions mt-6 flex justify-end gap-3">
+        <button mat-stroked-button color="warn" type="button" (click)="cancel()">Cancel</button>
+        <button mat-flat-button color="primary" (click)="save()" [disabled]="form.invalid">
+            Update
+        </button>
+    </div>
+</div>
+
+<div class="ticket-details-container p-6 bg-white rounded-2xl shadow-lg">
+    <!-- Tabs Section -->
+    <mat-tab-group class="ticket-tabs mt-6" mat-stretch-tabs>
+        <mat-tab label="{{ 'Ticket Comments' | translate }}">
+            <app-ticket-comments [ticketId]="ticket.id"></app-ticket-comments>
+        </mat-tab>
+        <mat-tab label="{{ 'Ticket History' | translate }}">
+            <app-ticket-history [ticketId]="ticket.id"></app-ticket-history>
+        </mat-tab>
+    </mat-tab-group>
+</div>

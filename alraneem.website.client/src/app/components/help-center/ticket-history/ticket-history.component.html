@@ -1,0 +1,41 @@
+<div class="history-wrapper">
+  <h3 class="history-header">
+    <mat-icon class="history-icon">history</mat-icon>
+    {{ 'History' | translate }} ({{ ticketHistories.length }})
+  </h3>
+
+  <p *ngIf="loading" class="text-gray-500 italic">Loading history...</p>
+  <div *ngIf="!loading && ticketHistories.length === 0" class="text-gray-500 italic">
+    No history available
+  </div>
+
+  <div *ngIf="ticketHistories.length > 0" class="timeline">
+    <div *ngFor="let history of ticketHistories" class="timeline-item">
+      
+      <!-- Dot Line-->
+      <div class="timeline-dot-wrapper">
+        <div class="timeline-dot"></div>
+        <div class="timeline-line"></div>
+      </div>
+
+      <!-- Card -->
+      <div class="timeline-card shadow-md rounded-2xl p-4 bg-white hover:shadow-lg transition-all duration-200">
+        <div class="flex justify-between items-center mb-3">
+          <div class="font-bold text-primary">
+            {{ history.createdBy?.userName || 'Unknown User' }}
+          </div>
+          <span class="text-gray-500 text-xs">
+            {{ history.createdAt | date:'short' }}
+          </span>
+        </div>
+
+        <!-- History Details كـ Mini Cards -->
+        <div class="history-details flex flex-wrap gap-2">
+          <div *ngFor="let detail of history.historyDetails" class="history-detail-card">
+            {{ detail }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

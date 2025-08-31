@@ -1,7 +1,7 @@
 ﻿using AlRaneem.Website.DataAccess.Models;
 using AlRaneem.Website.DataAccess.Models.SupportSystemModels;
 using Microsoft.EntityFrameworkCore;
-
+using System.Text.Json;
 namespace AlRaneem.Website.DataAccess.Contexts
 {
     public class ApplicationDbContext : DbContext
@@ -12,9 +12,12 @@ namespace AlRaneem.Website.DataAccess.Contexts
         public DbSet<Category> Categories { get; set; }
         public DbSet<Subcategory> subcategories { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<TicketHistory> TicketHistory { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
             base(options)
         { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -80,6 +83,27 @@ namespace AlRaneem.Website.DataAccess.Contexts
                 .HasIndex(u => u.UserEmail)
                 .IsUnique();
 
+            // Comment
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.CreatedBy)
+                .WithMany()
+                .HasForeignKey(c => c.CreatedById)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // TicketHistory
+            modelBuilder.Entity<TicketHistory>()
+                .HasOne(c => c.CreatedBy)
+                .WithMany()
+                .HasForeignKey(c => c.CreatedById)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // TicketHistory ↔ HistoryDetails (store as JSON)
+            modelBuilder.Entity<TicketHistory>()
+                .Property(th => th.HistoryDetails)
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null), 
+                    v => JsonSerializer.Deserialize<string[]>(v, (JsonSerializerOptions)null)! 
+                );
         }
     }
 }

@@ -25,6 +25,7 @@ import { Subcategory } from 'src/app/models/subcategory';
 import { UserRole } from 'src/app/models/user-role';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tickets',
@@ -68,6 +69,7 @@ export class TicketsComponent implements OnInit {
   };
 
   constructor(
+    private router: Router,
     private ticketService: TicketService,
     private dialog: MatDialog,
     private userService: UserService,
@@ -236,5 +238,9 @@ export class TicketsComponent implements OnInit {
           });
         }
       });
+  }
+
+  viewTicket(ticketId: number) {
+    this.router.navigate(['/support/ticket-details', ticketId]);
   }
 }

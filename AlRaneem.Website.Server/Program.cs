@@ -35,6 +35,7 @@ builder.Services.AddScoped<ITicketRepo, TicketRepo>();
 builder.Services.AddScoped<ICommentRepo, CommentRepo>();
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 builder.Services.AddScoped<ISubcategoryRepo, SubcategoryRepo>();
+builder.Services.AddScoped<ITicketHistoryRepo, TicketHistoryRepo>();
 builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 

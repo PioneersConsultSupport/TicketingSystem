@@ -137,19 +137,19 @@ export class TicketDialogComponent implements OnInit {
     }
   }
 
-loadSubcategories(categoryId: number) {
-  this.categoryService
-    .getSubcategoriesByCategoryId(categoryId)
-    .subscribe((data: Subcategory[]) => {
-      this.subcategories = data;
+  loadSubcategories(categoryId: number) {
+    this.categoryService
+      .getSubcategoriesByCategoryId(categoryId)
+      .subscribe((data: Subcategory[]) => {
+        this.subcategories = data;
 
-      if (this.subcategories.length > 0 && this.ticket?.subcategoryId) {
-        this.form.get('subcategoryId')?.setValue(this.ticket.subcategoryId);
-      } else {
-        this.form.get('subcategoryId')?.setValue(null);
-      }
-    });
-}
+        if (this.subcategories.length > 0 && this.ticket?.subcategoryId) {
+          this.form.get('subcategoryId')?.setValue(this.ticket.subcategoryId);
+        } else {
+          this.form.get('subcategoryId')?.setValue(null);
+        }
+      });
+  }
 
   save() {
     if (this.form.invalid) return;

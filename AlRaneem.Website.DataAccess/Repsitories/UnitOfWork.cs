@@ -13,10 +13,11 @@ namespace AlRaneem.Website.DataAccess.Repsitories
         public ITicketRepo ticketRepo { get; }
         public ICategoryRepo categoryRepo { get; }
         public ISubcategoryRepo subcategoryRepo { get; }
-        
+        public ITicketHistoryRepo ticketHistoryRepo { get; }
 
-        public UnitOfWork(ApplicationDbContext context,IEmployeeRepo employeeRepo, IUserRoleRepo userRepo, 
-            ICommentRepo commentRepo, ITicketRepo ticketRepo, ICategoryRepo categoryRepo, ISubcategoryRepo subcategoryRepo)
+
+        public UnitOfWork(ApplicationDbContext context, IEmployeeRepo employeeRepo, IUserRoleRepo userRepo,
+            ICommentRepo commentRepo, ITicketRepo ticketRepo, ICategoryRepo categoryRepo, ISubcategoryRepo subcategoryRepo, ITicketHistoryRepo ticketHistoryRepo)
         {
             _context = context;
             this.employeeRepo = employeeRepo;
@@ -25,6 +26,7 @@ namespace AlRaneem.Website.DataAccess.Repsitories
             this.ticketRepo = ticketRepo;
             this.categoryRepo = categoryRepo;
             this.subcategoryRepo = subcategoryRepo;
+            this.ticketHistoryRepo = ticketHistoryRepo;
         }
 
         public int Complete()

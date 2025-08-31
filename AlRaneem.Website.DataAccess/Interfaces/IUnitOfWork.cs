@@ -8,6 +8,8 @@
         ITicketRepo ticketRepo { get; }
         ICategoryRepo categoryRepo { get; }
         ISubcategoryRepo subcategoryRepo { get; }
+        ITicketHistoryRepo ticketHistoryRepo { get; }
+
 
         int Complete();
     }

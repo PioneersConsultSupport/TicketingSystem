@@ -13,6 +13,7 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized.co
 import { AdminPanelComponent } from './components/help-center/Admin Panel/admin-panel.component';
 import { CategoryComponent } from './components/help-center/category-management/category/category.component';
 import { SubcategoryComponent } from './components/help-center/category-management/subcategory/subcategory.component';
+import { TicketDetailsComponent } from './components/help-center/tickets/ticket-details/ticket-details.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: 'tickets',
         component: TicketsComponent,
+      },
+      {
+        path: 'ticket-details/:id',
+        component: TicketDetailsComponent,
       },
       {
         path: 'admin-panel',
