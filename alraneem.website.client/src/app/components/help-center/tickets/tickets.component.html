@@ -11,9 +11,10 @@
     <mat-card-content>
       <!-- Filter Form -->
       <form class="filters grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <!-- Status Filter -->
         <mat-form-field appearance="outline">
           <mat-label>{{ 'status' | translate }}</mat-label>
-          <mat-select ngModel name="status" [(value)]="filterValues.status" (selectionChange)="applyFilter()">
+          <mat-select [(value)]="filterValues.status" (selectionChange)="applyFilter()">
             <mat-option *ngFor="let status of ticketStatus" [value]="status.id">
               {{ status.name | translate }}
             </mat-option>
@@ -24,11 +25,12 @@
           </button>
         </mat-form-field>
 
+        <!-- Category Filter -->
         <mat-form-field appearance="outline">
           <mat-label>{{ 'category' | translate }}</mat-label>
-          <mat-select ngModel name="category" [(value)]="filterValues.category" (selectionChange)="applyFilter()">
-            <mat-option *ngFor="let Category of categories" [value]="Category.id">
-              {{ Category.name | translate }}
+          <mat-select [(value)]="filterValues.category" (selectionChange)="applyFilter()">
+            <mat-option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name | translate }}
             </mat-option>
           </mat-select>
           <button *ngIf="filterValues.category" mat-icon-button matSuffix tabindex="-1"
@@ -37,11 +39,12 @@
           </button>
         </mat-form-field>
 
+        <!-- Assigned To Filter -->
         <mat-form-field appearance="outline">
           <mat-label>{{ 'assigned_to' | translate }}</mat-label>
-          <mat-select ngModel name="assignedTo" [(value)]="filterValues.assignedToId" (selectionChange)="applyFilter()">
-            <mat-option *ngFor="let assignedTo of users" [value]="assignedTo.id">
-              {{ assignedTo.userName }}
+          <mat-select [(value)]="filterValues.assignedToId" (selectionChange)="applyFilter()">
+            <mat-option *ngFor="let user of users" [value]="user.id">
+              {{ user.userName }}
             </mat-option>
           </mat-select>
           <button *ngIf="filterValues.assignedToId" mat-icon-button matSuffix tabindex="-1"
@@ -50,6 +53,7 @@
           </button>
         </mat-form-field>
 
+        <!-- Reference Number Filter -->
         <mat-form-field appearance="outline">
           <mat-label>{{ 'reference_number' | translate }}</mat-label>
           <input matInput name="referenceNumber" [(ngModel)]="filterValues.referenceNumber" (keyup)="applyFilter()" />
@@ -70,39 +74,40 @@
     <div class="overflow-x-auto">
       <table mat-table [dataSource]="dataSource" matSort class="w-full min-w-[600px]">
 
+        <!-- Columns -->
         <ng-container matColumnDef="refNumber">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ref Number </th>
-          <td mat-cell *matCellDef="let ticket"> {{ ticket.refNumber }} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Ref Number</th>
+          <td mat-cell *matCellDef="let ticket">{{ ticket.refNumber }}</td>
         </ng-container>
 
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
-          <td mat-cell *matCellDef="let ticket"> {{ ticket.title }} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+          <td mat-cell *matCellDef="let ticket">{{ ticket.title }}</td>
         </ng-container>
 
         <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-          <td mat-cell *matCellDef="let ticket"> {{ ticket.description }} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+          <td mat-cell *matCellDef="let ticket">{{ ticket.description }}</td>
         </ng-container>
 
         <ng-container matColumnDef="category">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
-          <td mat-cell *matCellDef="let ticket"> {{ ticket.category.name }} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let ticket">{{ ticket.category.name }}</td>
         </ng-container>
 
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-          <td mat-cell *matCellDef="let ticket"> {{ ticket.status.name }} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let ticket">{{ ticket.status.name }}</td>
         </ng-container>
 
         <ng-container matColumnDef="assignedTo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned To </th>
-          <td mat-cell *matCellDef="let ticket"> {{ ticket.assignedTo.userName }} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Assigned To</th>
+          <td mat-cell *matCellDef="let ticket">{{ ticket.assignedTo.userName }}</td>
         </ng-container>
 
         <!-- Actions -->
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef class="text-center"> Actions </th>
+          <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
           <td mat-cell *matCellDef="let ticket" class="text-center">
             <button mat-icon-button color="primary" matTooltip="Edit" (click)="editTicket(ticket)">
               <mat-icon>edit</mat-icon>
@@ -116,11 +121,13 @@
           </td>
         </ng-container>
 
+        <!-- Header and Row Definitions -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
 
+    <!-- Paginator -->
     <mat-card-actions>
       <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     </mat-card-actions>

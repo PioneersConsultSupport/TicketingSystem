@@ -28,6 +28,7 @@ import { Subcategory } from 'src/app/models/subcategory';
 import { CategoryType } from 'src/app/Enums/category-types';
 import { UserService } from 'src/app/Services/UserService';
 import { UserRole } from 'src/app/models/user-role';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-ticket-dialog',
@@ -70,14 +71,20 @@ export class TicketDialogComponent implements OnInit {
     this.ticket = data.ticket;
 
     this.form = this.fb.group({
-      title: [this.ticket?.title || '', Validators.required],
-      description: [this.ticket?.description || '', Validators.required],
+      title: [
+        this.ticket?.title || '',
+        [Validators.required, Validators.pattern(/^(?!\s*$).+/)],
+      ],
+      description: [
+        this.ticket?.description || '',
+        [Validators.required, Validators.pattern(/^(?!\s*$).+/)],
+      ],
       priorityId: [this.ticket?.priorityId || null],
       statusId: [this.ticket?.statusId || null],
       categoryId: [this.ticket?.categoryId || null],
       subcategoryId: [this.ticket?.subcategoryId || null],
-      startDate: [this.ticket?.startDate || null],
-      deliveryDate: [this.ticket?.deliveryDate || null],
+      startDate: [this.ticket?.startDate || null, Validators.required],
+      deliveryDate: [this.ticket?.deliveryDate || null, Validators.required],
       assignedToId: [this.ticket?.assignedToId || null],
       supportOptionId: [this.ticket?.supportOptionId || null],
     });
@@ -103,26 +110,25 @@ export class TicketDialogComponent implements OnInit {
     });
   }
   loadCategories() {
-    this.categoryService
-      .getCategoriesByType(CategoryType.TicketCategory)
-      .subscribe((data: Category[]) => {
-        this.categories = data;
-      });
-    this.categoryService
-      .getCategoriesByType(CategoryType.TicketPriority)
-      .subscribe((data: Category[]) => {
-        this.ticketPriority = data[0].subcategory;
-      });
-    this.categoryService
-      .getCategoriesByType(CategoryType.TicketStatus)
-      .subscribe((data: Category[]) => {
-        this.ticketStatus = data[0].subcategory;
-      });
-    this.categoryService
-      .getCategoriesByType(CategoryType.SupportOption)
-      .subscribe((data: Category[]) => {
-        this.supportOptions = data[0].subcategory;
-      });
+    forkJoin({
+      categories: this.categoryService.getCategoriesByType(
+        CategoryType.TicketCategory
+      ),
+      priorities: this.categoryService.getCategoriesByType(
+        CategoryType.TicketPriority
+      ),
+      statuses: this.categoryService.getCategoriesByType(
+        CategoryType.TicketStatus
+      ),
+      supportOptions: this.categoryService.getCategoriesByType(
+        CategoryType.SupportOption
+      ),
+    }).subscribe(({ categories, priorities, statuses, supportOptions }) => {
+      this.categories = categories;
+      this.ticketPriority = priorities[0]?.subcategory || [];
+      this.ticketStatus = statuses[0]?.subcategory || [];
+      this.supportOptions = supportOptions[0]?.subcategory || [];
+    });
   }
 
   onCategoryChange(categoryId: number) {

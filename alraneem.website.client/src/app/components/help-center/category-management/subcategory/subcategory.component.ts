@@ -32,7 +32,7 @@ import { MatCardModule } from '@angular/material/card';
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   templateUrl: './subcategory.component.html',
   styleUrls: ['./subcategory.component.scss'],
@@ -48,7 +48,7 @@ export class SubcategoryComponent implements OnInit {
     private categoryService: CategoryService,
     private dialog: MatDialog,
     private confirmDialog: ConfirmDialogService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -56,8 +56,9 @@ export class SubcategoryComponent implements OnInit {
     if (id) {
       this.loadSubcategories(id);
     }
-    this.dataSource.filterPredicate = (data: Subcategory, filter: string) =>
-      data.name.toLowerCase().includes(filter.trim().toLowerCase());
+    this.dataSource.filterPredicate = (data: Subcategory, filter: string) => {
+      return data.name.toLowerCase().includes(filter.trim().toLowerCase());
+    };
   }
 
   loadSubcategories(categoryId: number) {
@@ -90,9 +91,7 @@ export class SubcategoryComponent implements OnInit {
         };
         this.categoryService
           .addSubcategory(newSub)
-          .subscribe(() =>
-            this.loadSubcategories(id!)
-          );
+          .subscribe(() => this.loadSubcategories(id!));
       }
     });
   }
@@ -114,9 +113,7 @@ export class SubcategoryComponent implements OnInit {
         const updatedSub: Subcategory = { ...sub, ...result };
         this.categoryService
           .updateSubcategory(updatedSub)
-          .subscribe(() =>
-            this.loadSubcategories(id!)
-          );
+          .subscribe(() => this.loadSubcategories(id!));
       }
     });
   }
@@ -133,9 +130,7 @@ export class SubcategoryComponent implements OnInit {
         if (result) {
           this.categoryService
             .deleteSubcategory(sub.id)
-            .subscribe(() =>
-              this.loadSubcategories(id!)
-            );
+            .subscribe(() => this.loadSubcategories(id!));
         }
       });
   }

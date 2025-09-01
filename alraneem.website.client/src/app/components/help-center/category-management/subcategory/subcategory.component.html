@@ -15,10 +15,6 @@
         <mat-form-field appearance="outline" class="search-field flex-1">
           <mat-label>Search by Name</mat-label>
           <input matInput [(ngModel)]="filterValue" (keyup)="applyFilter()" placeholder="Enter subcategory name" />
-          <button *ngIf="filterValue" mat-icon-button matSuffix tabindex="-1" (click)="filterValue=''; applyFilter()"
-            aria-label="Clear">
-            <mat-icon>close</mat-icon>
-          </button>
         </mat-form-field>
 
         <!-- Add Subcategory Button -->

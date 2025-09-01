@@ -30,6 +30,7 @@ import { TicketCommentsComponent } from '../../ticket-comments/ticket-comments.c
 import { TicketHistoryComponent } from '../../ticket-history/ticket-history.component';
 import { TicketHistoryService } from 'src/app/Services/ticket-history.service';
 import { TicketHistory } from 'src/app/models/ticket-history';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-ticket-details',
@@ -99,7 +100,7 @@ export class TicketDetailsComponent implements OnInit {
 
   buildForm(ticket: Ticket) {
     this.form = this.fb.group({
-      title: [ticket?.title || '', Validators.required],
+      title: [ticket?.title || '', [Validators.required, Validators.pattern(/^(?!\s*$).+/)]],
       supportOptionId: [ticket.supportOptionId],
       assignedToId: [ticket.assignedToId],
       priorityId: [ticket.priorityId],
@@ -108,7 +109,7 @@ export class TicketDetailsComponent implements OnInit {
       subcategoryId: [ticket.subcategoryId],
       startDate: [ticket.startDate],
       deliveryDate: [ticket.deliveryDate],
-      description: [ticket.description, Validators.required],
+      description: [ticket.description,[Validators.required, Validators.pattern(/^(?!\s*$).+/)]],
     });
 
     if (ticket.categoryId) {
@@ -129,21 +130,25 @@ export class TicketDetailsComponent implements OnInit {
   }
 
   loadCategories() {
-    this.categoryService
-      .getCategoriesByType(CategoryType.TicketCategory)
-      .subscribe((data) => (this.categories = data));
-
-    this.categoryService
-      .getCategoriesByType(CategoryType.TicketPriority)
-      .subscribe((data) => (this.ticketPriority = data[0].subcategory));
-
-    this.categoryService
-      .getCategoriesByType(CategoryType.TicketStatus)
-      .subscribe((data) => (this.ticketStatus = data[0].subcategory));
-
-    this.categoryService
-      .getCategoriesByType(CategoryType.SupportOption)
-      .subscribe((data) => (this.supportOptions = data[0].subcategory));
+    forkJoin({
+      categories: this.categoryService.getCategoriesByType(
+        CategoryType.TicketCategory
+      ),
+      priorities: this.categoryService.getCategoriesByType(
+        CategoryType.TicketPriority
+      ),
+      statuses: this.categoryService.getCategoriesByType(
+        CategoryType.TicketStatus
+      ),
+      supportOptions: this.categoryService.getCategoriesByType(
+        CategoryType.SupportOption
+      ),
+    }).subscribe(({ categories, priorities, statuses, supportOptions }) => {
+      this.categories = categories;
+      this.ticketPriority = priorities[0]?.subcategory || [];
+      this.ticketStatus = statuses[0]?.subcategory || [];
+      this.supportOptions = supportOptions[0]?.subcategory || [];
+    });
   }
 
   onCategoryChange(categoryId: number) {
@@ -173,88 +178,82 @@ export class TicketDetailsComponent implements OnInit {
   }
 
   save() {
-  if (this.form.invalid) return;
+    if (this.form.invalid || !this.ticket || !this.ticket.id) return;
 
-  const ticketData: Ticket = {
-    ...this.ticket,
-    ...this.form.value,
-  };
+    const updatedTicket: Ticket = { ...this.ticket, ...this.form.value };
 
-  if (this.ticket && this.ticket.id) {
-    const changes: string[] = [];
+    const changes = this.getTicketChanges(this.ticket, updatedTicket);
 
-    Object.keys(this.form.controls).forEach((key) => {
-      const oldValue = (this.ticket as any)[key];
-      const newValue = this.form.get(key)?.value;
-
-      if (oldValue !== newValue) {
-        let displayOld = oldValue ?? '';
-        let displayNew = newValue ?? '';
-        let fieldName = key;
-
-        switch (key) {
-          case 'categoryId':
-            displayOld = this.categories.find(c => c.id === oldValue)?.name || oldValue;
-            displayNew = this.categories.find(c => c.id === newValue)?.name || newValue;
-            fieldName = 'Category';
-            break;
-          case 'subcategoryId':
-            displayOld = this.subcategories.find(s => s.id === oldValue)?.name || oldValue;
-            displayNew = this.subcategories.find(s => s.id === newValue)?.name || newValue;
-            fieldName = 'Subcategory';
-            break;
-          case 'priorityId':
-            displayOld = this.ticketPriority.find(p => p.id === oldValue)?.name || oldValue;
-            displayNew = this.ticketPriority.find(p => p.id === newValue)?.name || newValue;
-            fieldName = 'Priority';
-            break;
-          case 'statusId':
-            displayOld = this.ticketStatus.find(s => s.id === oldValue)?.name || oldValue;
-            displayNew = this.ticketStatus.find(s => s.id === newValue)?.name || newValue;
-            fieldName = 'Status';
-            break;
-          case 'assignedToId':
-            displayOld = this.users.find(u => u.id === oldValue)?.userName || oldValue;
-            displayNew = this.users.find(u => u.id === newValue)?.userName || newValue;
-            fieldName = 'Assigned To';
-            break;
-          case 'startDate':
-          case 'deliveryDate':
-            if (oldValue) displayOld = new Date(oldValue).toLocaleDateString();
-            if (newValue) displayNew = new Date(newValue).toLocaleDateString();
-            fieldName = key === 'startDate' ? 'Start Date' : 'Delivery Date';
-            break;
-          case 'description':
-            fieldName = 'Description';
-            break;
-          case 'title':
-            fieldName = 'Title';
-            break;
-          default:
-            fieldName = key;
-        }
-
-        changes.push(`${fieldName} changed from "${displayOld}" to "${displayNew}"`);
-      }
-    });
-
-    this.ticketService.updateTicket(this.ticket.id, ticketData).subscribe({
-      next: () => {
-        if (changes.length > 0) {
+    this.ticketService
+      .updateTicket(this.ticket.id, updatedTicket)
+      .subscribe(() => {
+        if (changes.length) {
           const history: TicketHistory = {
             ticketId: this.ticket.id,
             historyDetails: changes,
           };
-
           this.ticketHistoryService.saveHistory(history).subscribe({
             next: () => this.ticketHistoryComponent?.loadHistory(),
           });
         }
-      },
-    });
+      });
   }
-}
 
+  private getTicketChanges(oldTicket: Ticket, newTicket: Ticket): string[] {
+    const changes: string[] = [];
+
+    Object.keys(this.form.controls).forEach((key) => {
+      const oldValue = (oldTicket as any)[key];
+      const newValue = (newTicket as any)[key];
+
+      if (oldValue !== newValue) {
+        let displayOld = this.getDisplayValue(key, oldValue);
+        let displayNew = this.getDisplayValue(key, newValue);
+        let fieldName = this.getFieldName(key);
+
+        changes.push(
+          `${fieldName} changed from "${displayOld}" to "${displayNew}"`
+        );
+      }
+    });
+
+    return changes;
+  }
+
+  private getDisplayValue(key: string, value: any): string {
+    switch (key) {
+      case 'categoryId':
+        return this.categories.find((c) => c.id === value)?.name || '';
+      case 'subcategoryId':
+        return this.subcategories.find((s) => s.id === value)?.name || '';
+      case 'priorityId':
+        return this.ticketPriority.find((p) => p.id === value)?.name || '';
+      case 'statusId':
+        return this.ticketStatus.find((s) => s.id === value)?.name || '';
+      case 'assignedToId':
+        return this.users.find((u) => u.id === value)?.userName || '';
+      case 'startDate':
+      case 'deliveryDate':
+        return value ? new Date(value).toLocaleDateString() : '';
+      default:
+        return value ?? '';
+    }
+  }
+
+  private getFieldName(key: string): string {
+    const map: Record<string, string> = {
+      categoryId: 'Category',
+      subcategoryId: 'Subcategory',
+      priorityId: 'Priority',
+      statusId: 'Status',
+      assignedToId: 'Assigned To',
+      startDate: 'Start Date',
+      deliveryDate: 'Delivery Date',
+      description: 'Description',
+      title: 'Title',
+    };
+    return map[key] || key;
+  }
 
   cancel() {
     window.history.back();

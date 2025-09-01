@@ -34,7 +34,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     MatSelectModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss'],
@@ -76,13 +76,14 @@ export class CategoryComponent implements OnInit {
       ) => {
         const searchTerms = JSON.parse(filter);
 
-        const matchesName = searchTerms.name
-          ? category.name.toLowerCase().includes(searchTerms.name.toLowerCase())
+        const nameFilter = searchTerms.name?.trim().toLowerCase() || '';
+        const typeFilter = searchTerms.type?.trim() || '';
+
+        const matchesName = nameFilter
+          ? category.name.toLowerCase().includes(nameFilter)
           : true;
 
-        const matchesType = searchTerms.type
-          ? category.type === searchTerms.type
-          : true;
+        const matchesType = typeFilter ? category.type === typeFilter : true;
 
         return matchesName && matchesType;
       };
@@ -90,6 +91,8 @@ export class CategoryComponent implements OnInit {
   }
 
   applyFilter() {
+    this.filterValues.name = this.filterValues.name.trim();
+    this.filterValues.type = this.filterValues.type.trim();
     this.dataSource.filter = JSON.stringify(this.filterValues);
   }
 
@@ -132,6 +135,9 @@ export class CategoryComponent implements OnInit {
   }
 
   goToSubcategory(categoryId: number) {
-    this.router.navigate(['/support/category-management/subcategory', categoryId]);
+    this.router.navigate([
+      '/support/category-management/subcategory',
+      categoryId,
+    ]);
   }
 }
