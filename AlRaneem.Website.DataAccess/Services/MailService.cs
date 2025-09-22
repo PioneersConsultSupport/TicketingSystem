@@ -27,7 +27,7 @@ namespace AlRaneem.Website.DataAccess.Services
                     Subject = mail.Subject,
                     Body = new ItemBody
                     {
-                        ContentType = BodyType.Text,
+                        ContentType = BodyType.Html,
                         Content = mail.Body
                     },
                     ToRecipients = mail.ToEmail.Select(x => new Recipient

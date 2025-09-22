@@ -22,8 +22,8 @@ export class Ticket {
   subcategoryId?: number;
   subcategory?:Subcategory;
 
-  startDate?: string;      // ISO string format: '2025-08-19T14:00:00'
-  deliveryDate?: string;   // ISO string format
+  startDate?: string;
+  deliveryDate?: string;
 
   assignedToId?: number;
   assignedTo?:UserRole;

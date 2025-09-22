@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
 import { CommentService } from 'src/app/Services/comments.service';
 import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
 import { Comment } from 'src/app/models/comment';
@@ -10,7 +9,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UserRoles } from 'src/app/Enums/user-roles';
 
 @Component({
   selector: 'app-ticket-comments',

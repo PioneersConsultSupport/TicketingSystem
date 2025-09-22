@@ -52,8 +52,17 @@ import { Router } from '@angular/router';
 export class TicketsComponent implements OnInit {
   categories: Category[] = [];
   ticketStatus: Subcategory[] = [];
-  displayedColumns: string[] = [];
+  displayedColumns: string[] = [
+    'refNumber',
+    'title',
+    'category',
+    'status',
+    'assignedTo',
+    'actions',
+  ];
   users: UserRole[] = [];
+  currentUserRole?: UserRoles;
+  UserRoles = UserRoles; 
 
   isLoading = true;
 
@@ -78,18 +87,30 @@ export class TicketsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadTickets();
-    this.displayColumns();
+    this.getUserRole();
     this.loadFilterOptions();
   }
-
   loadTickets() {
-    this.ticketService.getAllTickets().subscribe((res: Ticket[]) => {
-      this.initDataSource(res);
-      this.isLoading = false;
-    });
+    if (
+      this.currentUserRole === UserRoles.Client ||
+      this.currentUserRole === UserRoles.Employee
+    ) {
+      this.ticketService.getMyTickets().subscribe((res: Ticket[]) => {
+        this.initDataSource(res);
+        this.isLoading = false;
+      });
+    } else {
+      this.ticketService.getAllTickets().subscribe((res: Ticket[]) => {
+        this.initDataSource(res);
+        this.isLoading = false;
+      });
+    }
   }
+  async getUserRole() {
+    this.currentUserRole = await this.userService.getUserRole();
+    this.loadTickets();
 
+  }
   initDataSource(res: Ticket[]) {
     this.dataSource = new MatTableDataSource(res);
     this.dataSource.paginator = this.paginator;
@@ -129,53 +150,6 @@ export class TicketsComponent implements OnInit {
       }
     };
   }
-  async displayColumns() {
-    const userRole = (await this.userService.getUserRole()) ?? UserRoles.Client;
-    switch (userRole) {
-      case UserRoles.Client:
-        this.displayedColumns = [
-          'refNumber',
-          'title',
-          'category',
-          'status',
-          'assignedTo',
-        ];
-        break;
-
-      case UserRoles.SupportManager:
-        this.displayedColumns = [
-          'refNumber',
-          'title',
-          'category',
-          'status',
-          'assignedTo',
-          'actions',
-        ];
-        break;
-
-      case UserRoles.Employee:
-        this.displayedColumns = [
-          'refNumber',
-          'title',
-          'category',
-          'status',
-          'actions',
-        ];
-        break;
-
-      case UserRoles.Admin:
-        this.displayedColumns = [
-          'refNumber',
-          'title',
-          'description',
-          'category',
-          'status',
-          'assignedTo',
-          'actions',
-        ];
-        break;
-    }
-  }
 
   loadFilterOptions() {
     this.userService.getAllUsersRoles().subscribe((response) => {
@@ -196,7 +170,6 @@ export class TicketsComponent implements OnInit {
   }
   applyFilter() {
     const filterCopy = { ...this.filterValues };
-    debugger
     filterCopy.referenceNumber = filterCopy.referenceNumber?.trim() || '';
     this.dataSource.filter = JSON.stringify(filterCopy);
     this.dataSource.paginator?.firstPage();
@@ -211,17 +184,6 @@ export class TicketsComponent implements OnInit {
     const dialogRef = this.dialog.open(TicketDialogComponent, {
       width: '500px',
       data: { mode: 'create' },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) this.loadTickets();
-    });
-  }
-
-  editTicket(ticket: Ticket) {
-    const dialogRef = this.dialog.open(TicketDialogComponent, {
-      width: '500px',
-      data: { mode: 'edit', ticket },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

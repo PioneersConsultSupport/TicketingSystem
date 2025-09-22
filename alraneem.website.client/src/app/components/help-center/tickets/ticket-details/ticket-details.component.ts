@@ -29,8 +29,10 @@ import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
 import { TicketCommentsComponent } from '../../ticket-comments/ticket-comments.component';
 import { TicketHistoryComponent } from '../../ticket-history/ticket-history.component';
 import { TicketHistoryService } from 'src/app/Services/ticket-history.service';
-import { TicketHistory } from 'src/app/models/ticket-history';
 import { forkJoin } from 'rxjs';
+import { UserRoles } from 'src/app/Enums/user-roles';
+import { TicketHistory } from 'src/app/models/ticket-history';
+import { DeliveryDateHistoryComponent } from '../../ticket-history/delivery-date-history/delivery-date-history/delivery-date-history.component';
 
 @Component({
   selector: 'app-ticket-details',
@@ -51,6 +53,7 @@ import { forkJoin } from 'rxjs';
     MatTabsModule,
     TicketCommentsComponent,
     TicketHistoryComponent,
+    DeliveryDateHistoryComponent,
   ],
   templateUrl: './ticket-details.component.html',
   styleUrls: ['./ticket-details.component.scss'],
@@ -65,9 +68,13 @@ export class TicketDetailsComponent implements OnInit {
   ticketStatus: Subcategory[] = [];
   subcategories: Subcategory[] = [];
   users: UserRole[] = [];
+  currentUserRole?: UserRoles;
+  isLoaded = false;
 
   @ViewChild(TicketHistoryComponent)
   ticketHistoryComponent?: TicketHistoryComponent;
+  @ViewChild(DeliveryDateHistoryComponent)
+  deliveryDateHistoryComponent?:DeliveryDateHistoryComponent;
 
   constructor(
     private categoryService: CategoryService,
@@ -76,19 +83,21 @@ export class TicketDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private ticketHistoryService: TicketHistoryService
-  ) {
-    this.route.paramMap.subscribe((params) => {
-      const id = Number(params.get('id'));
-      if (id) {
-        this.getTicket(id);
-      }
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loadCategories();
     this.getUsers();
-    this.getUserRole();
+
+    this.userService.getUserRole().then((role) => {
+      this.currentUserRole = role;
+      this.isLoaded = true;
+    });
+
+    this.route.paramMap.subscribe((params) => {
+      const id = Number(params.get('id'));
+      if (id) this.getTicket(id);
+    });
   }
 
   getTicket(id: number) {
@@ -100,16 +109,22 @@ export class TicketDetailsComponent implements OnInit {
 
   buildForm(ticket: Ticket) {
     this.form = this.fb.group({
-      title: [ticket?.title || '', [Validators.required, Validators.pattern(/^(?!\s*$).+/)]],
+      title: [
+        ticket?.title || '',
+        [Validators.required, Validators.pattern(/^(?!\s*$).+/)],
+      ],
       supportOptionId: [ticket.supportOptionId],
       assignedToId: [ticket.assignedToId],
       priorityId: [ticket.priorityId],
       statusId: [ticket.statusId],
       categoryId: [ticket.categoryId],
       subcategoryId: [ticket.subcategoryId],
-      startDate: [ticket.startDate],
-      deliveryDate: [ticket.deliveryDate],
-      description: [ticket.description,[Validators.required, Validators.pattern(/^(?!\s*$).+/)]],
+      startDate: [ticket.startDate ,Validators.required],
+      deliveryDate: [ticket.deliveryDate ,Validators.required],
+      description: [
+        ticket.description,
+        [Validators.required, Validators.pattern(/^(?!\s*$).+/)],
+      ],
     });
 
     if (ticket.categoryId) {
@@ -119,14 +134,20 @@ export class TicketDetailsComponent implements OnInit {
     this.form.get('categoryId')?.valueChanges.subscribe((categoryId) => {
       this.onCategoryChange(categoryId);
     });
+
+    if (this.currentUserRole) {
+      Object.keys(this.form.controls).forEach((key) => {
+        const control = this.form.get(key);
+        if (control) {
+          if (this.isReadOnly(key)) control.disable({ emitEvent: false });
+          else control.enable({ emitEvent: false });
+        }
+      });
+    }
   }
 
   async getUsers() {
     this.userService.getAllUsersRoles().subscribe((res) => (this.users = res));
-  }
-
-  async getUserRole() {
-    const userRole = await this.userService.getUserRole();
   }
 
   loadCategories() {
@@ -164,9 +185,8 @@ export class TicketDetailsComponent implements OnInit {
   }
 
   loadSubcategories(categoryId: number) {
-    this.categoryService
-      .getSubcategoriesByCategoryId(categoryId)
-      .subscribe((data: Subcategory[]) => {
+    this.categoryService.getSubcategoriesByCategoryId(categoryId).subscribe(
+      (data: Subcategory[]) => {
         this.subcategories = data;
 
         if (this.subcategories.length > 0 && this.ticket?.subcategoryId) {
@@ -174,29 +194,33 @@ export class TicketDetailsComponent implements OnInit {
         } else {
           this.form.get('subcategoryId')?.setValue(null);
         }
-      });
+      }
+    );
   }
 
   save() {
     if (this.form.invalid || !this.ticket || !this.ticket.id) return;
 
     const updatedTicket: Ticket = { ...this.ticket, ...this.form.value };
-
     const changes = this.getTicketChanges(this.ticket, updatedTicket);
 
-    this.ticketService
-      .updateTicket(this.ticket.id, updatedTicket)
-      .subscribe(() => {
-        if (changes.length) {
-          const history: TicketHistory = {
-            ticketId: this.ticket.id,
-            historyDetails: changes,
-          };
-          this.ticketHistoryService.saveHistory(history).subscribe({
-            next: () => this.ticketHistoryComponent?.loadHistory(),
-          });
-        }
+    this.ticketService.updateTicket(this.ticket.id, updatedTicket).subscribe(() => {
+      if (changes.length) {
+      const history : TicketHistory = {
+        ticketId: this.ticket.id,
+        historyDetails: changes,
+      };
+      this.ticketHistoryService.saveHistory(history).subscribe({
+        next: () => {
+          this.ticketHistoryComponent?.loadHistory();
+          this.deliveryDateHistoryComponent?.loadDeliveryDateHistory();
+          this.ticket = { ...updatedTicket };
+        },
       });
+    } else {
+      this.ticket = { ...updatedTicket };
+    }
+    });
   }
 
   private getTicketChanges(oldTicket: Ticket, newTicket: Ticket): string[] {
@@ -207,13 +231,11 @@ export class TicketDetailsComponent implements OnInit {
       const newValue = (newTicket as any)[key];
 
       if (oldValue !== newValue) {
-        let displayOld = this.getDisplayValue(key, oldValue);
-        let displayNew = this.getDisplayValue(key, newValue);
-        let fieldName = this.getFieldName(key);
+        const displayOld = this.getDisplayValue(key, oldValue);
+        const displayNew = this.getDisplayValue(key, newValue);
+        const fieldName = this.getFieldName(key);
 
-        changes.push(
-          `${fieldName} changed from "${displayOld}" to "${displayNew}"`
-        );
+        changes.push(`${fieldName} changed from "${displayOld}" to "${displayNew}"`);
       }
     });
 
@@ -253,6 +275,38 @@ export class TicketDetailsComponent implements OnInit {
       title: 'Title',
     };
     return map[key] || key;
+  }
+
+  isReadOnly(field: string): boolean {
+    if (this.currentUserRole === undefined) return true;
+
+    switch (this.currentUserRole) {
+      case UserRoles.Client:
+        return !['title', 'description'].includes(field);
+      case UserRoles.Admin:
+      case UserRoles.SupportManager:
+        return false;
+      case UserRoles.Employee:
+        return field !== 'statusId';
+      default:
+        return true;
+    }
+  }
+
+  shouldShow(field: string): boolean {
+    if (this.currentUserRole === undefined) return false;
+
+    switch (this.currentUserRole) {
+      case UserRoles.Client:
+        return ['title', 'supportOptionId', 'categoryId', 'subcategoryId', 'description'].includes(field);
+      case UserRoles.Admin:
+      case UserRoles.SupportManager:
+        return true;
+      case UserRoles.Employee:
+        return ['title', 'categoryId', 'subcategoryId', 'priorityId', 'statusId', 'assignedToId', 'description'].includes(field);
+      default:
+        return false;
+    }
   }
 
   cancel() {

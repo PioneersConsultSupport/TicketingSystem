@@ -29,6 +29,7 @@ import { CategoryType } from 'src/app/Enums/category-types';
 import { UserService } from 'src/app/Services/UserService';
 import { UserRole } from 'src/app/models/user-role';
 import { forkJoin } from 'rxjs';
+import { UserRoles } from 'src/app/Enums/user-roles';
 
 @Component({
   selector: 'app-ticket-dialog',
@@ -49,58 +50,68 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./ticket-dialog.component.scss'],
 })
 export class TicketDialogComponent implements OnInit {
-  form: FormGroup;
-  mode: 'create' | 'edit';
+  form!: FormGroup;
   ticket?: Ticket;
+
   categories: Category[] = [];
   ticketPriority: Subcategory[] = [];
   supportOptions: Subcategory[] = [];
   ticketStatus: Subcategory[] = [];
   subcategories: Subcategory[] = [];
   users: UserRole[] = [];
+
+  currentUserRole?: UserRoles;
   categoryType: CategoryType = CategoryType.TicketCategory;
+
   constructor(
     private fb: FormBuilder,
     private ticketService: TicketService,
     private categoryService: CategoryService,
-    public dialogRef: MatDialogRef<TicketDialogComponent>,
     private userService: UserService,
+    public dialogRef: MatDialogRef<TicketDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-    this.mode = data.mode;
-    this.ticket = data.ticket;
+  ) {}
 
-    this.form = this.fb.group({
-      title: [
-        this.ticket?.title || '',
-        [Validators.required, Validators.pattern(/^(?!\s*$).+/)],
-      ],
-      description: [
-        this.ticket?.description || '',
-        [Validators.required, Validators.pattern(/^(?!\s*$).+/)],
-      ],
-      priorityId: [this.ticket?.priorityId || null],
-      statusId: [this.ticket?.statusId || null],
-      categoryId: [this.ticket?.categoryId || null],
-      subcategoryId: [this.ticket?.subcategoryId || null],
-      startDate: [this.ticket?.startDate || null, Validators.required],
-      deliveryDate: [this.ticket?.deliveryDate || null, Validators.required],
-      assignedToId: [this.ticket?.assignedToId || null],
-      supportOptionId: [this.ticket?.supportOptionId || null],
-    });
-  }
-
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.getUserRole();
+    this.buildForm();
     this.loadCategories();
     this.getUsers();
-    this.form
-      .get('categoryId')
-      ?.valueChanges.subscribe((categoryId: number) => {
-        this.onCategoryChange(categoryId);
-      });
+  }
 
-    if (this.ticket?.categoryId) {
-      this.onCategoryChange(this.ticket.categoryId);
+  async getUserRole() {
+    this.currentUserRole = await this.userService.getUserRole();
+  }
+
+  buildForm() {
+    if (this.currentUserRole === UserRoles.Client) {
+      this.form = this.fb.group({
+        title: ['', [Validators.required, Validators.pattern(/^(?!\s*$).+/)]],
+        description: [
+          '',
+          [Validators.required, Validators.pattern(/^(?!\s*$).+/)],
+        ],
+        categoryId: [null, Validators.required],
+        subcategoryId: [null],
+        supportOptionId: [null, Validators.required],
+        statusId: [21],
+      });
+    } else {
+      this.form = this.fb.group({
+        title: ['', [Validators.required, Validators.pattern(/^(?!\s*$).+/)]],
+        description: [
+          '',
+          [Validators.required, Validators.pattern(/^(?!\s*$).+/)],
+        ],
+        priorityId: [null],
+        statusId: [21],
+        categoryId: [null, Validators.required],
+        subcategoryId: [null],
+        startDate: [null],
+        deliveryDate: [null],
+        assignedToId: [null],
+        supportOptionId: [null, Validators.required],
+      });
     }
   }
 
@@ -133,46 +144,54 @@ export class TicketDialogComponent implements OnInit {
 
   onCategoryChange(categoryId: number) {
     this.subcategories = [];
-    this.form.get('subcategoryId')?.setValue(null);
+    const subcategoryControl = this.form.get('subcategoryId');
+    subcategoryControl?.setValue(null);
+    subcategoryControl?.clearValidators();
 
-    if (categoryId) {
-      this.loadSubcategories(categoryId);
-      if (this.ticket?.subcategoryId) {
-        this.form.get('subcategoryId')?.setValue(this.ticket.subcategoryId);
-      }
+    if (!categoryId) {
+      subcategoryControl?.updateValueAndValidity();
+      return;
     }
-  }
 
-  loadSubcategories(categoryId: number) {
     this.categoryService
       .getSubcategoriesByCategoryId(categoryId)
       .subscribe((data: Subcategory[]) => {
         this.subcategories = data;
 
-        if (this.subcategories.length > 0 && this.ticket?.subcategoryId) {
-          this.form.get('subcategoryId')?.setValue(this.ticket.subcategoryId);
+        if (this.subcategories.length > 0) {
+          subcategoryControl?.setValidators([Validators.required]);
         } else {
-          this.form.get('subcategoryId')?.setValue(null);
+          subcategoryControl?.clearValidators();
         }
+
+        subcategoryControl?.updateValueAndValidity();
       });
+  }
+
+  isFieldVisible(fieldName: string): boolean {
+    if (this.currentUserRole === undefined) return false;
+
+    if (this.currentUserRole === UserRoles.Client) {
+      const clientFields = [
+        'title',
+        'supportOptionId',
+        'categoryId',
+        'subcategoryId',
+        'description',
+      ];
+      return clientFields.includes(fieldName);
+    }
+
+    return true;
   }
 
   save() {
     if (this.form.invalid) return;
 
     const ticketData: Ticket = { ...this.ticket, ...this.form.value };
-
-    if (this.mode === 'create') {
-      this.ticketService.addTicket(ticketData).subscribe(() => {
-        this.dialogRef.close(true);
-      });
-    } else {
-      this.ticketService
-        .updateTicket(this.ticket!.id!, ticketData)
-        .subscribe(() => {
-          this.dialogRef.close(true);
-        });
-    }
+    this.ticketService.addTicket(ticketData).subscribe(() => {
+      this.dialogRef.close(true);
+    });
   }
 
   close() {

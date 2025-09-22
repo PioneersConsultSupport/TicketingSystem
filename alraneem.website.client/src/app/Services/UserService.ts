@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { UserRoles } from '../Enums/user-roles';
 
 @Injectable({
   providedIn: 'root',
@@ -58,9 +59,9 @@ export class UserService {
     return this.http.get<any>(this.baseUrl);
   }
 
-  async getUserRole() {
+  async getUserRole(): Promise<UserRoles> {
     const user = await this.getUserRoleAsync();
-    return user.userRoleId;
+    return user.userRoleId as UserRoles;
   }
 
   private async getUserRoleAsync(): Promise<any> {

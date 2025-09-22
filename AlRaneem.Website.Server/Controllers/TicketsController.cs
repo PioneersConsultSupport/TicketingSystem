@@ -18,7 +18,10 @@ namespace AlRaneem.Website.Server.Controllers
         private readonly IHttpContextAccessor _context;
         private readonly IMailService _mailService;
 
-        public TicketController(IUnitOfWork unitOfWork, IHttpContextAccessor context, IMailService mailService)
+        public TicketController(
+            IUnitOfWork unitOfWork,
+            IHttpContextAccessor context,
+            IMailService mailService)
         {
             _unitOfWork = unitOfWork;
             _context = context;
@@ -28,7 +31,11 @@ namespace AlRaneem.Website.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var includes = new string[]{"Priority","Status","Category","Subcategory","AssignedTo","CreatedBy"};
+            var includes = new string[]
+            {
+            "Priority", "Status", "Category", "Subcategory", "AssignedTo", "CreatedBy"
+            };
+
             var tickets = await _unitOfWork.ticketRepo.GetAllAsync(includes);
             return Ok(tickets);
         }
@@ -37,9 +44,7 @@ namespace AlRaneem.Website.Server.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var ticket = await _unitOfWork.ticketRepo.GetByIdAsync(id);
-            if (ticket == null)
-                return NotFound();
-
+            if (ticket == null) return NotFound();
             return Ok(ticket);
         }
 
@@ -48,43 +53,102 @@ namespace AlRaneem.Website.Server.Controllers
         {
             try
             {
-                if (ticket == null)
-                    return BadRequest("Invalid ticket data");
+                if (ticket == null) return BadRequest("Invalid ticket data");
 
-                // Client
-                var clientEmail = _context.HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
-                var userObj = _unitOfWork.userRoleRepo.FindUserRoleByConditionAsync(x => x.UserEmail == clientEmail).Result;
+                // Current user
+                var clientEmail = _context.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value;
+                var userObj = await _unitOfWork.userRoleRepo
+                    .FindUserRoleByConditionAsync(x => x.UserEmail == clientEmail);
 
                 ticket.RefNumber = await GenerateRefNumber();
                 ticket.CreatedById = userObj.Id;
                 ticket.CreatedBy = userObj;
+
                 await _unitOfWork.ticketRepo.AddAsync(ticket);
                 _unitOfWork.Complete();
 
+                // --- Email to Client ---
                 if (!string.IsNullOrEmpty(clientEmail))
                 {
+                    var clientBody = $@"
+<p>Dear Customer,</p>
+<p>Your request has been successfully received and a new ticket has been created in our Help Center system.</p>
+<h2>Ticket Details</h2>
+<ul>
+    <li><b>Reference Number:</b> {ticket.RefNumber}</li>
+    <li><b>Title:</b> {ticket.Title}</li>
+    <li><b>Description:</b> {ticket.Description}</li>
+</ul>
+<p>Our support team will follow up on your ticket and contact you shortly.</p>
+<p>Best regards,<br/>Support Team</p>";
+
                     var mailContextForClient = new MailContext
                     {
-                        Subject = "Ticket Created",
+                        Subject = $"Your Ticket Has Been Created - {ticket.RefNumber}",
                         ToEmail = new[] { clientEmail },
-                        Body = $"A new ticket has been added with Reference Number: {ticket.RefNumber}."
+                        Body = EmailTemplate.GetHtml(clientBody)
                     };
                     await _mailService.SendEmailAsync(mailContextForClient);
                 }
 
-                // Send email to Support Manager(s)
-                var supportManagerEmailList = await _unitOfWork.userRoleRepo.GetUserRoleByRoleAsync((int)UserRoles.SupportManager);
-                var emails = supportManagerEmailList.Select(x => x.UserEmail).ToArray();
-                var testEmails = "L.alawneh@pioneersconsult.com";
-                if (testEmails.Length > 0)
+                // --- Email to Support Managers ---
+                var supportManagers = await _unitOfWork.userRoleRepo
+                    .GetUserRoleByRoleAsync((int)UserRoles.SupportManager);
+
+                if (supportManagers.Any())
                 {
+                    var supportBody = $@"
+<p>Dear Support Manager,</p>
+<p>A new ticket has been created by a customer.</p>
+<h2>Ticket Details</h2>
+<ul>
+    <li><b>Reference Number:</b> {ticket.RefNumber}</li>
+    <li><b>Title:</b> {ticket.Title}</li>
+    <li><b>Description:</b> {ticket.Description}</li>
+    <li><b>Created By:</b> {userObj.UserEmail}</li>
+</ul>
+<p>Please review the ticket and take the necessary action.</p>
+<p>Best regards,<br/>Support Team</p>";
+
                     var mailContextForSupportManager = new MailContext
                     {
-                        Subject = "Ticket Created",
-                        ToEmail = [testEmails],
-                        Body = $"A new ticket has been added.\nRefNumber: {ticket.RefNumber}\nTitle: {ticket.Title}\nDescription: {ticket.Description}"
+                        Subject = $"New Ticket Created - {ticket.RefNumber}",
+                        ToEmail = supportManagers.Select(x => x.UserEmail).ToArray(),
+                        Body = EmailTemplate.GetHtml(supportBody)
                     };
                     await _mailService.SendEmailAsync(mailContextForSupportManager);
+                }
+
+                // --- Email to Assigned Employee ---
+                if (ticket.AssignedToId != null)
+                {
+                    var assignedUser = await _unitOfWork.userRoleRepo
+                        .FindUserRoleByConditionAsync(x => x.Id == ticket.AssignedToId);
+
+                    if (assignedUser != null && !string.IsNullOrEmpty(assignedUser.UserEmail))
+                    {
+                        var employeeBody = $@"
+<p>Dear {assignedUser.UserName},</p>
+<p>A new ticket has been assigned to you.</p>
+<h2>Ticket Details</h2>
+<ul>
+    <li><b>Reference Number:</b> {ticket.RefNumber}</li>
+    <li><b>Title:</b> {ticket.Title}</li>
+    <li><b>Description:</b> {ticket.Description}</li>
+    <li><b>Start Date:</b> {ticket.StartDate?.ToString("dd/MM/yyyy")}</li>
+    <li><b>Delivery Date:</b> {ticket.DeliveryDate?.ToString("dd/MM/yyyy")}</li>
+</ul>
+<p>Please follow up on the ticket and take the necessary actions.</p>
+<p>Best regards,<br/>Support Team</p>";
+
+                        var mailContextForEmployee = new MailContext
+                        {
+                            Subject = $"New Ticket Assigned to You - {ticket.RefNumber}",
+                            ToEmail = new[] { assignedUser.UserEmail },
+                            Body = EmailTemplate.GetHtml(employeeBody)
+                        };
+                        await _mailService.SendEmailAsync(mailContextForEmployee);
+                    }
                 }
 
                 return Ok(ticket);
@@ -95,16 +159,15 @@ namespace AlRaneem.Website.Server.Controllers
             }
         }
 
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] Ticket ticket)
         {
-            if (id != ticket.Id)
-                return BadRequest("Ticket ID mismatch");
+            if (id != ticket.Id) return BadRequest("Ticket ID mismatch");
 
             var existing = await _unitOfWork.ticketRepo.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound();
+            if (existing == null) return NotFound();
+
+            var previousAssignedToId = existing.AssignedToId;
 
             existing.Title = ticket.Title;
             existing.Description = ticket.Description;
@@ -117,9 +180,41 @@ namespace AlRaneem.Website.Server.Controllers
             existing.AssignedToId = ticket.AssignedToId;
             existing.SupportOptionId = ticket.SupportOptionId;
 
-
             _unitOfWork.ticketRepo.Update(existing);
             _unitOfWork.Complete();
+
+            // --- Email to newly assigned Employee ---
+            if (existing.AssignedToId != null && existing.AssignedToId != previousAssignedToId)
+            {
+                var assignedUser = await _unitOfWork.userRoleRepo
+                    .FindUserRoleByConditionAsync(x => x.Id == existing.AssignedToId);
+
+                if (assignedUser != null && !string.IsNullOrEmpty(assignedUser.UserEmail))
+                {
+                    var employeeBody = $@"
+<p>Dear {assignedUser.UserName},</p>
+<p>A new ticket has been assigned to you.</p>
+<h2>Ticket Details</h2>
+<ul>
+    <li><b>Reference Number:</b> {ticket.RefNumber}</li>
+    <li><b>Title:</b> {ticket.Title}</li>
+    <li><b>Description:</b> {ticket.Description}</li>
+    <li><b>Start Date:</b> {ticket.StartDate?.ToString("dd/MM/yyyy")}</li>
+    <li><b>Delivery Date:</b> {ticket.DeliveryDate?.ToString("dd/MM/yyyy")}</li>
+</ul>
+<p>Please follow up on the ticket and take the necessary actions.</p>
+<p>Best regards,<br/>Support Team</p>";
+
+                    var mailContextForEmployee = new MailContext
+                    {
+                        Subject = $"New Ticket Assigned to You - {ticket.RefNumber}",
+                        ToEmail = new[] { assignedUser.UserEmail },
+                        Body = EmailTemplate.GetHtml(employeeBody)
+                    };
+                    await _mailService.SendEmailAsync(mailContextForEmployee);
+                }
+            }
+
             return Ok(existing);
         }
 
@@ -127,13 +222,35 @@ namespace AlRaneem.Website.Server.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var ticket = await _unitOfWork.ticketRepo.GetByIdAsync(id);
-            if (ticket == null)
-                return NotFound();
+            if (ticket == null) return NotFound();
 
             _unitOfWork.ticketRepo.Delete(ticket);
             _unitOfWork.Complete();
-
             return NoContent();
+        }
+
+        [HttpGet("myTickets")]
+        public async Task<IActionResult> GetMyTickets()
+        {
+            var userEmail = _context.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(userEmail)) return Unauthorized();
+
+            var currentUser = await _unitOfWork.userRoleRepo
+                .FindUserRoleByConditionAsync(x => x.UserEmail == userEmail);
+
+            if (currentUser == null) return Unauthorized();
+
+            var includes = new string[]
+            {
+            "Priority", "Status", "Category", "Subcategory", "AssignedTo", "CreatedBy"
+            };
+
+            var tickets = await _unitOfWork.ticketRepo.FindAllAsync(
+                t => t.CreatedById == currentUser.Id || t.AssignedToId == currentUser.Id,
+                includes
+            );
+
+            return Ok(tickets);
         }
 
         private async Task<string> GenerateRefNumber()
@@ -150,4 +267,5 @@ namespace AlRaneem.Website.Server.Controllers
             return $"#RF_{nextNumber:D4}";
         }
     }
+
 }
