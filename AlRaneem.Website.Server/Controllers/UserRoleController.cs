@@ -42,7 +42,7 @@ namespace AlRaneem.Website.Server.Controllers
         [HttpPost("Update")]
         public async Task<IActionResult> UpdateUserRole([FromBody] UserRole userRole)
         {
-            _unitOfWork.userRoleRepo.UpdateUserRole(userRole);
+            _unitOfWork.userRoleRepo.UpdateUserRoleAsync(userRole);
             _unitOfWork.Complete();
             return Ok();
         }

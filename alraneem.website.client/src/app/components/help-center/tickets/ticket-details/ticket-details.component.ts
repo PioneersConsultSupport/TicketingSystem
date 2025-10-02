@@ -74,7 +74,7 @@ export class TicketDetailsComponent implements OnInit {
   @ViewChild(TicketHistoryComponent)
   ticketHistoryComponent?: TicketHistoryComponent;
   @ViewChild(DeliveryDateHistoryComponent)
-  deliveryDateHistoryComponent?:DeliveryDateHistoryComponent;
+  deliveryDateHistoryComponent?: DeliveryDateHistoryComponent;
 
   constructor(
     private categoryService: CategoryService,
@@ -119,8 +119,8 @@ export class TicketDetailsComponent implements OnInit {
       statusId: [ticket.statusId],
       categoryId: [ticket.categoryId],
       subcategoryId: [ticket.subcategoryId],
-      startDate: [ticket.startDate ,Validators.required],
-      deliveryDate: [ticket.deliveryDate ,Validators.required],
+      startDate: [ticket.startDate, Validators.required],
+      deliveryDate: [ticket.deliveryDate, Validators.required],
       description: [
         ticket.description,
         [Validators.required, Validators.pattern(/^(?!\s*$).+/)],
@@ -173,29 +173,33 @@ export class TicketDetailsComponent implements OnInit {
   }
 
   onCategoryChange(categoryId: number) {
-    this.subcategories = [];
-    this.form.get('subcategoryId')?.setValue(null);
+    const subcategoryControl = this.form.get('subcategoryId');
+    subcategoryControl?.setValue(null);
+    subcategoryControl?.clearValidators();
 
     if (categoryId) {
       this.loadSubcategories(categoryId);
-      if (this.ticket?.subcategoryId) {
-        this.form.get('subcategoryId')?.setValue(this.ticket.subcategoryId);
-      }
+    } else {
+      subcategoryControl?.updateValueAndValidity();
     }
   }
 
   loadSubcategories(categoryId: number) {
-    this.categoryService.getSubcategoriesByCategoryId(categoryId).subscribe(
-      (data: Subcategory[]) => {
+    this.categoryService
+      .getSubcategoriesByCategoryId(categoryId)
+      .subscribe((data: Subcategory[]) => {
         this.subcategories = data;
 
-        if (this.subcategories.length > 0 && this.ticket?.subcategoryId) {
-          this.form.get('subcategoryId')?.setValue(this.ticket.subcategoryId);
+        const subcategoryControl = this.form.get('subcategoryId');
+
+        if (this.subcategories.length > 0) {
+          subcategoryControl?.setValidators([Validators.required]);
         } else {
-          this.form.get('subcategoryId')?.setValue(null);
+          subcategoryControl?.clearValidators();
+          subcategoryControl?.setValue(null);
         }
-      }
-    );
+        subcategoryControl?.updateValueAndValidity({ emitEvent: true });
+      });
   }
 
   save() {
@@ -204,23 +208,25 @@ export class TicketDetailsComponent implements OnInit {
     const updatedTicket: Ticket = { ...this.ticket, ...this.form.value };
     const changes = this.getTicketChanges(this.ticket, updatedTicket);
 
-    this.ticketService.updateTicket(this.ticket.id, updatedTicket).subscribe(() => {
-      if (changes.length) {
-      const history : TicketHistory = {
-        ticketId: this.ticket.id,
-        historyDetails: changes,
-      };
-      this.ticketHistoryService.saveHistory(history).subscribe({
-        next: () => {
-          this.ticketHistoryComponent?.loadHistory();
-          this.deliveryDateHistoryComponent?.loadDeliveryDateHistory();
+    this.ticketService
+      .updateTicket(this.ticket.id, updatedTicket)
+      .subscribe(() => {
+        if (changes.length) {
+          const history: TicketHistory = {
+            ticketId: this.ticket.id,
+            historyDetails: changes,
+          };
+          this.ticketHistoryService.saveHistory(history).subscribe({
+            next: () => {
+              this.ticketHistoryComponent?.loadHistory();
+              this.deliveryDateHistoryComponent?.loadDeliveryDateHistory();
+              this.ticket = { ...updatedTicket };
+            },
+          });
+        } else {
           this.ticket = { ...updatedTicket };
-        },
+        }
       });
-    } else {
-      this.ticket = { ...updatedTicket };
-    }
-    });
   }
 
   private getTicketChanges(oldTicket: Ticket, newTicket: Ticket): string[] {
@@ -231,11 +237,12 @@ export class TicketDetailsComponent implements OnInit {
       const newValue = (newTicket as any)[key];
 
       if (oldValue !== newValue) {
-        const displayOld = this.getDisplayValue(key, oldValue);
-        const displayNew = this.getDisplayValue(key, newValue);
+        const displayOld = this.getDisplayValue(key, oldValue) || 'none';
+        const displayNew = this.getDisplayValue(key, newValue) || 'none';
         const fieldName = this.getFieldName(key);
-
-        changes.push(`${fieldName} changed from "${displayOld}" to "${displayNew}"`);
+        changes.push(
+          `${fieldName} changed from "${displayOld}" to "${displayNew}"`
+        );
       }
     });
 
@@ -243,6 +250,7 @@ export class TicketDetailsComponent implements OnInit {
   }
 
   private getDisplayValue(key: string, value: any): string {
+    if (value === null || value === undefined || value === '') return '';
     switch (key) {
       case 'categoryId':
         return this.categories.find((c) => c.id === value)?.name || '';
@@ -298,12 +306,26 @@ export class TicketDetailsComponent implements OnInit {
 
     switch (this.currentUserRole) {
       case UserRoles.Client:
-        return ['title', 'supportOptionId', 'categoryId', 'subcategoryId', 'description'].includes(field);
+        return [
+          'title',
+          'supportOptionId',
+          'categoryId',
+          'subcategoryId',
+          'description',
+        ].includes(field);
       case UserRoles.Admin:
       case UserRoles.SupportManager:
         return true;
       case UserRoles.Employee:
-        return ['title', 'categoryId', 'subcategoryId', 'priorityId', 'statusId', 'assignedToId', 'description'].includes(field);
+        return [
+          'title',
+          'categoryId',
+          'subcategoryId',
+          'priorityId',
+          'statusId',
+          'assignedToId',
+          'description',
+        ].includes(field);
       default:
         return false;
     }

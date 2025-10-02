@@ -6,7 +6,7 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { AuthService } from '../../../services/authService';
+import { UserService } from 'src/app/Services/UserService';
 
 @Component({
   selector: 'app-sidebar',
@@ -26,22 +26,30 @@ import { AuthService } from '../../../services/authService';
 export class AppSidebarComponent implements OnDestroy, OnInit {
   mobileQuery: MediaQueryList;
   menuList: Menu[] = [];
-
   private _mobileQueryListener: () => void;
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     public menuItems: MenuItems,
-    public authService: AuthService
+    private userService: UserService
   ) {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
-  async ngOnInit() {
-    this.menuList = await this.menuItems.getMenuitem();
+  ngOnInit() {
+    this.userService.getUserRole().then((role) => {
+      if (role != null) {
+        this.menuList = this.menuItems.getMenuitemSync(role);
+      }
+    });
+    this.userService.userRole$.subscribe((role) => {
+      if (role != null) {
+        this.menuList = this.menuItems.getMenuitemSync(role);
+      }
+    });
   }
 
   ngOnDestroy(): void {

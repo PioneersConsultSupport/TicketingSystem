@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace AlRaneem.Website.Server.Controllers
 {
-    [Authorize(Policy = "NotRegistered")]
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class TicketController : BaseController

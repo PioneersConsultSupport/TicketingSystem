@@ -70,9 +70,12 @@ namespace AlRaneem.Website.DataAccess.Repsitories
             return result;
         }
 
-        public void UpdateUserRole(UserRole userRole)
+        public async Task UpdateUserRoleAsync(UserRole userRole)
         {
-            _context.Update(userRole);
+            var existingUserRole = await _context.userRoles.FindAsync(userRole.Id);
+            if (existingUserRole == null)
+                throw new Exception("UserRole not found");
+            existingUserRole.UserRoleId = userRole.UserRoleId;
         }
     }
 }

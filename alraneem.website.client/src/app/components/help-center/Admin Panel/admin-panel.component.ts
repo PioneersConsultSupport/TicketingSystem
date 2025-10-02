@@ -7,6 +7,7 @@ import { User } from 'src/app/models/user';
 import { UserRoles } from 'src/app/Enums/user-roles';
 import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
 import { UserService } from 'src/app/Services/UserService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-panel',
@@ -23,8 +24,14 @@ export class AdminPanelComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = [];
   objectEnum = this.getEnumEntries();
+  currentUserRole?: UserRoles;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private confirmService: ConfirmDialogService) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private confirmService: ConfirmDialogService,
+    private router: Router
+  ) {
     this.adminForm = this.fb.group({
       id: [''],
       userRoleId: ['', Validators.required],
@@ -59,28 +66,43 @@ export class AdminPanelComponent implements OnInit {
   onSubmit(): void {
     if (this.adminForm.valid) {
       const user = this.adminForm.value;
-      const userNameOjbect = this.users.find(x => x.mail == user.userEmail) ?? null;
+      const userNameOjbect =
+        this.users.find((x) => x.mail == user.userEmail) ?? null;
+
+      let saveObservable;
       if (!user.id) {
-        this.userService
-          .addUserRole(user.userRoleId, user.userEmail, userNameOjbect?.displayName ?? '')
-          .subscribe((response) => {
-            this.adminForm.reset();
-            this.search();
-          });
-      } else
-        this.userService
-          .updateUserRole(
-            user.id,
-            user.userRoleId,
-            user.userEmail,
-            user.userName
-          )
-          .subscribe((response) => {
-            this.adminForm.reset();
-            this.search();
-          });
-          this.clearAllControls();
+        saveObservable = this.userService.addUserRole(
+          user.userRoleId,
+          user.userEmail,
+          userNameOjbect?.displayName ?? ''
+        );
+      } else {
+        saveObservable = this.userService.updateUserRole(
+          user.id,
+          user.userRoleId,
+          user.userEmail,
+          user.userName
+        );
+      }
+
+      saveObservable.subscribe(async (response) => {
+        this.adminForm.reset();
+        this.clearAllControls();
+        this.search();
+        const updatedRole = await this.userService.getUserRole();
+        this.userService.setUserRole(updatedRole);
+
+        if (updatedRole !== UserRoles.Admin) {
+          this.router.navigate(['/support/tickets']);
+        }
+      });
     }
+  }
+
+  async getcurrentUserRole(): Promise<UserRoles> {
+    const role = await this.userService.getUserRole();
+    this.currentUserRole = role;
+    return role;
   }
 
   edit(detail: any) {
@@ -94,21 +116,21 @@ export class AdminPanelComponent implements OnInit {
 
   deleteRole(detail: any) {
     this.confirmService
-    .confirm('delete_title', 'delete_message', 'delete')
-    .subscribe(result => {
-      if (result) {
-       this.userService
-      .deleteUserRole(
-        detail.id,
-        detail.userRoleId,
-        detail.userEmail,
-        detail.userName
-      )
-      .subscribe((response) => {
-        this.search();
+      .confirm('delete_title', 'delete_message', 'delete')
+      .subscribe((result) => {
+        if (result) {
+          this.userService
+            .deleteUserRole(
+              detail.id,
+              detail.userRoleId,
+              detail.userEmail,
+              detail.userName
+            )
+            .subscribe((response) => {
+              this.search();
+            });
+        }
       });
-      }
-    });
   }
 
   enumToKeyValueArray(enumObj: any): { key: string; value: number }[] {

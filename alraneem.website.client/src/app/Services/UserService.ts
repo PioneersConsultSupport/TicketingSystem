@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { UserRoles } from '../Enums/user-roles';
 
 @Injectable({
@@ -8,6 +8,8 @@ import { UserRoles } from '../Enums/user-roles';
 })
 export class UserService {
   baseUrl = 'UserRole';
+  private userRoleSubject = new BehaviorSubject<UserRoles | null>(null);
+  userRole$ = this.userRoleSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -60,9 +62,17 @@ export class UserService {
   }
 
   async getUserRole(): Promise<UserRoles> {
-    const user = await this.getUserRoleAsync();
-    return user.userRoleId as UserRoles;
+    const user = await firstValueFrom(
+      this.http.get<any>(`${this.baseUrl}/GetUser`)
+    );
+    const role = user.userRoleId as UserRoles;
+    this.userRoleSubject.next(role);
+    return role;
   }
+
+  setUserRole(role: UserRoles) {
+  this.userRoleSubject.next(role);
+}
 
   private async getUserRoleAsync(): Promise<any> {
     return await firstValueFrom(this.http.get<any>(`${this.baseUrl}/GetUser`));
