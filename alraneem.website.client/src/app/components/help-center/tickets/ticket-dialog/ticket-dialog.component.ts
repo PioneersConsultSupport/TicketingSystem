@@ -30,6 +30,7 @@ import { UserService } from 'src/app/Services/UserService';
 import { UserRole } from 'src/app/models/user-role';
 import { forkJoin } from 'rxjs';
 import { UserRoles } from 'src/app/Enums/user-roles';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-ticket-dialog',
@@ -188,10 +189,29 @@ export class TicketDialogComponent implements OnInit {
   save() {
     if (this.form.invalid) return;
 
-    const ticketData: Ticket = { ...this.ticket, ...this.form.value };
-    this.ticketService.addTicket(ticketData).subscribe(() => {
-      this.dialogRef.close(true);
+    const formValue = this.form.value;
+
+    const ticketData: Ticket = {
+      ...this.ticket,
+      ...formValue,
+      startDate: this.formatDate(formValue.startDate),
+      deliveryDate: this.formatDate(formValue.deliveryDate),
+    };
+
+    this.ticketService.addTicket(ticketData).subscribe({
+      next: () => this.dialogRef.close(true),
+      error: (err) => console.error('Failed to save ticket', err),
     });
+  }
+
+  private formatDate(date: any): string | null {
+    if (!date) return null;
+
+    try {
+      return format(new Date(date), 'yyyy-MM-dd');
+    } catch {
+      return null;
+    }
   }
 
   close() {

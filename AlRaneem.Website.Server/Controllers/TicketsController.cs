@@ -9,7 +9,6 @@ using System.Security.Claims;
 
 namespace AlRaneem.Website.Server.Controllers
 {
-    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class TicketController : BaseController

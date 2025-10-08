@@ -21,8 +21,8 @@ namespace AlRaneem.Website.DataAccess.Models.SupportSystemModels
         public int? SubcategoryId { get; set; }
         public Subcategory? Subcategory { get; set; }
 
-        public DateTime? StartDate { get; set; }
-        public DateTime? DeliveryDate { get; set; }
+        public DateOnly? StartDate { get; set; }
+        public DateOnly? DeliveryDate { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public int? AssignedToId { get; set; }

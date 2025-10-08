@@ -33,6 +33,7 @@ import { forkJoin } from 'rxjs';
 import { UserRoles } from 'src/app/Enums/user-roles';
 import { TicketHistory } from 'src/app/models/ticket-history';
 import { DeliveryDateHistoryComponent } from '../../ticket-history/delivery-date-history/delivery-date-history/delivery-date-history.component';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-ticket-details',
@@ -205,7 +206,15 @@ export class TicketDetailsComponent implements OnInit {
   save() {
     if (this.form.invalid || !this.ticket || !this.ticket.id) return;
 
-    const updatedTicket: Ticket = { ...this.ticket, ...this.form.value };
+    const formValue = this.form.value;
+
+    const updatedTicket: Ticket = {
+      ...this.ticket,
+      ...formValue,
+      startDate: this.formatDate(formValue.startDate),
+      deliveryDate: this.formatDate(formValue.deliveryDate),
+    };
+
     const changes = this.getTicketChanges(this.ticket, updatedTicket);
 
     this.ticketService
@@ -227,6 +236,15 @@ export class TicketDetailsComponent implements OnInit {
           this.ticket = { ...updatedTicket };
         }
       });
+  }
+  private formatDate(date: any): string | null {
+    if (!date) return null;
+
+    try {
+      return format(new Date(date), 'yyyy-MM-dd');
+    } catch {
+      return null;
+    }
   }
 
   private getTicketChanges(oldTicket: Ticket, newTicket: Ticket): string[] {
