@@ -6,7 +6,6 @@ namespace AlRaneem.Website.DataAccess.Interfaces
     public interface IUserRoleRepo
     {
         Task<List<AzureUser>> GetAllUsersAsync();
-        Task<List<AzureUser>> GetAllUsersAsync2();
         void AddUserRole(UserRole userRole);
         Task UpdateUserRoleAsync(UserRole userRole);
         void DeleteUserRole(UserRole userRole);

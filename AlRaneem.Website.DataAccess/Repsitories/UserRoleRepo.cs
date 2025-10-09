@@ -42,20 +42,6 @@ namespace AlRaneem.Website.DataAccess.Repsitories
 
         public async Task<List<AzureUser>> GetAllUsersAsync()
         {
-            var usersPage = await _graphClient.Users.GetAsync();
-
-            return usersPage.Value
-                .Select(x => new AzureUser
-                {
-                    Id = x.Id,
-                    DisplayName = $"{x.DisplayName} ({x.Mail})",
-                    Mail = x.Mail,
-                    UserPrincipalName = x.UserPrincipalName,
-                }).ToList();
-        }
-
-        public async Task<List<AzureUser>> GetAllUsersAsync2()
-        {
             var allUsers = new List<User>();
             var result = await _graphClient.Users.GetAsync();
 
