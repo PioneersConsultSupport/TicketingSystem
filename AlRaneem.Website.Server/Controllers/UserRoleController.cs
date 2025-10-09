@@ -24,7 +24,7 @@ namespace AlRaneem.Website.Server.Controllers
         [HttpGet("AllUsers")]
         public async Task<IActionResult> getAllUsers()
         {
-            var result = await _unitOfWork.userRoleRepo.GetAllUsersAsync();
+            var result = await _unitOfWork.userRoleRepo.GetAllUsersAsync2();
             _unitOfWork.Complete();
             return Ok(result);
         }

@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 
@@ -43,6 +45,29 @@ namespace AlRaneem.Website.DataAccess.Repsitories
             var usersPage = await _graphClient.Users.GetAsync();
 
             return usersPage.Value
+                .Select(x => new AzureUser
+                {
+                    Id = x.Id,
+                    DisplayName = $"{x.DisplayName} ({x.Mail})",
+                    Mail = x.Mail,
+                    UserPrincipalName = x.UserPrincipalName,
+                }).ToList();
+        }
+
+        public async Task<List<AzureUser>> GetAllUsersAsync2()
+        {
+            var allUsers = new List<User>();
+            var result = await _graphClient.Users.GetAsync();
+
+            allUsers.AddRange(result.Value);
+
+            while (!string.IsNullOrEmpty(result.OdataNextLink))
+            {
+                result = await _graphClient.Users.WithUrl(result.OdataNextLink).GetAsync();
+                allUsers.AddRange(result.Value);
+            }
+
+            return allUsers
                 .Select(x => new AzureUser
                 {
                     Id = x.Id,

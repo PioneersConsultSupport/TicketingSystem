@@ -158,7 +158,7 @@ namespace AlRaneem.Website.Server.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] Ticket ticket)
         {
             if (id != ticket.Id) return BadRequest("Ticket ID mismatch");

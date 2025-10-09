@@ -28,7 +28,7 @@ export class TicketService {
   }
 
   updateTicket(id: number, ticket: Ticket): Observable<Ticket> {
-    return this.http.put<Ticket>(`${this.baseUrl}/${id}`, ticket);
+    return this.http.post<Ticket>(`${this.baseUrl}/${id}`, ticket);
   }
 
   deleteTicket(id: number): Observable<void> {
