@@ -6,145 +6,24 @@
         <h2>Our Team</h2>
       </div>
       <div class="row gy-4">
-        <div *ngFor="let member of teamMembers" class="col-xl-3 col-md-6 d-flex"
-             data-aos="fade-up"
-             data-aos-delay="400">
-          <div class="member">
-            <!--<img [src]="'data:image/png;base64,' + member.profileImage" class="img-fluid" [alt]="member.name" />-->
-            <img [src]="member.profileImage" class="img-fluid" [alt]="member.name" />
+        <div *ngFor="let member of teamMembers" class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex" data-aos="fade-up">
+          <div class="member w-100">
+            <img [src]="member.profileImage" [alt]="member.name" />
             <h4>{{ member.title }}. {{ member.name }}</h4>
             <span>{{ member.role }}</span>
             <p>{{ member.description }}</p>
             <div class="social">
               <a *ngIf="member.twitterUrl" [href]="member.twitterUrl" target="_blank"><i class="bi bi-twitter"></i></a>
-              <a *ngIf="member.facebookUrl" [href]="member.facebookUrl" target="_blank"><i class="bi bi-facebook"></i></a>
-              <a *ngIf="member.instagramUrl" [href]="member.instagramUrl" target="_blank"><i class="bi bi-instagram"></i></a>
-              <a *ngIf="member.linkedInUrl" [href]="member.linkedInUrl" target="_blank"><i class="bi bi-linkedin"></i></a>
+              <a *ngIf="member.facebookUrl" [href]="member.facebookUrl" target="_blank"><i
+                  class="bi bi-facebook"></i></a>
+              <a *ngIf="member.instagramUrl" [href]="member.instagramUrl" target="_blank"><i
+                  class="bi bi-instagram"></i></a>
+              <a *ngIf="member.linkedInUrl" [href]="member.linkedInUrl" target="_blank"><i
+                  class="bi bi-linkedin"></i></a>
             </div>
           </div>
         </div>
 
-
-
-        <!--<div
-    class="col-xl-3 col-md-6 d-flex"
-    data-aos="fade-up"
-    data-aos-delay="200"
-  >
-    <div class="member">
-      <img src="assets/img/team/fadi1.png" class="img-fluid" alt="" />
-      <h4>Mr. Fadi Karajeh</h4>
-      <span>Managing Director</span>
-      <p>
-        I'm the company founder, built the team, supervised the
-        organization strategic direction, and insure qualitative delivery.
-      </p>
-      <div class="social">
-        <a><i class="bi bi-twitter"></i></a>
-        <a><i class="bi bi-facebook"></i></a>
-        <a><i class="bi bi-instagram"></i></a>
-        <a><i class="bi bi-linkedin"></i></a>
-      </div>
-    </div>
-  </div>-->
-        <!-- End Team Member -->
-        <!--<div
-    class="col-xl-3 col-md-6 d-flex"
-    data-aos="fade-up"
-    data-aos-delay="200"
-  >
-    <div class="member">
-      <img src="assets/img/team/EMAN.jpg" class="img-fluid" alt="" />
-      <h4>Ms. Eman Al Sardi</h4>
-      <span>Team leader </span>
-      <p>
-        Guide and lead the implementation to assure qualitative delivery,
-        and efficient solutions that match customer expectations.
-      </p>
-      <div class="social">
-        <a href=""><i class="bi bi-twitter"></i></a>
-        <a href=""><i class="bi bi-facebook"></i></a>
-        <a href=""><i class="bi bi-instagram"></i></a>
-        <a href=""><i class="bi bi-linkedin"></i></a>
-      </div>
-    </div>
-  </div>-->
-        <!-- End Team Member -->
-        <!--<div
-    class="col-xl-3 col-md-6 d-flex"
-    data-aos="fade-up"
-    data-aos-delay="300"
-  >
-    <div class="member">
-      <img src="assets/img/team/HAITHAM.jpg" class="img-fluid" alt="" />
-      <h4>Mr. Haitham Hannoun</h4>
-      <span>Administrative Manager </span>
-      <p>
-        Responsible for overseeing the smooth operation of the office and
-        ensuring that all administrative tasks are completed efficiently.
-      </p>
-      <div class="social">
-        <a><i class="bi bi-twitter"></i></a>
-        <a><i class="bi bi-facebook"></i></a>
-        <a><i class="bi bi-instagram"></i></a>
-        <a><i class="bi bi-linkedin"></i></a>
-      </div>
-    </div>
-  </div>-->
-        <!-- End Team Member -->
-        <!--<div
-    class="col-xl-3 col-md-6 d-flex"
-    data-aos="fade-up"
-    data-aos-delay="400"
-  >
-    <div class="member">
-      <img src="assets/img/team/MOATH.jpg" class="img-fluid" alt="" />
-
-      <h4>Mr. Moath Qutaish</h4>
-
-      <span>Senior Technical Consultant </span>
-
-      <p>
-        Business understating, Solution architect, and quality assurance.
-      </p>
-      <div class="social">
-        <a><i class="bi bi-twitter"></i></a>
-
-        <a><i class="bi bi-facebook"></i></a>
-
-        <a><i class="bi bi-instagram"></i></a>
-
-        <a><i class="bi bi-linkedin"></i></a>
-      </div>
-    </div>
-  </div>-->
-        <!-- End Team Member -->
-        <!-- End Team Member -->
-        <!--<div
-    class="col-xl-3 col-md-6 d-flex"
-    data-aos="fade-up"
-    data-aos-delay="400"
-  >
-    <div class="member">
-      <img
-        src="assets/img/team/ADBULKAREEM.jpg"
-        class="img-fluid"
-        alt=""
-      />
-      <h4>Mr. Abdulkareem Kilani</h4>
-      <span>Software Engineer </span>
-      <p>
-        Expertise in software design, development, and testing to create
-        innovative and effective solutions for our clients.
-      </p>
-      <div class="social">
-        <a><i class="bi bi-twitter"></i></a>
-        <a><i class="bi bi-facebook"></i></a>
-        <a><i class="bi bi-instagram"></i></a>
-        <a><i class="bi bi-linkedin"></i></a>
-      </div>
-    </div>
-  </div>-->
         <!-- End Team Member -->
       </div>
     </div>

@@ -1,21 +1,14 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef,
   OnInit,
-  ViewChild,
 } from '@angular/core';
-import { AuthService } from '../../../services/authService';
 import { TranslationService } from '../../../services/translation.service';
-import { MsalService } from '@azure/msal-angular';
-import { DemoMaterialModule } from '../../../demo-material-module';
-import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
+import { Router } from '@angular/router';
 import { environment } from 'src/app/environments/environment';
-import { MatSelect } from '@angular/material/select';
-import { FormControl } from '@angular/forms';
+import { AuthService } from 'src/app/Services/authService';
+import { UserService } from 'src/app/Services/UserService';
+import { UserRole } from 'src/app/models/user-role';
+import { UserRoles } from 'src/app/Enums/user-roles';
 
 @Component({
   selector: 'app-header-support',
@@ -24,10 +17,13 @@ import { FormControl } from '@angular/forms';
 })
 export class AppHeaderSupportComponent implements OnInit {
   languageSelect?: string;
+  currentUser?: UserRole;
+  userRoles = UserRoles;
 
   constructor(
     private authService: AuthService,
     private translationService: TranslationService,
+    private userService : UserService,
     private router: Router
   ) {}
 
@@ -39,6 +35,7 @@ export class AppHeaderSupportComponent implements OnInit {
       this.languageSelect = 'en';
     }
     this.changeLanguage(this.languageSelect);
+    this.getCurrentUserAsync();
   }
 
   logout() {
@@ -69,5 +66,12 @@ export class AppHeaderSupportComponent implements OnInit {
   changeLanguage(lang: any) {
     this.translationService.setLanguage(lang);
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }
+  async getCurrentUserAsync(){
+      this.currentUser = await this.userService.getCurrentUserAsync();
+      debugger;
+  }
+  getRoleName(roleId: number): string {
+    return UserRoles[roleId] ?? 'Unknown';
   }
 }

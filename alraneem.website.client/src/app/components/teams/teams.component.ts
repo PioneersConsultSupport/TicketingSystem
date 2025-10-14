@@ -13,7 +13,6 @@ export class TeamsComponent {
     window.scrollTo(0, 0);
   }
   ngOnInit(): void {
-    //this.fetchEmployees();
     this.teamMembers = [
       {
         "id": "a311b613-11be-446a-4883-08dd45e6d6b4",
@@ -40,18 +39,6 @@ export class TeamsComponent {
         "linkedInUrl": null
       },
       {
-        "id": "d0b77ab9-58cc-403e-488b-08dd45e6d6b4",
-        "title": "Mr",
-        "name": "Mohannad Salameh",
-        "role": "Senior Functional Consultant",
-        "description": "Working with Functional Consultants to understand and review the feasibility of business requirements. Gathering business requirements for enhancements, customizations and developing technical requirement documents.",
-        "profileImage": "assets/img/team/muhannad.jpg",
-        "twitterUrl": null,
-        "facebookUrl": null,
-        "instagramUrl": null,
-        "linkedInUrl": null
-      },
-      {
         "id": "78e3e645-52ff-4a57-4886-08dd45e6d6b4",
         "title": "Mr",
         "name": "Moath Qutaish",
@@ -64,12 +51,24 @@ export class TeamsComponent {
         "linkedInUrl": null
       },
       {
-        "id": "6e7ec74b-0299-41e7-488d-08dd45e6d6b4",
+        "id": "d0b77ab9-58cc-403e-488b-08dd45e6d6b4",
         "title": "Mr",
-        "name": "Marwan Hijazin",
+        "name": "Laith Al-alawneh",
+        "role": "Senior Software Developer",
+        "description": "Responsible for designing, developing, and maintaining high-quality software solutions. implement scalable and efficient applications.",
+        "profileImage": "assets/img/team/Laith-2.jpg",
+        "twitterUrl": null,
+        "facebookUrl": null,
+        "instagramUrl": null,
+        "linkedInUrl": null
+      },
+      {
+        "id": "6e7ec74b-0299-41e7-488d-08dd45e6d6b4",
+        "title": "Ms",
+        "name": "Farah Hammad",
         "role": "Functional Consultant",
         "description": "Collaborate with clients to understand their financial processes and configure ERP systems to meet their needs.",
-        "profileImage": "assets/img/team/marwan.jpg",
+        "profileImage": "assets/img/team/Farah.jpg",
         "twitterUrl": null,
         "facebookUrl": null,
         "instagramUrl": null,
@@ -103,7 +102,7 @@ export class TeamsComponent {
         "id": "51c8afa2-9159-4345-488c-08dd45e6d6b4",
         "title": "Mr",
         "name": "Mohammad Karajeh",
-        "role": "Functional Consultant",
+        "role": "Senior Functional Consultant",
         "description": "Collaborate with clients to understand their financial processes and configure ERP systems to meet their needs.",
         "profileImage": "assets/img/team/mkarajeh.jpg",
         "twitterUrl": null,
@@ -114,10 +113,10 @@ export class TeamsComponent {
       {
         "id": "da8954e1-02de-4a28-4889-08dd45e6d6b4",
         "title": "Mr",
-        "name": "Mohammad Mheidat",
-        "role": "Senior Web Developer",
-        "description": "Identifying user and system requirements for new websites and applications.Prioritizing software development projects, setting timelines and assigning tasks to team members.",
-        "profileImage": "assets/img/team/mheidat.jpg",
+        "name": "Mutaz Abu Saleh",
+        "role": "Supply Chain Functional Consultant",
+        "description": "Supports clients in optimizing supply chain processes, ensuring efficient operations and seamless integration of ERP solutions.",
+        "profileImage": "assets/img/team/Mutaz.png",
         "twitterUrl": null,
         "facebookUrl": null,
         "instagramUrl": null,
@@ -127,7 +126,7 @@ export class TeamsComponent {
         "id": "3ebc01a0-0290-4780-488e-08dd45e6d6b4",
         "title": "Ms",
         "name": "Lama Dmaidat",
-        "role": "Functional Consultant",
+        "role": "Senior Functional Consultant",
         "description": "Collaborate with clients to understand their financial processes and configure ERP systems to meet their needs.",
         "profileImage": "assets/img/team/lama.jpg",
         "twitterUrl": null,
@@ -139,7 +138,7 @@ export class TeamsComponent {
         "id": "0b6cdcc5-eba2-40d0-4888-08dd45e6d6b4",
         "title": "Mr",
         "name": "Saleem Abu Elayyan",
-        "role": "Technical Consultant",
+        "role": "Senior Technical Consultant",
         "description": "Expertise in software design, development, and testing to create innovative and effective solutions for our clients.",
         "profileImage": "assets/img/team/saleem.JPG",
         "twitterUrl": null,
@@ -161,18 +160,6 @@ export class TeamsComponent {
       },
       {
         "id": "8005c50e-9590-4d49-488f-08dd45e6d6b4",
-        "title": "Ms",
-        "name": " Najwa Badawi- KSA",
-        "role": "Functional Consultant",
-        "description": "Collaborate with clients to understand their financial processes and configure ERP systems to meet their needs.",
-        "profileImage": "assets/img/team/najwa.jpg",
-        "twitterUrl": null,
-        "facebookUrl": null,
-        "instagramUrl": null,
-        "linkedInUrl": null
-      },
-      {
-        "id": "8005c50e-9590-4d49-488f-08dd45e6d6b4",
         "title": "Mr",
         "name": "Ibrahim El_Dali",
         "role": "Senior Mobile Developer",
@@ -185,17 +172,4 @@ export class TeamsComponent {
       }
     ]
   }
-
-  fetchEmployees(): void {
-    this.employeeService.getAllEmployees().subscribe(
-      (data) => {
-        this.teamMembers = data;
-        console.log('Employees:', this.teamMembers);
-      },
-      (error) => {
-        console.error('Error fetching employees', error);
-      }
-    );
-  }
-
 }

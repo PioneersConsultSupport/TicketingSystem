@@ -95,7 +95,7 @@
         <!-- Description -->
         <mat-form-field appearance="outline" class="w-full md:col-span-3" *ngIf="shouldShow('description')">
             <mat-label>{{ "Description" | translate }}</mat-label>
-            <textarea matInput formControlName="description" rows="3"></textarea>
+            <textarea matInput formControlName="description" rows="5" placeholder="Enter detailed description..."></textarea>
             <mat-error *ngIf="form.get('description')?.invalid">
                 {{ "Description is required" | translate }}
             </mat-error>

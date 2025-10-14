@@ -1,46 +1,27 @@
-<div class="header-container" style="display: flex; align-items: center; justify-content: space-between;">
-  <!-- Language Selector -->
-  <!-- <select  id="language-select" #languageSelect (change)="changeLanguageEvent($event)">
-    <option value="en">English</option>
-    <option value="ar">العربية</option>
-  </select> -->
+<!-- User Menu -->
+<span *ngIf="isLoggedIn() && currentUser" class="user-menu">
+  <button mat-button [matMenuTriggerFor]="profileMenu" class="user-button">
+    <mat-icon class="avatar-icon">account_circle</mat-icon>
+    <span class="user-name">{{ currentUser.userName }}</span>
+  </button>
 
-  <mat-button-toggle-group
-  name="langToggle"
-  [(ngModel)]="languageSelect"
-  (change)="changeLanguage($event.value)"
-  appearance="legacy"
-  class="lang-toggle"
->
-  <mat-button-toggle value="en">EN</mat-button-toggle>
-  <mat-button-toggle value="ar">AR</mat-button-toggle>
-</mat-button-toggle-group>
-
-  <!-- <mat-form-field appearance="outline" class="lang-select">
-      <mat-select
-        ngModel
-        name="language"
-        [(ngModel)] ="languageSelect"
-        (selectionChange)="changeLanguage($event.value)"
-      >
-        <mat-option [value]="'ar'">
-          {{ 'العربية' }}
-        </mat-option>
-        <mat-option [value]="'en'">
-          {{ 'English' }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field> -->
-
-  <!-- User Menu -->
-  <span *ngIf="isLoggedIn()">
-    <button mat-icon-button [matMenuTriggerFor]="profileMenu">
-      <mat-icon>account_circle</mat-icon>
+  <!-- Dropdown Menu -->
+  <mat-menu #profileMenu="matMenu" class="modern-profile-dropdown">
+    <!-- User Info Section -->
+    <div class="profile-info">
+      <mat-icon class="profile-avatar">account_circle</mat-icon>
+      <div class="info-text">
+        <div class="name-role">
+          <span class="user-name">{{ currentUser.userName }}</span>
+          <span class="role-badge">{{ getRoleName(currentUser.userRoleId) | translate }}</span>
+        </div>
+        <div class="user-email">{{ currentUser.userEmail }}</div>
+      </div>
+    </div>
+    <!-- Actions -->
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>{{ 'signOut' | translate }}</span>
     </button>
-    <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item (click)="logout()">
-        <mat-icon style="margin-inline:10px;">exit_to_app</mat-icon> {{ 'signOut' | translate }}
-      </button>
-    </mat-menu>
-  </span>
-</div>
+  </mat-menu>
+</span>

@@ -74,7 +74,7 @@ export class UserService {
   this.userRoleSubject.next(role);
 }
 
-  private async getUserRoleAsync(): Promise<any> {
+  async getCurrentUserAsync(): Promise<any> {
     return await firstValueFrom(this.http.get<any>(`${this.baseUrl}/GetUser`));
   }
 }

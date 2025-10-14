@@ -73,7 +73,8 @@
     <!-- Start Date -->
     <mat-form-field *ngIf="isFieldVisible('startDate')" appearance="outline" class="w-full">
       <mat-label>{{ "StartDate" | translate }}</mat-label>
-      <input matInput [matDatepicker]="startPicker" [max]="form.get('deliveryDate')?.value" formControlName="startDate" />
+      <input matInput [matDatepicker]="startPicker" [max]="form.get('deliveryDate')?.value"
+        formControlName="startDate" />
       <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
       <mat-datepicker #startPicker></mat-datepicker>
       <mat-error *ngIf="form.get('startDate')?.hasError('required')">Start Date is required</mat-error>
@@ -82,18 +83,23 @@
     <!-- Delivery Date -->
     <mat-form-field *ngIf="isFieldVisible('deliveryDate')" appearance="outline" class="w-full">
       <mat-label>{{ "DeliveryDate" | translate }}</mat-label>
-      <input matInput [matDatepicker]="deliveryPicker" [min]="form.get('startDate')?.value" formControlName="deliveryDate" />
+      <input matInput [matDatepicker]="deliveryPicker" [min]="form.get('startDate')?.value"
+        formControlName="deliveryDate" />
       <mat-datepicker-toggle matSuffix [for]="deliveryPicker"></mat-datepicker-toggle>
       <mat-datepicker #deliveryPicker></mat-datepicker>
       <mat-error *ngIf="form.get('deliveryDate')?.hasError('required')">Delivery Date is required</mat-error>
     </mat-form-field>
 
     <!-- Description -->
-    <mat-form-field *ngIf="isFieldVisible('description')" appearance="outline" class="w-full md:col-span-2">
+    <mat-form-field *ngIf="isFieldVisible('description')" appearance="outline"
+      class="w-full md:col-span-2 description-field">
       <mat-label>{{ "Description" | translate }}</mat-label>
-      <textarea matInput formControlName="description" rows="3"></textarea>
-      <mat-error *ngIf="form.get('description')?.invalid">Description is required</mat-error>
+      <textarea matInput formControlName="description" rows="5" placeholder="Enter detailed description..."></textarea>
+      <mat-error *ngIf="form.get('description')?.invalid">
+        Description is required
+      </mat-error>
     </mat-form-field>
+
   </form>
 </mat-dialog-content>
 
