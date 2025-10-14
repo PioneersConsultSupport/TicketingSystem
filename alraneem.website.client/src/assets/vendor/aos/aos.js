@@ -2,18 +2,18 @@
   "object" == typeof exports && "undefined" != typeof module
     ? (module.exports = t())
     : "function" == typeof define && define.amd
-    ? define(t)
-    : (e.AOS = t());
+      ? define(t)
+      : (e.AOS = t());
 })(this, function () {
   "use strict";
   var e =
       "undefined" != typeof window
         ? window
         : "undefined" != typeof global
-        ? global
-        : "undefined" != typeof self
-        ? self
-        : {},
+          ? global
+          : "undefined" != typeof self
+            ? self
+            : {},
     t = "Expected a function",
     n = NaN,
     o = "[object Symbol]",
@@ -46,7 +46,7 @@
     function y(t) {
       var n = i,
         o = a;
-      return (i = a = void 0), (d = t), (c = e.apply(o, n));
+      return ((i = a = void 0), (d = t), (c = e.apply(o, n)));
     }
     function h(e) {
       var t = e - u;
@@ -60,11 +60,11 @@
         (function (e) {
           var t = n - (e - u);
           return f ? p(t, r - (e - d)) : t;
-        })(e)
+        })(e),
       );
     }
     function x(e) {
-      return (s = void 0), v && i ? y(e) : ((i = a = void 0), c);
+      return ((s = void 0), v && i ? y(e) : ((i = a = void 0), c));
     }
     function O() {
       var e = b(),
@@ -72,11 +72,11 @@
       if (((i = arguments), (a = this), (u = e), t)) {
         if (void 0 === s)
           return (function (e) {
-            return (d = e), (s = setTimeout(k, n)), l ? y(e) : c;
+            return ((d = e), (s = setTimeout(k, n)), l ? y(e) : c);
           })(u);
-        if (f) return (s = setTimeout(k, n)), y(u);
+        if (f) return ((s = setTimeout(k, n)), y(u));
       }
-      return void 0 === s && (s = setTimeout(k, n)), c;
+      return (void 0 === s && (s = setTimeout(k, n)), c);
     }
     return (
       (n = w(n) || 0),
@@ -85,7 +85,7 @@
         (r = (f = "maxWait" in o) ? m(w(o.maxWait) || 0, n) : r),
         (v = "trailing" in o ? !!o.trailing : v)),
       (O.cancel = function () {
-        void 0 !== s && clearTimeout(s), (d = 0), (i = u = a = s = void 0);
+        (void 0 !== s && clearTimeout(s), (d = 0), (i = u = a = s = void 0));
       }),
       (O.flush = function () {
         return void 0 === s ? c : x(b());
@@ -190,7 +190,7 @@
       function m(t) {
         var n = o,
           a = i;
-        return (o = i = void 0), (u = t), (r = e.apply(a, n));
+        return ((o = i = void 0), (u = t), (r = e.apply(a, n)));
       }
       function p(e) {
         var n = e - s;
@@ -204,11 +204,11 @@
           (function (e) {
             var n = t - (e - s);
             return l ? M(n, a - (e - u)) : n;
-          })(e)
+          })(e),
         );
       }
       function v(e) {
-        return (c = void 0), f && o ? m(e) : ((o = i = void 0), r);
+        return ((c = void 0), f && o ? m(e) : ((o = i = void 0), r));
       }
       function g() {
         var e = S(),
@@ -216,11 +216,11 @@
         if (((o = arguments), (i = this), (s = e), n)) {
           if (void 0 === c)
             return (function (e) {
-              return (u = e), (c = setTimeout(b, t)), d ? m(e) : r;
+              return ((u = e), (c = setTimeout(b, t)), d ? m(e) : r);
             })(s);
-          if (l) return (c = setTimeout(b, t)), m(s);
+          if (l) return ((c = setTimeout(b, t)), m(s));
         }
-        return void 0 === c && (c = setTimeout(b, t)), r;
+        return (void 0 === c && (c = setTimeout(b, t)), r);
       }
       return (
         (t = H(t) || 0),
@@ -229,7 +229,7 @@
           (a = (l = "maxWait" in n) ? T(H(n.maxWait) || 0, t) : a),
           (f = "trailing" in n ? !!n.trailing : f)),
         (g.cancel = function () {
-          void 0 !== c && clearTimeout(c), (u = 0), (o = s = i = c = void 0);
+          (void 0 !== c && clearTimeout(c), (u = 0), (o = s = i = c = void 0));
         }),
         (g.flush = function () {
           return void 0 === c ? r : v(S());
@@ -271,12 +271,12 @@
       ready: function (e, t) {
         var n = window.document,
           o = new (Y())(P);
-        (W = t),
+        ((W = t),
           o.observe(n.documentElement, {
             childList: !0,
             subtree: !0,
             removedNodes: !0,
-          });
+          }));
       },
     },
     B = function (e, t) {
@@ -287,14 +287,14 @@
       function e(e, t) {
         for (var n = 0; n < t.length; n++) {
           var o = t[n];
-          (o.enumerable = o.enumerable || !1),
+          ((o.enumerable = o.enumerable || !1),
             (o.configurable = !0),
             "value" in o && (o.writable = !0),
-            Object.defineProperty(e, o.key, o);
+            Object.defineProperty(e, o.key, o));
         }
       }
       return function (t, n, o) {
-        return n && e(t.prototype, n), o && e(t, o), t;
+        return (n && e(t.prototype, n), o && e(t, o), t);
       };
     })(),
     I =
@@ -365,7 +365,7 @@
               e,
               !0,
               !0,
-              { detail: t }
+              { detail: t },
             )
           : (n = new CustomEvent(e, { detail: t })),
         document.dispatchEvent(n)
@@ -394,25 +394,25 @@
           n.mirror && t >= o.out && !n.once
             ? a()
             : t >= o.in
-            ? e.animated ||
-              ((function (e, t) {
-                t &&
-                  t.forEach(function (t) {
-                    return e.classList.add(t);
-                  });
-              })(i, n.animatedClassNames),
-              V("aos:in", i),
-              e.options.id && V("aos:in:" + e.options.id, i),
-              (e.animated = !0))
-            : e.animated && !n.once && a();
+              ? e.animated ||
+                ((function (e, t) {
+                  t &&
+                    t.forEach(function (t) {
+                      return e.classList.add(t);
+                    });
+                })(i, n.animatedClassNames),
+                V("aos:in", i),
+                e.options.id && V("aos:in:" + e.options.id, i),
+                (e.animated = !0))
+              : e.animated && !n.once && a();
         })(e, window.pageYOffset);
       });
     },
     Z = function (e) {
       for (var t = 0, n = 0; e && !isNaN(e.offsetLeft) && !isNaN(e.offsetTop); )
-        (t += e.offsetLeft - ("BODY" != e.tagName ? e.scrollLeft : 0)),
+        ((t += e.offsetLeft - ("BODY" != e.tagName ? e.scrollLeft : 0)),
           (n += e.offsetTop - ("BODY" != e.tagName ? e.scrollTop : 0)),
-          (e = e.offsetParent);
+          (e = e.offsetParent));
       return { top: n, left: t };
     },
     ee = function (e, t, n) {
@@ -435,7 +435,7 @@
               .filter(function (e) {
                 return "string" == typeof e;
               });
-          t.initClassName && e.node.classList.add(t.initClassName),
+          (t.initClassName && e.node.classList.add(t.initClassName),
             (e.position = {
               in: (function (e, t, n) {
                 var o = window.innerHeight,
@@ -492,7 +492,7 @@
                   );
                 })(e.node, t.offset),
             }),
-            (e.options = { once: i, mirror: o, animatedClassNames: c, id: a });
+            (e.options = { once: i, mirror: o, animatedClassNames: c, id: a }));
         }),
         e
       );
@@ -526,7 +526,7 @@
       return document.all && !window.atob;
     },
     ce = function () {
-      arguments.length > 0 &&
+      (arguments.length > 0 &&
         void 0 !== arguments[0] &&
         arguments[0] &&
         (ie = !0),
@@ -537,8 +537,8 @@
             "scroll",
             y(function () {
               X(oe, ae.once);
-            }, ae.throttleDelay)
-          ));
+            }, ae.throttleDelay),
+          )));
     },
     se = function () {
       if (((oe = ne()), de(ae.disable) || re())) return ue();
@@ -546,12 +546,13 @@
     },
     ue = function () {
       oe.forEach(function (e, t) {
-        e.node.removeAttribute("data-aos"),
+        (e.node.removeAttribute("data-aos"),
           e.node.removeAttribute("data-aos-easing"),
           e.node.removeAttribute("data-aos-duration"),
           e.node.removeAttribute("data-aos-delay"),
           ae.initClassName && e.node.classList.remove(ae.initClassName),
-          ae.animatedClassName && e.node.classList.remove(ae.animatedClassName);
+          ae.animatedClassName &&
+            e.node.classList.remove(ae.animatedClassName));
       });
     },
     de = function (e) {
@@ -571,7 +572,7 @@
         ae.disableMutationObserver ||
           _.isSupported() ||
           (console.info(
-            '\n      aos: MutationObserver is not supported on this browser,\n      code mutations observing has been disabled.\n      You may have to call "refreshHard()" by yourself.\n    '
+            '\n      aos: MutationObserver is not supported on this browser,\n      code mutations observing has been disabled.\n      You may have to call "refreshHard()" by yourself.\n    ',
           ),
           (ae.disableMutationObserver = !0)),
         ae.disableMutationObserver || _.ready("[data-aos]", se),
@@ -599,7 +600,7 @@
             window.addEventListener("resize", $(ce, ae.debounceDelay, !0)),
             window.addEventListener(
               "orientationchange",
-              $(ce, ae.debounceDelay, !0)
+              $(ce, ae.debounceDelay, !0),
             ),
             oe)
       );

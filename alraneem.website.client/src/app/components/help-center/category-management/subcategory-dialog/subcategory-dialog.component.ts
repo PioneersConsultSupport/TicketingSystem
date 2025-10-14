@@ -40,7 +40,7 @@ export class SubcategoryDialogComponent {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<SubcategoryDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { category: Category; subcategory?: Subcategory }
+    public data: { category: Category; subcategory?: Subcategory },
   ) {
     this.form = this.fb.group({
       name: [

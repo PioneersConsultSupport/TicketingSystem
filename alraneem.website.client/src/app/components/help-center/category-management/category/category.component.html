@@ -13,14 +13,23 @@
       <div class="filters">
         <mat-form-field appearance="outline">
           <mat-label>Filter by Name</mat-label>
-          <input matInput [(ngModel)]="filterValues.name" (keyup)="applyFilter()" />
+          <input
+            matInput
+            [(ngModel)]="filterValues.name"
+            (keyup)="applyFilter()"
+          />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Filter by Type</mat-label>
-          <mat-select [(ngModel)]="filterValues.type" (selectionChange)="applyFilter()">
+          <mat-select
+            [(ngModel)]="filterValues.type"
+            (selectionChange)="applyFilter()"
+          >
             <mat-option value="">All</mat-option>
-            <mat-option *ngFor="let type of types" [value]="type">{{ type }}</mat-option>
+            <mat-option *ngFor="let type of types" [value]="type">{{
+              type
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -53,13 +62,28 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let category" class="table-actions">
-          <button mat-icon-button color="primary" matTooltip="Edit" (click)="openCategoryDialog(category)">
+          <button
+            mat-icon-button
+            color="primary"
+            matTooltip="Edit"
+            (click)="openCategoryDialog(category)"
+          >
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button color="accent" matTooltip="Subcategories" (click)="goToSubcategory(category.id)">
+          <button
+            mat-icon-button
+            color="accent"
+            matTooltip="Subcategories"
+            (click)="goToSubcategory(category.id)"
+          >
             <mat-icon>category</mat-icon>
           </button>
-          <button mat-icon-button color="warn" matTooltip="Delete" (click)="deleteCategory(category)">
+          <button
+            mat-icon-button
+            color="warn"
+            matTooltip="Delete"
+            (click)="deleteCategory(category)"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </td>
@@ -70,7 +94,10 @@
     </table>
 
     <mat-card-actions>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 25]"
+        showFirstLastButtons
+      ></mat-paginator>
     </mat-card-actions>
   </mat-card>
 </div>

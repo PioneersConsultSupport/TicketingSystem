@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SpinnerService } from '../../services/spinnerService';
+import { SpinnerService } from 'src/app/services/spinner-service';
 
 @Component({
   selector: 'app-spinner',
@@ -8,7 +8,7 @@ import { SpinnerService } from '../../services/spinnerService';
       <div class="loader"></div>
     </div>
   `,
-  styleUrls: ['./spinner.component.css']
+  styleUrls: ['./spinner.component.css'],
 })
 export class SpinnerComponent {
   constructor(public spinnerService: SpinnerService) {}

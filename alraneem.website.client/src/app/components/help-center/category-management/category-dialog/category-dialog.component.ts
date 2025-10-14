@@ -38,7 +38,7 @@ export class CategoryDialogComponent {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CategoryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Category
+    @Inject(MAT_DIALOG_DATA) public data: Category,
   ) {
     this.form = this.fb.group({
       name: [

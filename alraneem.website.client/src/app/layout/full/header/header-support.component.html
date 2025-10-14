@@ -13,7 +13,9 @@
       <div class="info-text">
         <div class="name-role">
           <span class="user-name">{{ currentUser.userName }}</span>
-          <span class="role-badge">{{ getRoleName(currentUser.userRoleId) | translate }}</span>
+          <span class="role-badge">{{
+            getRoleName(currentUser.userRoleId) | translate
+          }}</span>
         </div>
         <div class="user-email">{{ currentUser.userEmail }}</div>
       </div>
@@ -21,7 +23,7 @@
     <!-- Actions -->
     <button mat-menu-item (click)="logout()">
       <mat-icon>exit_to_app</mat-icon>
-      <span>{{ 'signOut' | translate }}</span>
+      <span>{{ "signOut" | translate }}</span>
     </button>
   </mat-menu>
 </span>

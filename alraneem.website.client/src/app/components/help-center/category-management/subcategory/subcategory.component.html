@@ -4,21 +4,35 @@
     <mat-card-header>
       <div class="header-flex flex items-center gap-3 flex-wrap md:flex-nowrap">
         <mat-icon color="primary">category</mat-icon>
-        <mat-card-title class="title-text">Subcategories of {{ categoryName }}</mat-card-title>
+        <mat-card-title class="title-text"
+          >Subcategories of {{ categoryName }}</mat-card-title
+        >
       </div>
     </mat-card-header>
 
     <mat-card-content>
       <!-- Search + Add Button Row -->
-      <div class="search-add-row mb-4 flex flex-col md:flex-row md:items-center gap-4">
+      <div
+        class="search-add-row mb-4 flex flex-col md:flex-row md:items-center gap-4"
+      >
         <!-- Search Filter -->
         <mat-form-field appearance="outline" class="search-field flex-1">
           <mat-label>Search by Name</mat-label>
-          <input matInput [(ngModel)]="filterValue" (keyup)="applyFilter()" placeholder="Enter subcategory name" />
+          <input
+            matInput
+            [(ngModel)]="filterValue"
+            (keyup)="applyFilter()"
+            placeholder="Enter subcategory name"
+          />
         </mat-form-field>
 
         <!-- Add Subcategory Button -->
-        <button mat-flat-button color="primary" class="add-btn" (click)="openAddSubcategoryDialog()">
+        <button
+          mat-flat-button
+          color="primary"
+          class="add-btn"
+          (click)="openAddSubcategoryDialog()"
+        >
           <mat-icon class="mr-2">add</mat-icon> Add Subcategory
         </button>
       </div>
@@ -31,7 +45,11 @@
       <table mat-table [dataSource]="dataSource" class="w-full min-w-[500px]">
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef class="bg-blue-50 px-4 py-3 font-medium text-blue-800">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="bg-blue-50 px-4 py-3 font-medium text-blue-800"
+          >
             Name
           </th>
           <td mat-cell *matCellDef="let sub" class="px-4 py-3">
@@ -41,14 +59,28 @@
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef class="bg-blue-50 px-4 py-3 text-center font-medium">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="bg-blue-50 px-4 py-3 text-center font-medium"
+          >
             Actions
           </th>
           <td mat-cell *matCellDef="let sub" class="text-center">
-            <button mat-icon-button color="primary" matTooltip="Edit" (click)="editSubcategory(sub)">
+            <button
+              mat-icon-button
+              color="primary"
+              matTooltip="Edit"
+              (click)="editSubcategory(sub)"
+            >
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" matTooltip="Delete" (click)="deleteSubcategory(sub)">
+            <button
+              mat-icon-button
+              color="warn"
+              matTooltip="Delete"
+              (click)="deleteSubcategory(sub)"
+            >
               <mat-icon>delete</mat-icon>
             </button>
           </td>

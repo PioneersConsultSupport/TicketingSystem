@@ -4,13 +4,11 @@ import { Ticket } from '../models/ticket';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class TicketService {
-
-  baseUrl = "Ticket";
-  constructor(private http: HttpClient) { }
+  baseUrl = 'Ticket';
+  constructor(private http: HttpClient) {}
 
   getAllTickets(): Observable<Ticket[]> {
     return this.http.get<Ticket[]>(this.baseUrl);

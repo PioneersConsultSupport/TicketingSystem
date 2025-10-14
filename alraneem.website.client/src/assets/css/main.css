@@ -12,9 +12,10 @@
 --------------------------------------------------------------*/
 /* Fonts */
 :root {
-  --font-default: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-default:
+    "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-primary: "Montserrat", sans-serif;
   --font-secondary: "Poppins", sans-serif;
 }
@@ -777,24 +778,24 @@ section {
 }
 
 .hero-swiper {
-  color: #fff; 
+  color: #fff;
 }
 
 .hero-swiper .swiper-slide {
-  padding: 40px 20px; 
-  text-align: left;  
+  padding: 40px 20px;
+  text-align: left;
 }
 
 .hero-swiper h2 {
   font-size: 2.2rem;
   font-weight: 700;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
   line-height: 1.3;
 }
 
 .hero-swiper p {
   font-size: 1.1rem;
-  margin-bottom: 25px; 
+  margin-bottom: 25px;
   line-height: 1.7;
   max-width: 800px;
 }
@@ -802,8 +803,6 @@ section {
 .hero-swiper .d-flex a {
   margin-right: 15px;
 }
-
-
 
 /*--------------------------------------------------------------
 # Clients Section
@@ -882,7 +881,8 @@ section {
 # Call To Action Section
 --------------------------------------------------------------*/
 .call-to-action .container {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url("../img/cta-bg.jpg") center center;
   background-size: cover;
   padding: 100px 60px;

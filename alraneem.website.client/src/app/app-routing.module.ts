@@ -10,7 +10,7 @@ import { authGuard } from './guards/auth.guard';
 import { FullComponent } from './layout/full/full.component';
 import { TicketsComponent } from './components/help-center/tickets/tickets.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
-import { AdminPanelComponent } from './components/help-center/Admin Panel/admin-panel.component';
+import { AdminPanelComponent } from './components/help-center/admin-panel/admin-panel.component';
 import { CategoryComponent } from './components/help-center/category-management/category/category.component';
 import { SubcategoryComponent } from './components/help-center/category-management/subcategory/subcategory.component';
 import { TicketDetailsComponent } from './components/help-center/tickets/ticket-details/ticket-details.component';

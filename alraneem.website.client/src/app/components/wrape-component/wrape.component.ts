@@ -1,23 +1,27 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component,OnDestroy,AfterViewInit} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  AfterViewInit,
+} from '@angular/core';
 import { MenuItems } from '../../shared/menu-items/menu-items';
-
 
 /** @title Responsive sidenav */
 @Component({
   selector: 'app-wrape-layout',
   templateUrl: 'wrape.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class WrapeComponent implements OnDestroy, AfterViewInit {
   mobileQuery: MediaQueryList;
-  addClassToContent = false; 
+  addClassToContent = false;
   private _mobileQueryListener: () => void;
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
-    public menuItems: MenuItems
+    public menuItems: MenuItems,
   ) {
     this.mobileQuery = media.matchMedia('(min-width: 1024px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -27,9 +31,9 @@ export class WrapeComponent implements OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-  ngAfterViewInit() { }
+  ngAfterViewInit() {}
 
   toggleSidebar() {
-    this.addClassToContent = !this.addClassToContent; // Toggle the class variable
+    this.addClassToContent = !this.addClassToContent;
   }
 }

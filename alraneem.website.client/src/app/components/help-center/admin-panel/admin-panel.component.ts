@@ -4,9 +4,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { User } from 'src/app/models/user';
-import { UserRoles } from 'src/app/Enums/user-roles';
-import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
-import { UserService } from 'src/app/Services/UserService';
+import { UserRoles } from 'src/app/enums/user-roles';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
+import { UserService } from 'src/app/services/user-service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -30,7 +30,7 @@ export class AdminPanelComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private confirmService: ConfirmDialogService,
-    private router: Router
+    private router: Router,
   ) {
     this.adminForm = this.fb.group({
       id: [''],
@@ -74,14 +74,14 @@ export class AdminPanelComponent implements OnInit {
         saveObservable = this.userService.addUserRole(
           user.userRoleId,
           user.userEmail,
-          userNameOjbect?.displayName ?? ''
+          userNameOjbect?.displayName ?? '',
         );
       } else {
         saveObservable = this.userService.updateUserRole(
           user.id,
           user.userRoleId,
           user.userEmail,
-          user.userName
+          user.userName,
         );
       }
 
@@ -124,7 +124,7 @@ export class AdminPanelComponent implements OnInit {
               detail.id,
               detail.userRoleId,
               detail.userEmail,
-              detail.userName
+              detail.userName,
             )
             .subscribe((response) => {
               this.search();
@@ -143,7 +143,7 @@ export class AdminPanelComponent implements OnInit {
     return Object.fromEntries(
       Object.keys(UserRoles)
         .filter((key) => isNaN(Number(key)))
-        .map((key) => [UserRoles[key as keyof typeof UserRoles], key])
+        .map((key) => [UserRoles[key as keyof typeof UserRoles], key]),
     );
   }
 

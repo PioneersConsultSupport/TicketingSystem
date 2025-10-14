@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserRoles } from '../../Enums/user-roles';
-import { UserService } from '../../Services/UserService';
+import { UserRoles } from '../../enums/user-roles';
 
 export interface Menu {
   state: string;

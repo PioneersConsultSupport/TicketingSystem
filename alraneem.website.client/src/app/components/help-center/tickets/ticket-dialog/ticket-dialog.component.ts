@@ -4,7 +4,6 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
-  AbstractControl,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {
@@ -19,17 +18,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
 import { Ticket } from 'src/app/models/ticket';
-import { TicketService } from 'src/app/Services/ticketService';
+import { TicketService } from 'src/app/services/ticket-service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatTableDataSource } from '@angular/material/table';
 import { Category } from 'src/app/models/category';
-import { CategoryService } from 'src/app/Services/category.Service';
+import { CategoryService } from 'src/app/services/category.Service';
 import { Subcategory } from 'src/app/models/subcategory';
-import { CategoryType } from 'src/app/Enums/category-types';
-import { UserService } from 'src/app/Services/UserService';
+import { CategoryType } from 'src/app/enums/category-types';
+import { UserService } from 'src/app/services/user-service';
 import { UserRole } from 'src/app/models/user-role';
 import { forkJoin } from 'rxjs';
-import { UserRoles } from 'src/app/Enums/user-roles';
+import { UserRoles } from 'src/app/enums/user-roles';
 import { format } from 'date-fns';
 
 @Component({
@@ -70,8 +68,8 @@ export class TicketDialogComponent implements OnInit {
     private categoryService: CategoryService,
     private userService: UserService,
     public dialogRef: MatDialogRef<TicketDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.getUserRole();
@@ -124,16 +122,16 @@ export class TicketDialogComponent implements OnInit {
   loadCategories() {
     forkJoin({
       categories: this.categoryService.getCategoriesByType(
-        CategoryType.TicketCategory
+        CategoryType.TicketCategory,
       ),
       priorities: this.categoryService.getCategoriesByType(
-        CategoryType.TicketPriority
+        CategoryType.TicketPriority,
       ),
       statuses: this.categoryService.getCategoriesByType(
-        CategoryType.TicketStatus
+        CategoryType.TicketStatus,
       ),
       supportOptions: this.categoryService.getCategoriesByType(
-        CategoryType.SupportOption
+        CategoryType.SupportOption,
       ),
     }).subscribe(({ categories, priorities, statuses, supportOptions }) => {
       this.categories = categories;

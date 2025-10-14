@@ -1,4 +1,5 @@
-$color-array:(primary: $primary,
+$color-array: (
+  primary: $primary,
   secondary: $secondary,
   success: $success,
   info: $info,
@@ -11,8 +12,7 @@ $color-array:(primary: $primary,
   white: $white,
 );
 
-@each $color-name,
-$color-value in $color-array {
+@each $color-name, $color-value in $color-array {
   .text-#{"" + $color-name} {
     color: $color-value;
   }

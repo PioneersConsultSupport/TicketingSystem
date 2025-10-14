@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TranslationService {
   private language = new BehaviorSubject<string>('en');
@@ -24,12 +24,13 @@ export class TranslationService {
       (translations: any) => {
         this.translations = translations;
       },
-      error => console.error(`Could not load translations for ${lang}`, error)
+      (error) =>
+        console.error(`Could not load translations for ${lang}`, error),
     );
   }
 
   getTranslation(key: string): string {
-    return this.translations[key] || key; // Fallback to key if translation not found
+    return this.translations[key] || key;
   }
 
   getDirection(): 'ltr' | 'rtl' {

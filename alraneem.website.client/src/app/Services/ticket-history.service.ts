@@ -1,7 +1,7 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { TicketHistory } from "../models/ticket-history";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { TicketHistory } from '../models/ticket-history';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,9 @@ export class TicketHistoryService {
   }
 
   saveHistory(ticketHistory: TicketHistory): Observable<TicketHistory> {
-    return this.http.post<TicketHistory>(`${this.baseUrl}/saveHistory`, ticketHistory);
+    return this.http.post<TicketHistory>(
+      `${this.baseUrl}/saveHistory`,
+      ticketHistory,
+    );
   }
 }
-

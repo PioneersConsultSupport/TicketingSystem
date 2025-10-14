@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TicketDialogComponent } from './ticket-dialog/ticket-dialog.component';
 import { Ticket } from 'src/app/models/ticket';
-import { TicketService } from 'src/app/Services/ticketService';
-import { UserRoles } from 'src/app/Enums/user-roles';
-import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
-import { UserService } from 'src/app/Services/UserService';
+import { TicketService } from 'src/app/services/ticket-service';
+import { UserRoles } from 'src/app/enums/user-roles';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
+import { UserService } from 'src/app/services/user-service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -18,9 +18,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
 import { FormsModule } from '@angular/forms';
-import { CategoryType } from 'src/app/Enums/category-types';
+import { CategoryType } from 'src/app/enums/category-types';
 import { Category } from 'src/app/models/category';
-import { CategoryService } from 'src/app/Services/category.Service';
+import { CategoryService } from 'src/app/services/category.Service';
 import { Subcategory } from 'src/app/models/subcategory';
 import { UserRole } from 'src/app/models/user-role';
 import { MatCardModule } from '@angular/material/card';
@@ -62,7 +62,7 @@ export class TicketsComponent implements OnInit {
   ];
   users: UserRole[] = [];
   currentUserRole?: UserRoles;
-  UserRoles = UserRoles; 
+  UserRoles = UserRoles;
 
   isLoading = true;
 
@@ -83,7 +83,7 @@ export class TicketsComponent implements OnInit {
     private dialog: MatDialog,
     private userService: UserService,
     private confirmService: ConfirmDialogService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
   ) {}
 
   ngOnInit() {
@@ -109,7 +109,6 @@ export class TicketsComponent implements OnInit {
   async getUserRole() {
     this.currentUserRole = await this.userService.getUserRole();
     this.loadTickets();
-
   }
   initDataSource(res: Ticket[]) {
     this.dataSource = new MatTableDataSource(res);
@@ -136,7 +135,7 @@ export class TicketsComponent implements OnInit {
 
     this.dataSource.sortingDataAccessor = (
       item: Ticket,
-      property: keyof Ticket | string
+      property: keyof Ticket | string,
     ) => {
       switch (property) {
         case 'category':

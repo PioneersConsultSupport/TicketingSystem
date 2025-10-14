@@ -6,7 +6,7 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { UserService } from 'src/app/Services/UserService';
+import { UserService } from 'src/app/services/user-service';
 
 @Component({
   selector: 'app-sidebar',
@@ -32,7 +32,7 @@ export class AppSidebarComponent implements OnDestroy, OnInit {
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     public menuItems: MenuItems,
-    private userService: UserService
+    private userService: UserService,
   ) {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();

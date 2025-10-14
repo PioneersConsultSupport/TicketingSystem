@@ -8,14 +8,18 @@ import { HomeComponent } from './components/home/home.component';
 import { SolutionComponent } from './components/solution/solution.component';
 import { SolutionDetailsComponent } from './components/solution/solution-details/solution-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import {
+  CommonModule,
+  LocationStrategy,
+  PathLocationStrategy,
+} from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TeamsComponent } from './components/teams/teams.component';
 import { TermsComponent } from './components/terms/terms.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
 import { FullComponent } from './layout/full/full.component';
-import { AdminPanelComponent } from './components/help-center/Admin Panel/admin-panel.component';
+import { AdminPanelComponent } from './components/help-center/admin-panel/admin-panel.component';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { DemoMaterialModule } from './demo-material-module';
 import { SharedModule } from './shared/shared.module';
@@ -31,7 +35,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { MessageService } from 'primeng/api';
-import { SpinnerService } from './services/spinnerService';
+import { SpinnerService } from './services/spinner-service';
 import { HttpInterceptorService } from './interceptors/http-interceptor.service';
 import { environment } from './environments/environment';
 import { WrapeComponent } from './components/wrape-component/wrape.component';
@@ -56,7 +60,7 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     WrapeComponent,
     AdminPanelComponent,
     SpinnerComponent,
-    AppHeaderSupportComponent
+    AppHeaderSupportComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,36 +82,18 @@ const scope = 'api://' + environment.apiClientId + '/access_as_user';
     MatPaginatorModule,
     MatButtonModule,
     MatIconModule,
-    // MsalModule.forRoot(new PublicClientApplication({
-    //     auth: {
-    //         clientId: environment.clientId,
-    //         redirectUri: environment.redirectUri,
-    //         authority: 'https://login.microsoftonline.com/' + environment.tenantId,
-    //     },
-    //     cache: {
-    //         cacheLocation: 'localStorage',
-    //         storeAuthStateInCookie: isIE,
-    //     },
-    // }), {
-    //     interactionType: InteractionType.Popup,
-    //     authRequest: {
-    //         scopes: ['user.read'],
-    //     },
-    // }, {
-    //     interactionType: InteractionType.Popup,
-    //     protectedResourceMap: new Map([[environment.apiUrl, [scope]]]),
-    // }),
-    TranslatePipe
+    TranslatePipe,
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
-    // { provide: HTTP_INTERCEPTORS, useClass: MsalInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    // MsalService,
-    // MsalBroadcastService,
-    // MsalGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi: true,
+    },
     MessageService,
-    SpinnerService],
+    SpinnerService,
+  ],
   bootstrap: [AppComponent, MsalRedirectComponent],
 })
 export class AppModule {}

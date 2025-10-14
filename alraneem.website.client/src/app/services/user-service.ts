@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
-import { UserRoles } from '../Enums/user-roles';
+import { UserRoles } from '../enums/user-roles';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +29,7 @@ export class UserService {
     id: number,
     roleId: number,
     userEmail: string,
-    userName: string
+    userName: string,
   ) {
     return this.http.post(this.baseUrl + '/Update', {
       UserEmail: userEmail,
@@ -43,7 +43,7 @@ export class UserService {
     id: number,
     roleId: number,
     userEmail: string,
-    userName: string
+    userName: string,
   ) {
     return this.http.post(this.baseUrl + '/Delete', {
       UserEmail: userEmail,
@@ -63,7 +63,7 @@ export class UserService {
 
   async getUserRole(): Promise<UserRoles> {
     const user = await firstValueFrom(
-      this.http.get<any>(`${this.baseUrl}/GetUser`)
+      this.http.get<any>(`${this.baseUrl}/GetUser`),
     );
     const role = user.userRoleId as UserRoles;
     this.userRoleSubject.next(role);
@@ -71,8 +71,8 @@ export class UserService {
   }
 
   setUserRole(role: UserRoles) {
-  this.userRoleSubject.next(role);
-}
+    this.userRoleSubject.next(role);
+  }
 
   async getCurrentUserAsync(): Promise<any> {
     return await firstValueFrom(this.http.get<any>(`${this.baseUrl}/GetUser`));

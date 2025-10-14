@@ -21,7 +21,6 @@
   "details": "التفاصيل",
   "noExamsCreated": "لم يتم إنشاء امتحانات",
   "examDetails": "تفاصيل الامتحان",
-  
   "totalQuestions": "إجمالي الأسئلة",
   "correctAnswers": "الإجابات الصحيحة",
   "wrongAnswers": "الإجابات الخاطئة",
@@ -39,7 +38,6 @@
   "register": "تسجيل",
   "units": "الوحدات",
   "noCoursesAvailable": "لا توجد مواد متاحة في الوقت الحالي.",
-
   "addNewExam": "إضافة امتحان جديد",
   "noUnitsAvailable": "لا توجد وحدات متاحة لهذه المادة.",
   "activityTab": "صفحة الانشطة",
@@ -81,26 +79,19 @@
   "RESUME_LATER_CONFIRMATION": "هل أنت متأكد أنك تريد الاستئناف لاحقاً؟",
   "solved": "تم الحل",
   "removeFromCourses": "ازالة من المفضل",
-
   "subtitle": "اختر المادة، استكشف الوحدات، وابدأ الامتحان لاختبار معرفتك",
   "availablecourses": "استكشاف المواد المتاحة",
   "subTitleFavScrren": "تصفح قائمتك المفضلة للوصول إلى المواد التي تهمك. يمكنك إدارة المواد وإزالتها من قائمتك هنا.",
-
   "titleFavScreen": "المواد المحفوظة",
-
   "noFAvCoursesAvailable": "لم تقم بعد بحفظ أي مادة مفضلة. قم بحفظ بعض المواد المفضلة الآن!",
   "createYourAccount": "إنشاء حسابك",
   "welcomeBack": "اهلا بك ",
-
   "searchCourses": "ابحث عن المواد الخاصة بك",
   "enterCourseName": "أدخل اسم المادة",
   "Confirmation": "للتاكيد",
   "Yes": "نعم",
-  
-
-
   "ARE_YOU_SURE_RESUME_LATER": "هل أنت متأكد أنك تريد الاستئناف لاحقًا؟",
-  "category_management":"إدارة الفئات",
+  "category_management": "إدارة الفئات",
   "Tickets": "التذاكر",
   "admin_panel": "شاشة المسؤول",
   "tickets_dashboard": "لوحة التذاكر",
@@ -116,8 +107,8 @@
   "view_ticket": "عرض تذكرة",
   "Low": "منخفض",
   "Medium": "متوسط",
-  "High": "مرتفع" ,
-  "Open": "مفتوح" ,
+  "High": "مرتفع",
+  "Open": "مفتوح",
   "Assigned": "تم التعيين",
   "In Progress": "قيد التنفيذ",
   "Completed": "مكتمل",
@@ -133,14 +124,14 @@
   "Project Management and Accounting": "إدارة المشاريع والمحاسبة",
   "Business Intelligence and Analytics": "الذكاء والتحليلات التجارية",
   "Customer Relationship Management (CRM)": "إدارة علاقات العملاء (CRM)",
-  "Governance, Risk, and Compliance":  "الحوكمة والمخاطر والامتثال",
+  "Governance, Risk, and Compliance": "الحوكمة والمخاطر والامتثال",
   "Data Management": "إدارة البيانات",
   "Service Management": "إدارة الخدمات",
   "Business Central": "مركزية الاعمال",
   "Finance Management": "إدارة المالية",
   "Sales & Service Management": "إدارة المبيعات والخدمات",
   "Project Management": "إدارة المشاريع",
-  "Operations Management": "إدارة العمليات" ,
+  "Operations Management": "إدارة العمليات",
   "Reporting & Analytics": "التقارير والتحليلات",
   "Azure": "Azure",
   "We Care": "نحن نهتم",

@@ -7,9 +7,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Subcategory } from 'src/app/models/subcategory';
-import { CategoryService } from 'src/app/Services/category.Service';
+import { CategoryService } from 'src/app/services/category.Service';
 import { SubcategoryDialogComponent } from '../subcategory-dialog/subcategory-dialog.component';
-import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -48,7 +48,7 @@ export class SubcategoryComponent implements OnInit {
     private categoryService: CategoryService,
     private dialog: MatDialog,
     private confirmDialog: ConfirmDialogService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -124,7 +124,7 @@ export class SubcategoryComponent implements OnInit {
       .confirm(
         'Delete Subcategory',
         `Are you sure you want to delete subcategory "${sub.name}"?`,
-        'delete'
+        'delete',
       )
       .subscribe((result) => {
         if (result) {

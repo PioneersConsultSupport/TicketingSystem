@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { CommentService } from 'src/app/Services/comments.service';
+import { CommentService } from 'src/app/services/comments.service';
 import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
 import { Comment } from 'src/app/models/comment';
 import { FormsModule } from '@angular/forms';
@@ -21,7 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   templateUrl: './ticket-comments.component.html',
   styleUrls: ['./ticket-comments.component.scss'],

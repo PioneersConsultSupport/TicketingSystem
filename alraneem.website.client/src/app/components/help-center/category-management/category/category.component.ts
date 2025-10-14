@@ -7,10 +7,10 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Category } from 'src/app/models/category';
-import { CategoryService } from 'src/app/Services/category.Service';
+import { CategoryService } from 'src/app/services/category.Service';
 import { CategoryDialogComponent } from '../category-dialog/category-dialog.component';
 import { Router } from '@angular/router';
-import { ConfirmDialogService } from 'src/app/Services/confirm-dialog.service';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -56,7 +56,7 @@ export class CategoryComponent implements OnInit {
     private categoryService: CategoryService,
     private dialog: MatDialog,
     private router: Router,
-    private confirmDialog: ConfirmDialogService
+    private confirmDialog: ConfirmDialogService,
   ) {}
 
   ngOnInit() {
@@ -72,7 +72,7 @@ export class CategoryComponent implements OnInit {
       this.types = [...new Set(data.map((c) => c.type))];
       this.dataSource.filterPredicate = (
         category: Category,
-        filter: string
+        filter: string,
       ) => {
         const searchTerms = JSON.parse(filter);
 
@@ -122,7 +122,7 @@ export class CategoryComponent implements OnInit {
       .confirm(
         'Delete Category',
         `Are you sure you want to delete category "${category.name}"?`,
-        'delete'
+        'delete',
       )
       .subscribe((result) => {
         if (result) {

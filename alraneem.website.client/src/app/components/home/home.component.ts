@@ -9,12 +9,15 @@ import { environment } from 'src/app/environments/environment';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  formSubmitted: boolean = false; // Start as false
+  formSubmitted: boolean = false;
   name!: string;
   email!: string;
   subject!: string;
   message!: string;
-  constructor(private messageService: MessageService, private router: Router) {}
+  constructor(
+    private messageService: MessageService,
+    private router: Router,
+  ) {}
   sendEmail() {
     if (!this.name || !this.email || !this.subject || !this.message) {
       this.messageService.add({
@@ -38,7 +41,7 @@ export class HomeComponent {
         'service_c2i3tjc',
         'template_96smusi',
         templateParams,
-        'vmC2qnWpyXc5b4sEi'
+        'vmC2qnWpyXc5b4sEi',
       )
       .then((response) => {
         this.messageService.add({
@@ -74,7 +77,7 @@ export class HomeComponent {
     const popup = window.open(
       environment.apiUrl + '/auth/login',
       'Azure Login',
-      'width=600,height=600'
+      'width=600,height=600',
     );
 
     const handler = (event: MessageEvent) => {

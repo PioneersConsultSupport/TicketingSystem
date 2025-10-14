@@ -91,26 +91,27 @@
   }
 }
 
-
 ::ng-deep .description-field {
   width: 100%;
-  max-width: 700px;      
-  min-width: 250px; 
+  max-width: 700px;
+  min-width: 250px;
   display: block;
 
   textarea[matInput] {
     width: 100%;
-    min-height: 120px;    
-    max-height: 400px;   
-    height: 150px;      
-    padding: 12px;        
-    border-radius: 8px;  
+    min-height: 120px;
+    max-height: 400px;
+    height: 150px;
+    padding: 12px;
+    border-radius: 8px;
     font-size: 14px;
     line-height: 1.5;
-    resize: vertical; 
+    resize: vertical;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
 
     &:focus {
       border-color: #1976d2;

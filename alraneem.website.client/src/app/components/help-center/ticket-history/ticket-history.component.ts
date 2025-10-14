@@ -4,7 +4,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { TicketHistory } from 'src/app/models/ticket-history';
-import { TicketHistoryService } from 'src/app/Services/ticket-history.service';
+import { TicketHistoryService } from 'src/app/services/ticket-history.service';
 import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
 
 @Component({
@@ -16,7 +16,7 @@ import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
     MatListModule,
     MatChipsModule,
     MatIconModule,
-    TranslatePipe
+    TranslatePipe,
   ],
   templateUrl: './ticket-history.component.html',
   styleUrl: './ticket-history.component.scss',
@@ -44,7 +44,7 @@ export class TicketHistoryComponent implements OnChanges {
           this.ticketHistories = res.sort(
             (a, b) =>
               new Date(b.createdAt!).getTime() -
-              new Date(a.createdAt!).getTime()
+              new Date(a.createdAt!).getTime(),
           );
           this.loading = false;
         },

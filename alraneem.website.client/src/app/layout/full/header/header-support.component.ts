@@ -1,14 +1,11 @@
-import {
-  Component,
-  OnInit,
-} from '@angular/core';
-import { TranslationService } from '../../../services/translation.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/app/environments/environment';
-import { AuthService } from 'src/app/Services/authService';
-import { UserService } from 'src/app/Services/UserService';
+import { AuthService } from 'src/app/services/auth-service';
+import { UserService } from 'src/app/services/user-service';
 import { UserRole } from 'src/app/models/user-role';
-import { UserRoles } from 'src/app/Enums/user-roles';
+import { UserRoles } from 'src/app/enums/user-roles';
+import { TranslationService } from 'src/app/services/translation.service';
 
 @Component({
   selector: 'app-header-support',
@@ -23,8 +20,8 @@ export class AppHeaderSupportComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private translationService: TranslationService,
-    private userService : UserService,
-    private router: Router
+    private userService: UserService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +41,7 @@ export class AppHeaderSupportComponent implements OnInit {
         environment.tenantId +
         '/oauth2/v2.0/logout',
       'Azure Logout',
-      'width=600,height=600'
+      'width=600,height=600',
     );
 
     const interval = setInterval(() => {
@@ -67,9 +64,9 @@ export class AppHeaderSupportComponent implements OnInit {
     this.translationService.setLanguage(lang);
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }
-  async getCurrentUserAsync(){
-      this.currentUser = await this.userService.getCurrentUserAsync();
-      debugger;
+  async getCurrentUserAsync() {
+    this.currentUser = await this.userService.getCurrentUserAsync();
+    debugger;
   }
   getRoleName(roleId: number): string {
     return UserRoles[roleId] ?? 'Unknown';

@@ -36,7 +36,7 @@ export class CategoryService {
   getCategoriesByType(type: string): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/ByType/${type}`);
   }
-  
+
   // ---------- Subcategory ----------
   addSubcategory(subcategory: Subcategory): Observable<void> {
     return this.http.post<void>(this.subcategoryBaseUrl, subcategory);
@@ -45,7 +45,7 @@ export class CategoryService {
   updateSubcategory(subcategory: Subcategory): Observable<void> {
     return this.http.post<void>(
       `${this.subcategoryBaseUrl}/Update`,
-      subcategory
+      subcategory,
     );
   }
 
@@ -56,10 +56,10 @@ export class CategoryService {
   getSubcategoryById(id: number): Observable<Subcategory> {
     return this.http.get<Subcategory>(`${this.subcategoryBaseUrl}/${id}`);
   }
-  
+
   getSubcategoriesByCategoryId(categoryId: number): Observable<Subcategory[]> {
     return this.http.get<Subcategory[]>(
-      `${this.subcategoryBaseUrl}/ByCategory/${categoryId}`
+      `${this.subcategoryBaseUrl}/ByCategory/${categoryId}`,
     );
   }
 }

@@ -114,10 +114,13 @@ code {
   margin-right: 5px;
   // color: $white;
 }
-.mat-mdc-fab.mat-accent, .mat-mdc-mini-fab.mat-accent{
+
+.mat-mdc-fab.mat-accent,
+.mat-mdc-mini-fab.mat-accent {
   color: $white;
 }
-.mat-mdc-tab-header{
+
+.mat-mdc-tab-header {
   border-bottom: 1px solid $border;
 }
 
@@ -125,6 +128,7 @@ html body {
   .position-relative {
     position: relative;
   }
+
   // list
   .clear {
     clear: both;
@@ -133,6 +137,7 @@ html body {
   ol li {
     margin: 5px 0;
   }
+
   // display
   .dl {
     display: inline-block;
@@ -145,6 +150,7 @@ html body {
   .jc-c {
     justify-content: center;
   }
+
   //   opacity
   .op-5 {
     opacity: 0.5;
@@ -157,6 +163,7 @@ html body {
   .rounded {
     border-radius: $radius;
   }
+
   //   flex
   .ml-auto {
     margin-left: auto;
@@ -193,6 +200,7 @@ html body {
   .no-shadow {
     box-shadow: none;
   }
+
   //   align vertical
   .vt {
     vertical-align: top;
@@ -205,6 +213,7 @@ html body {
   .vb {
     vertical-align: bottom;
   }
+
   //   horizontal align
   .text-center {
     text-align: center;
@@ -217,6 +226,7 @@ html body {
   .text-left {
     text-align: left;
   }
+
   //   border
   .b-0 {
     border: none;
@@ -247,6 +257,7 @@ html[dir="rtl"] body {
   .position-relative {
     position: relative;
   }
+
   // list
   .clear {
     clear: both;
@@ -255,6 +266,7 @@ html[dir="rtl"] body {
   ol li {
     margin: 5px 0;
   }
+
   // display
   .dl {
     display: inline-block;
@@ -267,6 +279,7 @@ html[dir="rtl"] body {
   .jc-c {
     justify-content: center;
   }
+
   //   opacity
   .op-5 {
     opacity: 0.5;
@@ -279,6 +292,7 @@ html[dir="rtl"] body {
   .rounded {
     border-radius: $radius;
   }
+
   //   flex
   .ml-auto {
     margin-left: unset;
@@ -316,6 +330,7 @@ html[dir="rtl"] body {
   .no-shadow {
     box-shadow: none;
   }
+
   //   align vertical
   .vt {
     vertical-align: top;
@@ -328,6 +343,7 @@ html[dir="rtl"] body {
   .vb {
     vertical-align: bottom;
   }
+
   //   horizontal align
   .text-center {
     text-align: center;
@@ -340,6 +356,7 @@ html[dir="rtl"] body {
   .text-left {
     text-align: left;
   }
+
   //   border
   .b-0 {
     border: none;
@@ -364,8 +381,6 @@ html[dir="rtl"] body {
   .b-all {
     border: 1px solid $border;
   }
-
- 
 }
 
 .mat-mdc-form-field {
@@ -377,6 +392,6 @@ html[dir="rtl"] body {
   font-weight: 400;
 }
 
-.mdc-button{
+.mdc-button {
   border-radius: 7px !important;
 }

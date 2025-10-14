@@ -1,12 +1,19 @@
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
-<div class="main-container" style="background-color: rgb(255, 255, 255);">
+<div class="main-container" style="background-color: rgb(255, 255, 255)">
   <!-- ============================================================== -->
   <!-- Topbar - style you can find in header.scss -->
   <!-- ============================================================== -->
   <!--style="background-color: #464646"-->
-  <mat-toolbar style="background-color: rgb(255, 255, 255);box-shadow: none;border-bottom: 1px solid #c7c7c7;" class="topbar telative">
+  <mat-toolbar
+    style="
+      background-color: rgb(255, 255, 255);
+      box-shadow: none;
+      border-bottom: 1px solid #c7c7c7;
+    "
+    class="topbar telative"
+  >
     <!-- ============================================================== -->
     <!-- Logo - style you can find in header.scss -->
     <!-- ============================================================== -->
@@ -15,7 +22,11 @@
         <!-- Logo icon --><b>
           <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
           <!-- Dark Logo icon -->
-          <img src="assets/images/logo-icon.svg" alt="homepage" class="dark-logo">
+          <img
+            src="assets/images/logo-icon.svg"
+            alt="homepage"
+            class="dark-logo"
+          />
           <!-- Light Logo icon -->
           <!--<img src="assets/images/logo-light-icon.svg" alt="homepage" class="light-logo">-->
         </b>
@@ -23,7 +34,9 @@
         <!-- Logo text -->
         <span class="text-logo-icon" fxShow="false" fxShow.gt-xs>
           <!-- dark Logo text -->
-          <span style=" font-weight: 100; color: #464646;">{{'client_support_portal' | translate }}</span>
+          <span style="font-weight: 100; color: #464646">{{
+            "client_support_portal" | translate
+          }}</span>
           <!--<span style=" font-weight: 100; color: #464646; font-size: medium; ">For </span><span style=" font-weight: 100; color: #464646; font-size: medium; ">Education</span>-->
           <!--<img src="assets/images/logo-text.svg" alt="homepage" class="dark-logo">-->
           <!-- Light Logo text -->
@@ -35,27 +48,43 @@
     <!-- sidebar toggle -->
     <!-- ============================================================== -->
 
-    <button mat-icon-button (click)="snav.toggle();toggleSidebar()" style="color: #464646" value="sidebarclosed">
+    <button
+      mat-icon-button
+      (click)="snav.toggle(); toggleSidebar()"
+      style="color: #464646"
+      value="sidebarclosed"
+    >
       <mat-icon>menu</mat-icon>
     </button>
     <!-- ============================================================== -->
     <!-- app header component - style you can find in header.scss / header.component.ts-->
     <!-- ============================================================== -->
     <!--<a href="https://wrappixel.com/templates/materialpro-angular-dashboard/" class=" m-r-20 hidden-sm-up" mat-raised-button>Explore</a>-->
-    <app-header-support class="d-flex align-items-center ml-auto"></app-header-support>
+    <app-header-support
+      class="d-flex align-items-center ml-auto"
+    ></app-header-support>
   </mat-toolbar>
   <!-- ============================================================== -->
   <!-- End Topbar - style you can find in pages.scss -->
   <!-- ============================================================== -->
-  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0"  style="background-color: rgb(255, 255, 255);">
+  <mat-sidenav-container
+    class="example-sidenav-container"
+    [style.marginTop.px]="mobileQuery.matches ? 0 : 0"
+    style="background-color: rgb(255, 255, 255)"
+  >
     <!-- ============================================================== -->
     <!-- Sidebar - style you can find in sidebar.scss -->
     <!-- ============================================================== -->
-    <mat-sidenav #snav id="snav" class="dark-sidebar pl-xs" [mode]="mobileQuery.matches ? 'side' : 'over'" fixedTopGap="0" [opened]="mobileQuery.matches" [disableClose]="mobileQuery.matches">
-
+    <mat-sidenav
+      #snav
+      id="snav"
+      class="dark-sidebar pl-xs"
+      [mode]="mobileQuery.matches ? 'side' : 'over'"
+      fixedTopGap="0"
+      [opened]="mobileQuery.matches"
+      [disableClose]="mobileQuery.matches"
+    >
       <app-sidebar></app-sidebar>
-
-
     </mat-sidenav>
     <!-- ============================================================== -->
     <!-- Sidebar - style you can find in sidebar.scss -->
@@ -63,14 +92,14 @@
     <!-- ============================================================== -->
     <!-- Page container - style you can find in pages.scss -->
     <!-- ============================================================== -->
-    <mat-sidenav-content [ngClass]="{'remove-mat-content': addClassToContent}"  class="page-wrapper mat-content" style="background-color: rgb(255, 255, 255);">
-
+    <mat-sidenav-content
+      [ngClass]="{ 'remove-mat-content': addClassToContent }"
+      class="page-wrapper mat-content"
+      style="background-color: rgb(255, 255, 255)"
+    >
       <div class="page-content">
-
         <router-outlet><app-spinner></app-spinner></router-outlet>
-
       </div>
-
     </mat-sidenav-content>
     <!-- ============================================================== -->
     <!-- Page container - style you can find in pages.scss -->

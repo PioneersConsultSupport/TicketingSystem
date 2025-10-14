@@ -21,7 +21,6 @@
   "details": "Details",
   "noExamsCreated": "No exams have been created.",
   "examDetails": "Exam Details",
-  
   "totalQuestions": "Total Questions",
   "correctAnswers": "Correct Answers",
   "wrongAnswers": "Wrong Answers",
@@ -39,7 +38,6 @@
   "register": "Register",
   "units": "Units",
   "noCoursesAvailable": "No courses are currently available.",
-
   "addNewExam": "Add New Exam",
   "noUnitsAvailable": "No units available for this course.",
   "activityTab": "Activities Tab",
@@ -55,7 +53,6 @@
   "checkNow": "Check Now",
   "insertExamName": "Please enter the exam name",
   "examName": "Exam Name",
-  
   "addToCourses": "Add to Favorite Courses",
   "save": "Save",
   "startExam": "Start Exam",
@@ -92,10 +89,7 @@
   "searchCourses": "Search your courses",
   "enterCourseName": "Enter course name",
   "ARE_YOU_SURE_RESUME_LATER": "Are you sure you want to resume later?",
-
-
-
-  "category_management":"Category Management",
+  "category_management": "Category Management",
   "Tickets": "Tickets",
   "admin_panel": "Admin Panel",
   "tickets_dashboard": "Tickets Dashboard",

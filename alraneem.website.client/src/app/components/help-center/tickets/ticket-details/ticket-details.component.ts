@@ -17,22 +17,22 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
-import { CategoryType } from 'src/app/Enums/category-types';
+import { CategoryType } from 'src/app/enums/category-types';
 import { Category } from 'src/app/models/category';
 import { Subcategory } from 'src/app/models/subcategory';
 import { Ticket } from 'src/app/models/ticket';
 import { UserRole } from 'src/app/models/user-role';
-import { CategoryService } from 'src/app/Services/category.Service';
-import { TicketService } from 'src/app/Services/ticketService';
-import { UserService } from 'src/app/Services/UserService';
+import { CategoryService } from 'src/app/services/category.Service';
+import { TicketService } from 'src/app/services/ticket-service';
+import { UserService } from 'src/app/services/user-service';
 import { TranslatePipe } from 'src/app/shared/pipes/translate.pipe';
 import { TicketCommentsComponent } from '../../ticket-comments/ticket-comments.component';
 import { TicketHistoryComponent } from '../../ticket-history/ticket-history.component';
-import { TicketHistoryService } from 'src/app/Services/ticket-history.service';
+import { TicketHistoryService } from 'src/app/services/ticket-history.service';
 import { forkJoin } from 'rxjs';
-import { UserRoles } from 'src/app/Enums/user-roles';
+import { UserRoles } from 'src/app/enums/user-roles';
 import { TicketHistory } from 'src/app/models/ticket-history';
-import { DeliveryDateHistoryComponent } from '../../ticket-history/delivery-date-history/delivery-date-history/delivery-date-history.component';
+import { DeliveryDateHistoryComponent } from '../../ticket-history/delivery-date-history/delivery-date-history.component';
 import { format } from 'date-fns';
 
 @Component({
@@ -83,7 +83,7 @@ export class TicketDetailsComponent implements OnInit {
     private ticketService: TicketService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private ticketHistoryService: TicketHistoryService
+    private ticketHistoryService: TicketHistoryService,
   ) {}
 
   ngOnInit(): void {
@@ -154,16 +154,16 @@ export class TicketDetailsComponent implements OnInit {
   loadCategories() {
     forkJoin({
       categories: this.categoryService.getCategoriesByType(
-        CategoryType.TicketCategory
+        CategoryType.TicketCategory,
       ),
       priorities: this.categoryService.getCategoriesByType(
-        CategoryType.TicketPriority
+        CategoryType.TicketPriority,
       ),
       statuses: this.categoryService.getCategoriesByType(
-        CategoryType.TicketStatus
+        CategoryType.TicketStatus,
       ),
       supportOptions: this.categoryService.getCategoriesByType(
-        CategoryType.SupportOption
+        CategoryType.SupportOption,
       ),
     }).subscribe(({ categories, priorities, statuses, supportOptions }) => {
       this.categories = categories;
@@ -259,7 +259,7 @@ export class TicketDetailsComponent implements OnInit {
         const displayNew = this.getDisplayValue(key, newValue) || 'none';
         const fieldName = this.getFieldName(key);
         changes.push(
-          `${fieldName} changed from "${displayOld}" to "${displayNew}"`
+          `${fieldName} changed from "${displayOld}" to "${displayNew}"`,
         );
       }
     });

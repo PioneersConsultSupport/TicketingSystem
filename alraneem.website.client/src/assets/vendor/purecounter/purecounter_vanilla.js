@@ -9,10 +9,10 @@
   "object" == typeof exports && "object" == typeof module
     ? (module.exports = t())
     : "function" == typeof define && define.amd
-    ? define([], t)
-    : "object" == typeof exports
-    ? (exports.PureCounter = t())
-    : (e.PureCounter = t());
+      ? define([], t)
+      : "object" == typeof exports
+        ? (exports.PureCounter = t())
+        : (e.PureCounter = t());
 })(self, function () {
   return (
     (e = {
@@ -51,15 +51,15 @@
                   "Map" === r || "Set" === r
                     ? Array.from(e)
                     : "Arguments" === r ||
-                      /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r)
-                    ? n(e, t)
-                    : void 0
+                        /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r)
+                      ? n(e, t)
+                      : void 0
                 );
               }
             })(e) ||
             (function () {
               throw new TypeError(
-                "Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+                "Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.",
               );
             })()
           );
@@ -78,9 +78,9 @@
           for (var n in e)
             if (t == {} || t.hasOwnProperty(n)) {
               var o = c(e[n]);
-              (r[n] = o),
+              ((r[n] = o),
                 n.match(/duration|pulse/) &&
-                  (r[n] = "boolean" != typeof o ? 1e3 * o : o);
+                  (r[n] = "boolean" != typeof o ? 1e3 * o : o));
             }
           return Object.assign({}, t, r);
         }
@@ -89,8 +89,8 @@
             n = "inc";
           t.start > t.end && ((n = "dec"), (r *= -1));
           var o = c(t.start);
-          (e.innerHTML = u(o, t)),
-            !0 === t.once && e.setAttribute("data-purecounter-duration", 0);
+          ((e.innerHTML = u(o, t)),
+            !0 === t.once && e.setAttribute("data-purecounter-duration", 0));
           var i = setInterval(function () {
             var a = (function (e, t) {
               var r =
@@ -98,10 +98,12 @@
                   ? arguments[2]
                   : "inc";
               return (
-                (e = c(e)), (t = c(t)), parseFloat("inc" === r ? e + t : e - t)
+                (e = c(e)),
+                (t = c(t)),
+                parseFloat("inc" === r ? e + t : e - t)
               );
             })(o, r, n);
-            (e.innerHTML = u(a, t)),
+            ((e.innerHTML = u(a, t)),
               (((o = a) >= t.end && "inc" == n) ||
                 (o <= t.end && "dec" == n)) &&
                 ((e.innerHTML = u(t.end, t)),
@@ -110,10 +112,10 @@
                   setTimeout(function () {
                     e.setAttribute(
                       "data-purecounter-duration",
-                      t.duration / 1e3
+                      t.duration / 1e3,
                     );
                   }, t.pulse)),
-                clearInterval(i));
+                clearInterval(i)));
           }, t.delay);
         }
         function a(e, t) {
@@ -171,9 +173,9 @@
                             ? ((a = t.replace(new RegExp(/,/gi, "gi"), n)),
                               (u = ","))
                             : void 0 !== r
-                            ? (a = r.replace(new RegExp(/\./gi, "gi"), n))
-                            : void 0 !== o &&
-                              (a = o.replace(new RegExp(/ /gi, "gi"), n)),
+                              ? (a = r.replace(new RegExp(/\./gi, "gi"), n))
+                              : void 0 !== o &&
+                                (a = o.replace(new RegExp(/ /gi, "gi"), n)),
                           void 0 !== i)
                         ) {
                           var c = "," !== u && "," !== n ? "," : ".";
@@ -183,7 +185,7 @@
                               : "";
                         }
                         return a;
-                      }
+                      },
                     ));
               }
               var n;
@@ -192,7 +194,7 @@
               (e = t.formater
                 ? e.toLocaleString(n, r)
                 : parseInt(e).toString()),
-              t
+              t,
             )
           );
         }
@@ -200,10 +202,10 @@
           return /^[0-9]+\.[0-9]+$/.test(e)
             ? parseFloat(e)
             : /^[0-9]+$/.test(e)
-            ? parseInt(e)
-            : /^true|false/i.test(e)
-            ? /^true/i.test(e)
-            : e;
+              ? parseInt(e)
+              : /^true|false/i.test(e)
+                ? /^true/i.test(e)
+                : e;
         }
         function f(e) {
           for (
@@ -214,7 +216,7 @@
             e.offsetParent;
 
           )
-            (t += (e = e.offsetParent).offsetTop), (r += e.offsetLeft);
+            ((t += (e = e.offsetParent).offsetTop), (r += e.offsetLeft));
           return (
             t >= window.pageYOffset &&
             r >= window.pageXOffset &&
@@ -270,7 +272,7 @@
                     function (t) {
                       l(e);
                     },
-                    { passive: !0 }
+                    { passive: !0 },
                   ));
           }
           function l(e) {
@@ -309,14 +311,14 @@
                           return t(
                             {},
                             r.replace("data-purecounter-", "").toLowerCase(),
-                            c(n)
+                            c(n),
                           );
-                        })
-                      )
-                    )
+                        }),
+                      ),
+                    ),
                   )
                 : {},
-              n
+              n,
             );
           }
           d();
@@ -328,7 +330,7 @@
       var o = t[n];
       if (void 0 !== o) return o.exports;
       var i = (t[n] = { exports: {} });
-      return e[n](i, i.exports, r), i.exports;
+      return (e[n](i, i.exports, r), i.exports);
     })(638)),
     r
   );

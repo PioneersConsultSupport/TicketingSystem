@@ -29,11 +29,9 @@ export class SolutionDetailsComponent implements OnInit {
   id: string = '';
   constructor(private route: ActivatedRoute) {}
   ngOnInit(): void {
-
     this.route.params.subscribe((param) => {
       this.id = param['id'];
     });
     window.scrollTo(0, 0);
-
   }
 }

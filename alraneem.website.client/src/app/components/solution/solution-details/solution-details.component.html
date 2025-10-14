@@ -2,7 +2,7 @@
   <div class="breadcrumbs">
     <div
       class="page-header d-flex align-items-center"
-      style="background-image: url('')"
+      style="background-image: url(&quot;&quot;)"
     >
       <div class="container position-relative">
         <div class="row d-flex justify-content-center">
@@ -17,9 +17,7 @@
             <h2 *ngIf="id == 'real-estate'">
               Elite Real-Estate: Management System
             </h2>
-            <h2 *ngIf="id == 'zatca'">
-              Zatca Suadi Arabia
-            </h2>
+            <h2 *ngIf="id == 'zatca'">Zatca Suadi Arabia</h2>
           </div>
         </div>
       </div>
@@ -39,9 +37,7 @@
           <li *ngIf="id == 'real-estate'">
             Elite Real-Estate: Management System
           </li>
-           <li *ngIf="id == 'zatca'">
-            Zatca Suadi Arabia
-          </li>
+          <li *ngIf="id == 'zatca'">Zatca Suadi Arabia</li>
         </ol>
       </div>
     </nav>
@@ -428,7 +424,7 @@
             <!-- End post content -->
           </article>
 
-           <article *ngIf="id == 'zatca'" class="blog-details">
+          <article *ngIf="id == 'zatca'" class="blog-details">
             <div class="post-img">
               <img
                 src="assets/img/Services/Zatca.png"
@@ -439,13 +435,14 @@
             <h2 class="title">Microsoft Dynamics 365 finance and operation</h2>
             <!-- End meta top -->
             <div class="content">
-            
               <blockquote>
                 <p>
-                 ZATCA, or the Zakat, Tax and Customs Authority, is a government agency in Saudi Arabia that is responsible for managing the collection and administration of zakat (Islamic charity), taxes, and customs duties in the country.
+                  ZATCA, or the Zakat, Tax and Customs Authority, is a
+                  government agency in Saudi Arabia that is responsible for
+                  managing the collection and administration of zakat (Islamic
+                  charity), taxes, and customs duties in the country.
                 </p>
               </blockquote>
-
             </div>
             <!-- End post content -->
           </article>
@@ -503,10 +500,7 @@
                 </div>
                 <!-- End recent post item-->
                 <div class="post-item">
-                  <img
-                    src="assets/img/Services/Safety.png"
-                    alt=""
-                  />
+                  <img src="assets/img/Services/Safety.png" alt="" />
                   <div>
                     <h4>
                       <a [routerLink]="['/solutions/detail/saftey']">
@@ -527,17 +521,16 @@
                 </div>
                 <!-- End recent post item-->
 
-                 <div class="post-item">
+                <div class="post-item">
                   <img src="assets/img/Services/Zatca.png" alt="Services" />
                   <div>
                     <h4>
                       <a [routerLink]="['/solutions/detail/zatca']">
-                       Zatca Saudi Arabia</a
+                        Zatca Saudi Arabia</a
                       >
                     </h4>
                   </div>
                 </div>
-
               </div>
               <!-- End sidebar recent posts-->
             </div>
@@ -623,7 +616,9 @@
                     class="d-flex flex-column align-items-left justify-content-center"
                   >
                     <div class="post-item">
-                      <a href="assets/videos/25 - SAFETY INSPECTION SYSTEM-1080p-220630.mp4">
+                      <a
+                        href="assets/videos/25 - SAFETY INSPECTION SYSTEM-1080p-220630.mp4"
+                      >
                         <img src="assets/img/Services/Safety.png" alt="" />
                         <div>
                           <h4>Safety Inspection Software</h4>
@@ -669,8 +664,7 @@
                       <!-- <img src="assets/img/Services/ZatcaLogo.jpeg" alt="" /> -->
                       <div>
                         <h4>
-                          <a class="zatca-link"
-                            href="assets/videos/zatca.mp4"
+                          <a class="zatca-link" href="assets/videos/zatca.mp4"
                             >Zatca Integration</a
                           >
                         </h4>
@@ -682,7 +676,6 @@
                   <!-- End sidebar recent posts-->
                 </div>
               </div>
-
             </div>
             <!-- End sidebar tags-->
           </div>

@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EmployeeService {
-  private baseUrl = 'employees'; // Replace with actual API URL
+  private baseUrl = 'employees';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAllEmployees(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/${this.baseUrl}/getAll`);

@@ -1,17 +1,23 @@
 <div class="history-wrapper">
   <h3 class="history-header">
     <mat-icon class="history-icon">event</mat-icon>
-    {{ 'Delivery Date Changes' | translate }} ({{ deliveryDateHistories.length }})
+    {{ "Delivery Date Changes" | translate }} ({{
+      deliveryDateHistories.length
+    }})
   </h3>
 
-  <p *ngIf="loading" class="text-gray-500 italic">Loading delivery date changes...</p>
-  <div *ngIf="!loading && deliveryDateHistories.length === 0" class="text-gray-500 italic">
+  <p *ngIf="loading" class="text-gray-500 italic">
+    Loading delivery date changes...
+  </p>
+  <div
+    *ngIf="!loading && deliveryDateHistories.length === 0"
+    class="text-gray-500 italic"
+  >
     No delivery date changes available
   </div>
 
   <div *ngIf="deliveryDateHistories.length > 0" class="timeline">
     <div *ngFor="let history of deliveryDateHistories" class="timeline-item">
-      
       <!-- Dot Line -->
       <div class="timeline-dot-wrapper">
         <div class="timeline-dot"></div>
@@ -19,18 +25,23 @@
       </div>
 
       <!-- Card -->
-      <div class="timeline-card shadow-md rounded-2xl p-4 bg-white hover:shadow-lg transition-all duration-200">
+      <div
+        class="timeline-card shadow-md rounded-2xl p-4 bg-white hover:shadow-lg transition-all duration-200"
+      >
         <div class="flex justify-between items-center mb-3">
           <div class="font-bold text-primary">
-            {{ history.createdBy?.userName || 'Unknown User' }}
+            {{ history.createdBy?.userName || "Unknown User" }}
           </div>
           <span class="text-gray-500 text-xs">
-            {{ history.createdAt | date:'short' }}
+            {{ history.createdAt | date: "short" }}
           </span>
         </div>
 
         <div class="history-details flex flex-wrap gap-2">
-          <div *ngFor="let detail of history.historyDetails" class="history-detail-card">
+          <div
+            *ngFor="let detail of history.historyDetails"
+            class="history-detail-card"
+          >
             {{ detail }}
           </div>
         </div>

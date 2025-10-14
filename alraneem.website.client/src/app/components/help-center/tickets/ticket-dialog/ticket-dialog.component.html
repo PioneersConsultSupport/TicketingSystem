@@ -5,27 +5,50 @@
     <h2 class="text-2xl font-bold">{{ "Create Ticket" | translate }}</h2>
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="save()" class="dialog-form grid grid-cols-1 md:grid-cols-2 gap-4">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    class="dialog-form grid grid-cols-1 md:grid-cols-2 gap-4"
+  >
     <!-- Title -->
-    <mat-form-field *ngIf="isFieldVisible('title')" appearance="outline" class="w-full">
+    <mat-form-field
+      *ngIf="isFieldVisible('title')"
+      appearance="outline"
+      class="w-full"
+    >
       <mat-label>{{ "title" | translate }}</mat-label>
       <input matInput formControlName="title" />
-      <mat-error *ngIf="form.get('title')?.invalid">Title is required</mat-error>
+      <mat-error *ngIf="form.get('title')?.invalid"
+        >Title is required</mat-error
+      >
     </mat-form-field>
 
     <!-- Support Option -->
-    <mat-form-field *ngIf="isFieldVisible('supportOptionId')" appearance="outline" class="w-full">
+    <mat-form-field
+      *ngIf="isFieldVisible('supportOptionId')"
+      appearance="outline"
+      class="w-full"
+    >
       <mat-label>{{ "SupportOption" | translate }}</mat-label>
       <mat-select formControlName="supportOptionId">
-        <mat-option *ngFor="let supportOption of supportOptions" [value]="supportOption.id">
+        <mat-option
+          *ngFor="let supportOption of supportOptions"
+          [value]="supportOption.id"
+        >
           {{ supportOption.name }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="form.get('supportOptionId')?.hasError('required')">support option is required</mat-error>
+      <mat-error *ngIf="form.get('supportOptionId')?.hasError('required')"
+        >support option is required</mat-error
+      >
     </mat-form-field>
 
     <!-- Assigned To -->
-    <mat-form-field *ngIf="isFieldVisible('assignedToId')" appearance="outline" class="w-full">
+    <mat-form-field
+      *ngIf="isFieldVisible('assignedToId')"
+      appearance="outline"
+      class="w-full"
+    >
       <mat-label>{{ "AssignedTo" | translate }}</mat-label>
       <mat-select formControlName="assignedToId">
         <mat-option *ngFor="let user of users" [value]="user.id">
@@ -35,75 +58,146 @@
     </mat-form-field>
 
     <!-- Priority -->
-    <mat-form-field *ngIf="isFieldVisible('priorityId')" appearance="outline" class="w-full">
+    <mat-form-field
+      *ngIf="isFieldVisible('priorityId')"
+      appearance="outline"
+      class="w-full"
+    >
       <mat-label>{{ "Priority" | translate }}</mat-label>
       <mat-select formControlName="priorityId">
-        <mat-option *ngFor="let priority of ticketPriority" [value]="priority.id">{{ priority.name }}</mat-option>
+        <mat-option
+          *ngFor="let priority of ticketPriority"
+          [value]="priority.id"
+          >{{ priority.name }}</mat-option
+        >
       </mat-select>
     </mat-form-field>
 
     <!-- Status -->
-    <mat-form-field *ngIf="isFieldVisible('statusId')" appearance="outline" class="w-full">
+    <mat-form-field
+      *ngIf="isFieldVisible('statusId')"
+      appearance="outline"
+      class="w-full"
+    >
       <mat-label>{{ "Status" | translate }}</mat-label>
       <mat-select formControlName="statusId">
-        <mat-option *ngFor="let status of ticketStatus" [value]="status.id">{{ status.name }}</mat-option>
+        <mat-option *ngFor="let status of ticketStatus" [value]="status.id">{{
+          status.name
+        }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <!-- Category -->
-    <mat-form-field *ngIf="isFieldVisible('categoryId')" appearance="outline" class="w-full">
+    <mat-form-field
+      *ngIf="isFieldVisible('categoryId')"
+      appearance="outline"
+      class="w-full"
+    >
       <mat-label>{{ "Category" | translate }}</mat-label>
-      <mat-select formControlName="categoryId" (selectionChange)="onCategoryChange($event.value)">
-        <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
+      <mat-select
+        formControlName="categoryId"
+        (selectionChange)="onCategoryChange($event.value)"
+      >
+        <mat-option *ngFor="let category of categories" [value]="category.id">{{
+          category.name
+        }}</mat-option>
       </mat-select>
-      <mat-error *ngIf="form.get('categoryId')?.hasError('required')">category is required</mat-error>
+      <mat-error *ngIf="form.get('categoryId')?.hasError('required')"
+        >category is required</mat-error
+      >
     </mat-form-field>
 
     <!-- Subcategory -->
-    <mat-form-field *ngIf="isFieldVisible('subcategoryId') && subcategories.length > 0" appearance="outline"
-      class="w-full">
+    <mat-form-field
+      *ngIf="isFieldVisible('subcategoryId') && subcategories.length > 0"
+      appearance="outline"
+      class="w-full"
+    >
       <mat-label>{{ "Subcategory" | translate }}</mat-label>
       <mat-select formControlName="subcategoryId">
-        <mat-option *ngFor="let sub of subcategories" [value]="sub.id">{{ sub.name }}</mat-option>
+        <mat-option *ngFor="let sub of subcategories" [value]="sub.id">{{
+          sub.name
+        }}</mat-option>
       </mat-select>
-      <mat-error *ngIf="form.get('subcategoryId')?.hasError('required')">Subcategory is required</mat-error>
+      <mat-error *ngIf="form.get('subcategoryId')?.hasError('required')"
+        >Subcategory is required</mat-error
+      >
     </mat-form-field>
 
-
     <!-- Start Date -->
-    <mat-form-field *ngIf="isFieldVisible('startDate')" appearance="outline" class="w-full">
+    <mat-form-field
+      *ngIf="isFieldVisible('startDate')"
+      appearance="outline"
+      class="w-full"
+    >
       <mat-label>{{ "StartDate" | translate }}</mat-label>
-      <input matInput [matDatepicker]="startPicker" [max]="form.get('deliveryDate')?.value"
-        formControlName="startDate" />
-      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <input
+        matInput
+        [matDatepicker]="startPicker"
+        [max]="form.get('deliveryDate')?.value"
+        formControlName="startDate"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="startPicker"
+      ></mat-datepicker-toggle>
       <mat-datepicker #startPicker></mat-datepicker>
-      <mat-error *ngIf="form.get('startDate')?.hasError('required')">Start Date is required</mat-error>
+      <mat-error *ngIf="form.get('startDate')?.hasError('required')"
+        >Start Date is required</mat-error
+      >
     </mat-form-field>
 
     <!-- Delivery Date -->
-    <mat-form-field *ngIf="isFieldVisible('deliveryDate')" appearance="outline" class="w-full">
+    <mat-form-field
+      *ngIf="isFieldVisible('deliveryDate')"
+      appearance="outline"
+      class="w-full"
+    >
       <mat-label>{{ "DeliveryDate" | translate }}</mat-label>
-      <input matInput [matDatepicker]="deliveryPicker" [min]="form.get('startDate')?.value"
-        formControlName="deliveryDate" />
-      <mat-datepicker-toggle matSuffix [for]="deliveryPicker"></mat-datepicker-toggle>
+      <input
+        matInput
+        [matDatepicker]="deliveryPicker"
+        [min]="form.get('startDate')?.value"
+        formControlName="deliveryDate"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="deliveryPicker"
+      ></mat-datepicker-toggle>
       <mat-datepicker #deliveryPicker></mat-datepicker>
-      <mat-error *ngIf="form.get('deliveryDate')?.hasError('required')">Delivery Date is required</mat-error>
+      <mat-error *ngIf="form.get('deliveryDate')?.hasError('required')"
+        >Delivery Date is required</mat-error
+      >
     </mat-form-field>
 
     <!-- Description -->
-    <mat-form-field *ngIf="isFieldVisible('description')" appearance="outline"
-      class="w-full md:col-span-2 description-field">
+    <mat-form-field
+      *ngIf="isFieldVisible('description')"
+      appearance="outline"
+      class="w-full md:col-span-2 description-field"
+    >
       <mat-label>{{ "Description" | translate }}</mat-label>
-      <textarea matInput formControlName="description" rows="5" placeholder="Enter detailed description..."></textarea>
+      <textarea
+        matInput
+        formControlName="description"
+        rows="5"
+        placeholder="Enter detailed description..."
+      ></textarea>
       <mat-error *ngIf="form.get('description')?.invalid">
         Description is required
       </mat-error>
     </mat-form-field>
-
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="dialog-actions mt-4">
   <button mat-stroked-button type="button" (click)="close()">Cancel</button>
-  <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="save()">{{ "save" | translate }}</button>
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="form.invalid"
+    (click)="save()"
+  >
+    {{ "save" | translate }}
+  </button>
 </mat-dialog-actions>

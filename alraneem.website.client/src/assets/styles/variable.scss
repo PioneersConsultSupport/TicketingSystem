@@ -9,10 +9,10 @@ File: scss
 @use "@angular/material" as mat;
 @include mat.core();
 
-@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
 
-$bodyfont: 'Poppins', sans-serif;
-$headingfont: 'Poppins', sans-serif;
+$bodyfont: "Poppins", sans-serif;
+$headingfont: "Poppins", sans-serif;
 
 $mat-primary: (
   100: #ebf9fa,
@@ -51,7 +51,6 @@ $primary: mat.define-palette($mat-primary, 500);
 $accent: mat.define-palette($mat-secondary, 500);
 $warn: mat.define-palette($mat-warn, 500);
 
-
 // $theme: mat-light-theme($primary, $accent, $warn);
 
 // $background: map-get($theme, background);
@@ -64,8 +63,7 @@ $cyantheme: mat.define-light-theme(
       accent: $accent,
       warn: $warn,
     ),
-    typography:
-      mat.define-typography-config(
+    typography: mat.define-typography-config(
         $font-family: "Poppins",
       ),
   )

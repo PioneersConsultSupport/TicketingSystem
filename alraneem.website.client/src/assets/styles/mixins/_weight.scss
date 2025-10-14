@@ -1,4 +1,5 @@
-$font-array:(lighter: 100,
+$font-array: (
+  lighter: 100,
   light: 300,
   normal: 400,
   medium: 500,
@@ -6,8 +7,7 @@ $font-array:(lighter: 100,
   bold: 700,
 );
 
-@each $font-weight,
-$font-value in $font-array {
+@each $font-weight, $font-value in $font-array {
   .fw-#{$font-weight} {
     font-weight: $font-value;
   }

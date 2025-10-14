@@ -2,14 +2,24 @@
   <!-- Header -->
   <div class="dialog-header flex items-center gap-3 mb-6">
     <mat-icon color="primary">category</mat-icon>
-    <h2 class="text-2xl font-bold">{{ data ? 'Edit Category' : 'Add Category' }}</h2>
+    <h2 class="text-2xl font-bold">
+      {{ data ? "Edit Category" : "Add Category" }}
+    </h2>
   </div>
 
   <!-- Form -->
-  <form [formGroup]="form" (ngSubmit)="save()" class="dialog-form grid grid-cols-1 md:grid-cols-2 gap-4">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    class="dialog-form grid grid-cols-1 md:grid-cols-2 gap-4"
+  >
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Name</mat-label>
-      <input matInput formControlName="name" placeholder="Enter category name" />
+      <input
+        matInput
+        formControlName="name"
+        placeholder="Enter category name"
+      />
       <mat-error *ngIf="form.get('name')?.hasError('required')">
         Name is required
       </mat-error>
@@ -20,7 +30,11 @@
 
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Type</mat-label>
-      <input matInput formControlName="type" placeholder="Enter category type" />
+      <input
+        matInput
+        formControlName="type"
+        placeholder="Enter category type"
+      />
       <mat-error *ngIf="form.get('type')?.hasError('required')">
         Type is required
       </mat-error>
@@ -29,12 +43,18 @@
       </mat-error>
     </mat-form-field>
 
-
     <!-- Buttons -->
     <div class="dialog-actions md:col-span-2 flex justify-end gap-2 mt-4">
-      <button mat-stroked-button color="warn" type="button" (click)="close()">Cancel</button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
-        {{ data ? 'Update' : 'Add' }}
+      <button mat-stroked-button color="warn" type="button" (click)="close()">
+        Cancel
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        {{ data ? "Update" : "Add" }}
       </button>
     </div>
   </form>

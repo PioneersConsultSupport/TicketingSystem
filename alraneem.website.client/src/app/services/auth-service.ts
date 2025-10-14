@@ -23,7 +23,7 @@ export class AuthService {
     this.clearToken();
     return this.http.post<any>(`${environment.apiUrl}/auth/logout`, null);
   }
-  
+
   clearToken() {
     localStorage.removeItem('jwt_token');
   }
