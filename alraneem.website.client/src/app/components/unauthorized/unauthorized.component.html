@@ -1,2 +1,18 @@
-<h2>Access Denied</h2>
-<p>You are authenticated, but not authorized to access this resource.</p>
+<div class="container">
+  <div class="circle top-right"></div>
+  <div class="circle bottom-left"></div>
+
+  <svg class="warning-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round"
+      d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+  </svg>
+
+  <h1>403</h1>
+  <h2>Access Denied</h2>
+  <p>You are authenticated, but you do not have permission to access this page.<br>
+    Please contact your administrator to ensure you have the necessary permissions.
+  </p>
+  <button (click)="goHome()">Go Back Home</button>
+
+  <p class="notice">Thank you for your understanding.</p>
+</div>

@@ -40,10 +40,26 @@ html .page-wrapper {
 
   .page-content {
     padding: 30px 15px;
-    max-width: 1300px;
+    background: linear-gradient(135deg, #59cedb, #3cadba, #008593);
     margin: 0 auto;
   }
 }
+
+.page-wrapper.mat-content {
+  background: linear-gradient(135deg, #59cedb, #3cadba, #008593);
+  color: #fff;
+}
+
+mat-sidenav.dark-sidebar {
+  background: linear-gradient(135deg, #59cedb, #3cadba, #008593) !important;
+  color: #fff;
+}
+
+mat-toolbar.topbar {
+  background: linear-gradient(135deg, #59cedb, #3cadba, #008593);
+  color: #fff; 
+}
+
 
 // a tag
 

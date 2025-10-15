@@ -1,51 +1,56 @@
+//@import '../../../../../assets/styles/component/help-center-styles';
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .dialog-container {
-  padding: 1rem 1.5rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  min-width: 350px;
+  overflow: hidden;
+}
 
-  .dialog-header {
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background-color: #323e49;
+  color: #fff;
+
+  .header-icon { font-size: 24px; }
+  .header-title { font-size: 1.25rem; font-weight: 600; }
+}
+
+.dialog-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+
+  .dialog-actions {
+    grid-column: 1 / -1;
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-
-    mat-icon {
-      font-size: 28px;
-    }
-
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin: 0;
-    }
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
   }
+}
 
-  .dialog-form {
-    display: grid;
-    gap: 1rem;
-
-    mat-form-field {
-      width: 100%;
-    }
-
-    .dialog-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.5rem;
-      margin-top: 1rem;
-
-      button {
-        padding: 0.5rem 1.5rem;
-        border-radius: 0.5rem;
-        font-weight: 600;
-        transition: all 0.2s ease-in-out;
-
-        &:hover {
-          transform: scale(1.05);
-        }
-      }
-
-      mat-flat-button[color="primary"] {
-        color: #fff;
-      }
-    }
-  }
+@media (max-width: 768px) {
+  .dialog-container { min-width: 90%; }
 }

@@ -72,6 +72,7 @@ export class TicketDialogComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
+    this.dialogRef.updateSize('700px');
     await this.getUserRole();
     this.buildForm();
     this.loadCategories();

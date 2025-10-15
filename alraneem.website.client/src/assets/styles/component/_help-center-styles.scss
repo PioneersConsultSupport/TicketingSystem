@@ -1,0 +1,1016 @@
+/* ===========================
+   Variables
+=========================== */
+$primary-color: #1976d2;
+$error-color: #d32f2f;
+$bg-light: #fafafa;
+$bg-white: #ffffff;
+$main-container: #008593;
+$shadow-light: 0 2px 12px rgba(0, 0, 0, 0.08);
+$shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+$shadow-heavy: 0 8px 20px rgba(0, 0, 0, 0.2);
+$border-radius: 12px;
+$accent-color: #323e49;
+$bg-light: #f9f9f9;
+$text-primary: #333;
+$text-secondary: #555;
+$text-muted: #888;
+$shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.2);
+$gap: 0.75rem;
+$max-card-height: 400px;
+
+
+
+/* ===========================
+   Admin Panel
+=========================== */
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+
+  .admin-form-card,
+  .admin-table-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #fff;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    mat-card-header.admin-header {
+      background-color: #323e49;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      color: #fff !important;
+
+      .header-flex {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .header-icon {
+          font-size: 22px;
+          color: #fff !important;
+        }
+
+        .header-title {
+          font-weight: 600;
+          font-size: 1.25rem;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+
+    mat-card-content {
+      padding: 1.5rem;
+    }
+  }
+
+  .admin-form {
+    display: grid;
+    gap: 1rem;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    .mat-form-field {
+      width: 100%;
+    }
+
+    .dialog-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.5rem;
+    }
+
+    .save-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      text-transform: uppercase;
+      background-color: $primary-color;
+      color: #fff;
+      transition: all 0.3s ease;
+
+      mat-icon {
+        font-size: 18px;
+      }
+
+      &:hover {
+        filter: brightness(1.1);
+      }
+    }
+  }
+
+
+  .table-wrapper {
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 0.75rem;
+      overflow: hidden;
+
+      th {
+        background: #eff6ff;
+        font-weight: 600;
+        color: #1e3a8a;
+        text-align: left;
+        padding: 0.75rem 1rem;
+      }
+
+      td {
+        border-bottom: 1px solid #e5e7eb;
+        color: #334155;
+        padding: 0.75rem 1rem;
+      }
+
+      .role-badge {
+        background: #e0f2fe;
+        color: #0369a1;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      button[mat-icon-button] {
+        transition: transform 0.2s ease;
+
+        &:hover {
+          transform: scale(1.15);
+        }
+      }
+    }
+  }
+
+  mat-paginator {
+    border-top: 1px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    background: #fafafa;
+    border-radius: 0 0 1rem 1rem;
+  }
+}
+
+/* ===========================
+   Categories Management
+=========================== */
+.categories-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+
+  .categories-header,
+  .categories-table {
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #fff;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    mat-card-header {
+      background-color: #323e49;
+      color: #fff !important;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+      .header-flex {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        mat-icon {
+          font-size: 22px;
+          color: #fff !important;
+        }
+
+        mat-card-title {
+          font-weight: 600;
+          font-size: 1.25rem;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+
+    mat-card-content {
+      padding: 1.5rem;
+
+      .filters {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        @media (min-width: 768px) {
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        mat-form-field {
+          width: 100%;
+        }
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1rem;
+
+        button {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.6rem 1.2rem;
+          border-radius: 0.5rem;
+          font-weight: 600;
+          transition: all 0.2s ease-in-out;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+
+    th {
+      background: #eff6ff;
+      font-weight: 600;
+      color: #1e3a8a;
+      text-align: left;
+      padding: 0.75rem 1rem;
+    }
+
+    td {
+      border-bottom: 1px solid #e5e7eb;
+      color: #334155;
+      padding: 0.75rem 1rem;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.5rem;
+
+      button[mat-icon-button] {
+        transition: transform 0.2s ease;
+
+        &:hover {
+          transform: scale(1.15);
+        }
+      }
+    }
+  }
+
+  mat-paginator {
+    border-top: 1px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    background: #fafafa;
+    border-radius: 0 0 1rem 1rem;
+  }
+}
+
+
+/* ===========================
+   Ticket Details Styles
+=========================== */
+.ticket-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+
+  .ticket-header,
+  .ticket-tabs-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #fff;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    mat-card-header {
+      background-color: #323e49;
+      color: #fff !important;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+      .header-flex {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        mat-icon {
+          font-size: 22px;
+          color: #fff !important;
+        }
+
+        mat-card-title {
+          font-weight: 600;
+          font-size: 1.25rem;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+
+    mat-card-content {
+      padding: 1.5rem;
+
+      .ticket-form {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+        mat-form-field {
+          width: 100%;
+        }
+
+        .full-width {
+          grid-column: 1 / -1;
+        }
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+
+        button {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.6rem 1.2rem;
+          border-radius: 0.5rem;
+          font-weight: 600;
+          transition: all 0.2s ease-in-out;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+  }
+
+  /* Tabs Card */
+  .ticket-tabs-card {
+    mat-tab-group {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+      ::ng-deep .mat-tab-labels {
+        background: #f3f4f6;
+        border-bottom: 1px solid #e5e7eb;
+        border-radius: 1rem 1rem 0 0;
+      }
+
+      ::ng-deep .mat-tab-label {
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      ::ng-deep .mat-tab-label-active {
+        color: #1d4ed8;
+      }
+
+      ::ng-deep .mat-ink-bar {
+        background-color: #1d4ed8 !important;
+        height: 3px;
+        border-radius: 3px 3px 0 0;
+      }
+
+      mat-card-content {
+        padding: 1.5rem;
+      }
+    }
+  }
+}
+
+
+mat-form-field {
+
+  input,
+  textarea,
+  mat-select {
+    border-radius: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .ticket-details-container {
+    .ticket-form {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+mat-form-field {
+
+  input,
+  textarea,
+  mat-select {
+    border-radius: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .ticket-details-container {
+    .ticket-form {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+
+/* ===========================
+   Subcategories Management
+=========================== */
+.subcategories-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+
+  .subcategories-header,
+  .subcategories-table {
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #fff;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    mat-card-header {
+      background-color: #323e49;
+      color: #fff !important;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+      .header-flex {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        mat-icon {
+          font-size: 22px;
+          color: #fff !important;
+        }
+
+        mat-card-title {
+          font-weight: 600;
+          font-size: 1.25rem;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+
+    mat-card-content {
+      padding: 1.5rem;
+
+      .filters {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        @media (min-width: 768px) {
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        mat-form-field {
+          width: 100%;
+        }
+
+        .actions {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+
+          button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+              transform: scale(1.05);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 0.75rem;
+      overflow: hidden;
+
+      th {
+        background: #eff6ff;
+        font-weight: 600;
+        color: #1e3a8a;
+        text-align: left;
+        padding: 0.75rem 1rem;
+      }
+
+      td {
+        border-bottom: 1px solid #e5e7eb;
+        color: #334155;
+        padding: 0.75rem 1rem;
+      }
+
+      .table-actions {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+
+        button[mat-icon-button] {
+          transition: transform 0.2s ease;
+
+          &:hover {
+            transform: scale(1.15);
+          }
+        }
+      }
+    }
+  }
+
+  mat-paginator {
+    border-top: 1px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    background: #fafafa;
+    border-radius: 0 0 1rem 1rem;
+  }
+}
+
+/* ===========================
+   Responsive
+=========================== */
+@media (max-width: 768px) {
+  .subcategories-container {
+    padding: 0.75rem;
+
+    .filters {
+      grid-template-columns: 1fr !important;
+    }
+
+    table th,
+    table td {
+      padding: 6px 8px;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+
+/* ===========================
+   Tickets Management
+=========================== */
+.tickets-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+
+  .tickets-header,
+  .tickets-table {
+    border-radius: 1rem;
+    background: #fff;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    mat-card-header {
+      background-color: #323e49;
+      color: #fff;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+      .header-flex {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        mat-icon {
+          color: #fff;
+          font-size: 22px;
+        }
+
+        mat-card-title {
+          font-weight: 600;
+          font-size: 1.3rem;
+        }
+      }
+    }
+
+    mat-card-content {
+      padding: 1.5rem;
+
+      .filters {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        @media (min-width: 768px) {
+          grid-template-columns: repeat(4, 1fr);
+        }
+
+        mat-form-field {
+          width: 100%;
+        }
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-weight: 600;
+          border-radius: 0.5rem;
+          transition: all 0.2s ease;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+  }
+
+  .tickets-table {
+    .table-wrapper {
+      overflow-x: auto;
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th {
+          background: #eff6ff;
+          color: #1e3a8a;
+          font-weight: 600;
+          padding: 0.75rem 1rem;
+          text-align: left;
+        }
+
+        td {
+          padding: 0.75rem 1rem;
+          border-bottom: 1px solid #e5e7eb;
+          color: #334155;
+        }
+
+        .table-actions {
+          display: flex;
+          justify-content: center;
+          gap: 0.5rem;
+
+          button[mat-icon-button] {
+            transition: transform 0.2s ease;
+
+            &:hover {
+              transform: scale(1.15);
+            }
+          }
+        }
+      }
+    }
+
+    mat-paginator {
+      border-top: 1px solid #e5e7eb;
+      background: #fafafa;
+      padding: 0.75rem 1rem;
+      border-radius: 0 0 1rem 1rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .tickets-container {
+    padding: 0.75rem;
+
+    .filters {
+      grid-template-columns: 1fr !important;
+    }
+
+    table th,
+    table td {
+      font-size: 0.85rem;
+      padding: 6px 8px;
+    }
+  }
+}
+
+/* ===========================
+   Animations
+=========================== */
+@keyframes dialogFadeIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialogFadeOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+}
+
+@keyframes overlayFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+
+/* ===========================
+   Comments & History Changes Styles
+=========================== */
+
+.wrapper-card {
+  background: $bg-white;
+  padding: 1.5rem;
+  border-radius: $border-radius;
+  box-shadow: $shadow-light;
+
+  h3.header {
+    background: $bg-white;
+    color: #000;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    mat-icon {
+      color: $primary-color;
+    }
+  }
+
+  /* ===========================
+     Shared Scrollable List
+  ============================ */
+  .scrollable-list {
+    display: flex;
+    flex-direction: column;
+    gap: $gap;
+    max-height: $max-card-height;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+    }
+  }
+
+  /* ===========================
+     Comments Section
+  ============================ */
+  &.comments-wrapper {
+    .comments-list {
+      @extend .scrollable-list;
+
+      .comment-card {
+        background: $bg-light;
+        border-radius: $border-radius;
+        padding: 0.9rem 1rem;
+        transition: transform 0.1s ease, box-shadow 0.2s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: $shadow-hover;
+        }
+
+        .comment-header {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 0.5rem;
+          font-size: 0.875rem;
+          color: $text-secondary;
+          align-items: center;
+
+          .author {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-weight: 600;
+
+            mat-icon {
+              font-size: 18px;
+              color: $primary-color;
+            }
+          }
+        }
+
+        .comment-message {
+          font-size: 1rem;
+          color: $text-primary;
+          line-height: 1.5;
+          white-space: pre-wrap;
+        }
+      }
+    }
+
+    .comment-input {
+      display: flex;
+      gap: $gap;
+      margin-top: 1rem;
+
+      mat-form-field {
+        flex: 1;
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0 1rem;
+        border-radius: 8px;
+      }
+    }
+  }
+
+  /* ===========================
+     Timeline (History & Delivery Changes)
+  ============================ */
+  &.history-wrapper {
+    .timeline {
+      position: relative;
+      margin-left: 30px;
+
+      .timeline-item {
+        display: flex;
+        position: relative;
+        margin-bottom: 30px;
+      }
+
+      .timeline-dot-wrapper {
+        position: relative;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+
+        .timeline-dot {
+          width: 16px;
+          height: 16px;
+          background-color: $main-container;
+          border-radius: 50%;
+          border: 4px solid $bg-white;
+          box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+          z-index: 2;
+        }
+
+        .timeline-line {
+          position: absolute;
+          top: 16px;
+          width: 3px;
+          height: calc(100% - 16px);
+          background-color: $main-container;
+          z-index: 1;
+        }
+      }
+
+      .timeline-card {
+        flex: 1;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        margin-left: 10px;
+        background: $bg-white;
+        border-radius: $border-radius;
+        box-shadow: $shadow-light;
+        padding: 1rem;
+        color: $text-primary;
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: $shadow-hover;
+        }
+
+        .history-details {
+          @extend .scrollable-list;
+
+          .history-detail-card {
+            background-color: #f3f4f6;
+            padding: 6px 12px;
+            border-radius: $border-radius;
+            font-size: 0.875rem;
+            color: $text-primary;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.15s ease, background-color 0.15s ease;
+
+            &:hover {
+              background-color: $accent-color;
+              color: white;
+              transform: translateY(-2px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+/* ===========================
+   Mobile Adjustments
+=========================== */
+@media (max-width: 768px) {
+
+  .admin-container,
+  .categories-container {
+    padding: 0.75rem;
+  }
+
+  .dialog-container form.dialog-form {
+    grid-template-columns: 1fr !important;
+  }
+
+  table th,
+  table td {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+
+  .categories-header mat-card-content,
+  .categories-table mat-card-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

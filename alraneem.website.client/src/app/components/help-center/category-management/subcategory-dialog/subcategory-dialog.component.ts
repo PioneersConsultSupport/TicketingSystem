@@ -42,6 +42,7 @@ export class SubcategoryDialogComponent {
     @Inject(MAT_DIALOG_DATA)
     public data: { category: Category; subcategory?: Subcategory },
   ) {
+    this.dialogRef.updateSize('400px');
     this.form = this.fb.group({
       name: [
         data.subcategory?.name?.trim() || '',

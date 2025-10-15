@@ -40,6 +40,7 @@ export class CategoryDialogComponent {
     private dialogRef: MatDialogRef<CategoryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Category,
   ) {
+    this.dialogRef.updateSize('500px');
     this.form = this.fb.group({
       name: [
         data?.name?.trim() || '',

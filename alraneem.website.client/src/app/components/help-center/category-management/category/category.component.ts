@@ -98,8 +98,8 @@ export class CategoryComponent implements OnInit {
 
   openCategoryDialog(category?: Category) {
     const dialogRef = this.dialog.open(CategoryDialogComponent, {
-      width: '400px',
       data: category ? { ...category } : null,
+      width: '500px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

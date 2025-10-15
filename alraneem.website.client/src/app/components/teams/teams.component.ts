@@ -70,7 +70,7 @@ export class TeamsComponent {
         name: 'Farah Hammad',
         role: 'Functional Consultant',
         description:
-          'Collaborate with clients to understand their financial processes and configure ERP systems to meet their needs.',
+          'Specialist in Microsoft Dynamics 365, analyzing client business needs and designing ERP solutions to deliver effective system enhancements and customizations.',
         profileImage: 'assets/img/team/Farah.jpg',
         twitterUrl: null,
         facebookUrl: null,

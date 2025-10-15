@@ -1,46 +1,19 @@
-<mat-dialog-content class="dialog-container">
-  <!-- Header -->
-  <div class="dialog-header flex items-center gap-3 mb-6">
-    <mat-icon color="primary">category</mat-icon>
-    <h2 class="text-2xl font-bold">
-      {{ data.subcategory ? "Edit Subcategory" : "Add Subcategory" }}
-    </h2>
-  </div>
-
-  <!-- Form -->
-  <form
-    [formGroup]="form"
-    (ngSubmit)="save()"
-    class="dialog-form grid grid-cols-1 gap-4"
-  >
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Name</mat-label>
-      <input
-        matInput
-        formControlName="name"
-        placeholder="Enter subcategory name"
-      />
-      <mat-error *ngIf="form.get('name')?.hasError('required')">
-        Name is required
-      </mat-error>
-      <mat-error *ngIf="form.get('name')?.hasError('pattern')">
-        Name cannot be empty
-      </mat-error>
-    </mat-form-field>
-
-    <!-- Buttons -->
-    <div class="dialog-actions flex justify-end gap-2 mt-4">
-      <button mat-stroked-button color="warn" type="button" (click)="close()">
-        Cancel
-      </button>
-      <button
-        mat-flat-button
-        color="primary"
-        type="submit"
-        [disabled]="form.invalid"
-      >
-        {{ data.subcategory ? "Update" : "Add" }}
-      </button>
+<div class="dialog-overlay">
+  <div class="dialog-container subcategory-dialog">
+    <div class="dialog-header">
+      <mat-icon class="header-icon">category</mat-icon>
+      <div class="header-title">{{ data.subcategory ? "Edit Subcategory" : "Add Subcategory" }}</div>
     </div>
-  </form>
-</mat-dialog-content>
+    <form [formGroup]="form" (ngSubmit)="save()" class="dialog-form subcategory-dialog">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+      <div class="dialog-actions">
+        <button mat-stroked-button type="button" (click)="close()">Cancel</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">{{ data.subcategory ? "Update" :
+          "Add" }}</button>
+      </div>
+    </form>
+  </div>
+</div>

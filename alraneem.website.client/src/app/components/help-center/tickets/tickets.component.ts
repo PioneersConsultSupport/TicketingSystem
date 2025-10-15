@@ -181,7 +181,6 @@ export class TicketsComponent implements OnInit {
 
   addTicket() {
     const dialogRef = this.dialog.open(TicketDialogComponent, {
-      width: '500px',
       data: { mode: 'create' },
     });
 
