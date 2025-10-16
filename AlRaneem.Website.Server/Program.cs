@@ -37,6 +37,7 @@ builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 builder.Services.AddScoped<ISubcategoryRepo, SubcategoryRepo>();
 builder.Services.AddScoped<ITicketHistoryRepo, TicketHistoryRepo>();
 builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<ITicketEmailService, TicketEmailService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
 var azureAd = builder.Configuration
