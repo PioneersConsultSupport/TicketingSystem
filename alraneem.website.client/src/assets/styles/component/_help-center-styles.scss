@@ -19,8 +19,6 @@ $shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.2);
 $gap: 0.75rem;
 $max-card-height: 400px;
 
-
-
 /* ===========================
    Admin Panel
 =========================== */
@@ -109,7 +107,6 @@ $max-card-height: 400px;
       }
     }
   }
-
 
   .table-wrapper {
     overflow-x: auto;
@@ -289,7 +286,6 @@ $max-card-height: 400px;
   }
 }
 
-
 /* ===========================
    Ticket Details Styles
 =========================== */
@@ -409,9 +405,7 @@ $max-card-height: 400px;
   }
 }
 
-
 mat-form-field {
-
   input,
   textarea,
   mat-select {
@@ -428,7 +422,6 @@ mat-form-field {
 }
 
 mat-form-field {
-
   input,
   textarea,
   mat-select {
@@ -443,7 +436,6 @@ mat-form-field {
     }
   }
 }
-
 
 /* ===========================
    Subcategories Management
@@ -595,7 +587,6 @@ mat-form-field {
     }
   }
 }
-
 
 /* ===========================
    Tickets Management
@@ -787,11 +778,9 @@ mat-form-field {
   }
 }
 
-
 /* ===========================
    Comments & History Changes Styles
 =========================== */
-
 .wrapper-card {
   background: $bg-white;
   padding: 1.5rem;
@@ -984,15 +973,10 @@ mat-form-field {
   }
 }
 
-
-
-
-
 /* ===========================
    Mobile Adjustments
 =========================== */
 @media (max-width: 768px) {
-
   .admin-container,
   .categories-container {
     padding: 0.75rem;
